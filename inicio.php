@@ -54,7 +54,7 @@ require 'db.php';
                             </h4>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped"> <!-- LISTADO DE USUARIOS MODIFICADO -->
                                 <thead>
                                     <tr>
                                         <th>ID</th>
