@@ -1,12 +1,12 @@
 <?php
 $host = 'localhost';
-$dbname = 'practica_sventas';
+$dbname = 'practica_sventas_desa';
 $username = 'practica_global';
 $password = 'Global_2026';
 
 $conn = new mysqli($host, $username, $password, $dbname);
 
-if($conn->connect_error) {
-    die('Connection failed'. $conn->connect_error);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
 }
 ?>

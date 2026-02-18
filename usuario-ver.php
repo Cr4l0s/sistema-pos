@@ -75,13 +75,39 @@ require 'db.php';
                                     <?php echo $usuario['fonocelular2']; ?>
                                 </p>
                             </div>
-
                             <div class="mb-3">
                                 <label><b>Email</b></label>
                                 <p class="form-control">
                                     <?php echo $usuario['email']; ?>
                                 </p>
                             </div>
+
+                            <!-- ===== NUEVA SECCIÓN: MOSTRAR ROLES ===== -->
+                            <div class="mb-3">
+                                <label><b>Roles asignados</b></label>
+                                <p class="form-control">
+                                    <?php
+                                    // Consultar los roles del usuario desde la tabla intermedia
+                                    $sql_roles = "SELECT r.nombre_rol 
+                                                  FROM usuarios_roles ur 
+                                                  JOIN roles r ON ur.id_rol = r.id_rol 
+                                                  WHERE ur.idUsuario = $usuario_id";
+                                    $roles_usuario = mysqli_query($conn, $sql_roles);
+
+                                    if (mysqli_num_rows($roles_usuario) > 0) {
+                                        $lista_roles = [];
+                                        while($rol = mysqli_fetch_array($roles_usuario)) {
+                                            $lista_roles[] = $rol['nombre_rol'];
+                                        }
+                                        echo implode(', ', $lista_roles);
+                                    } else {
+                                        echo '<span class="text-muted">Sin roles asignados</span>';
+                                    }
+                                    ?>
+                                </p>
+                            </div>
+                            <!-- ===== FIN NUEVA SECCIÓN ===== -->
+
                             <div class="mb-3">
                                 <label><b>Fecha de Registro</b></label>
                                 <p class="form-control">

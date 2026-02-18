@@ -19,25 +19,40 @@ if (isset($_POST['create_usuario'])) {
 
     mysqli_query($conn, $sql);
 
-    if(mysqli_affected_rows($conn) > 0) {
-        $_SESSION['mensaje'] ='Ya existe un usuario con el mismo email, por lo que no se agregará.';
-        header('Location: inicio.php');
-        exit;
-	}
+if (isset($_POST['create_usuario'])) {
+    $nombres = mysqli_real_escape_string($conn, trim($_POST['nombres']));
+    $email = mysqli_real_escape_string($conn, trim($_POST['email']));
+    $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
+    $apPaterno = mysqli_real_escape_string($conn, trim($_POST['apPaterno']));
+    $apMaterno = mysqli_real_escape_string($conn, trim($_POST['apMaterno']));
+    $username = mysqli_real_escape_string($conn, trim($_POST['username']));
+    $fonofijo = mysqli_real_escape_string($conn, trim($_POST['fonofijo']));
+    $fonocelular1 = mysqli_real_escape_string($conn, trim($_POST['fonocelular1']));
+    $fonocelular2 = mysqli_real_escape_string($conn, trim($_POST['fonocelular2']));
 
-    $sql = "INSERT INTO usuarios (nombres, ApPaterno, ApMaterno, NombreUsuario, fonofijo, fonocelular1, fonocelular2, email, password, vigente) VALUES ('$nombres', '$apPaterno', '$apMaterno', '$username', '$fonofijo', '$fonocelular1', '$fonocelular2', '$email', '$password', '1')";
+    // Insertar usuario (SIN id_rol)
+    $sql = "INSERT INTO usuarios (nombres, ApPaterno, ApMaterno, NombreUsuario, fonofijo, fonocelular1, fonocelular2, email, password, vigente) 
+            VALUES ('$nombres', '$apPaterno', '$apMaterno', '$username', '$fonofijo', '$fonocelular1', '$fonocelular2', '$email', '$password', 1)";
 
-    mysqli_query($conn, $sql);
+    if (mysqli_query($conn, $sql)) {
+        $usuario_id = mysqli_insert_id($conn);
 
-    if(mysqli_affected_rows($conn) > 0) {
-        $_SESSION['mensaje'] ='Usuario creado en forma exitosa.';
-        header('Location: inicio.php');
-        exit;
+        // Insertar roles seleccionados en usuarios_roles
+        if (isset($_POST['roles']) && is_array($_POST['roles'])) {
+            foreach ($_POST['roles'] as $id_rol) {
+                $id_rol = mysqli_real_escape_string($conn, $id_rol);
+                $conn->query("INSERT INTO usuarios_roles (idUsuario, id_rol) VALUES ($usuario_id, $id_rol)");
+            }
+        }
+
+        $_SESSION['mensaje'] = 'Usuario creado exitosamente.';
     } else {
-        $_SESSION['mensaje'] ='Usuario no se pudo crear.';
-        header('Location: inicio.php');
-        exit;
+        $_SESSION['mensaje'] = 'Error al crear usuario.';
     }
+
+    header('Location: inicio.php');
+    exit;
+}
 }
  
 if (isset($_POST['update_usuario'])) {
