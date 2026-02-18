@@ -24,12 +24,17 @@ require 'db.php';
                     <div class="card-body">
                         <?php
                         if (isset($_GET['id'])) {
-                            $id = mysqli_real_escape_string($conn, $_GET['id']);
-                            $sql = "SELECT * FROM categorias WHERE id_categoria = '$id' AND activo = 1";
-                            $query = mysqli_query($conn, $sql);
+                            $id = intval($_GET['id']);
                             
-                            if(mysqli_num_rows($query) > 0) {
-                                $categoria = mysqli_fetch_array($query);
+                            $sql = "SELECT * FROM categorias WHERE id_categoria = ? AND activo = 1";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $id);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+
+                            if ($result->num_rows > 0) {
+                                $categoria = $result->fetch_assoc();
+                                $stmt->close();
                         ?>
                         <div class="mb-3">
                             <label><b>ID</b></label>

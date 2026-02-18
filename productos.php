@@ -63,24 +63,33 @@ require 'db.php';
                             <tbody>
                                 <?php
                                     $resultados_por_pagina = 8;
-                                    $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+                                    $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                                     $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
                                     
-                                    $sql_total = 'SELECT COUNT(*) as total FROM productos WHERE activo = 1';
-                                    $resultado_total = mysqli_query($conn, $sql_total);
-                                    $fila_total = mysqli_fetch_assoc($resultado_total);
+                                    // Obtener total de registros
+                                    $sql_total = "SELECT COUNT(*) as total FROM productos WHERE activo = 1";
+                                    $stmt_total = $conn->prepare($sql_total);
+                                    $stmt_total->execute();
+                                    $resultado_total = $stmt_total->get_result();
+                                    $fila_total = $resultado_total->fetch_assoc();
                                     $total_registros = $fila_total['total'];
+                                    $stmt_total->close();
+                                    
                                     $total_paginas = ceil($total_registros / $resultados_por_pagina);
                                     
+                                    // Consulta principal con JOIN y LIMIT
                                     $sql = "SELECT p.*, c.nombre_categoria 
                                             FROM productos p
                                             LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
                                             WHERE p.activo = 1 
-                                            LIMIT $calculo, $resultados_por_pagina";
-                                    $productos = mysqli_query($conn, $sql);
+                                            LIMIT ?, ?";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->bind_param("ii", $calculo, $resultados_por_pagina);
+                                    $stmt->execute();
+                                    $productos = $stmt->get_result();
                                     
-                                    if(mysqli_num_rows($productos) > 0) {
-                                        foreach($productos as $producto) {
+                                    if($productos->num_rows > 0) {
+                                        while($producto = $productos->fetch_assoc()) {
                                 ?>
                                 <tr>
                                     <td><?php echo $producto['id_producto']; ?></td>
@@ -100,7 +109,8 @@ require 'db.php';
                                     </td>
                                 </tr>
                                 <?php 
-                                        } 
+                                        }
+                                        $stmt->close();
                                     } else { 
                                         echo '<tr><td colspan="7" class="text-center">No hay productos registrados</td></tr>';
                                     }    

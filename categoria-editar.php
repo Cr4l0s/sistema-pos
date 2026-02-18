@@ -24,17 +24,22 @@ require 'db.php';
                     </div>
                     <div class="card-body">
                         <?php
-                            if (isset($_GET['id'])) {
-                                $id = mysqli_real_escape_string($conn, $_GET['id']);
-                                $sql = "SELECT * FROM categorias WHERE id_categoria = '$id' AND activo = 1";
-                                $query = mysqli_query($conn, $sql);
+                        if (isset($_GET['id'])) {
+                            $id = intval($_GET['id']);
+                            
+                            $sql = "SELECT * FROM categorias WHERE id_categoria = ? AND activo = 1";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $id);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
-                                if(mysqli_num_rows($query) > 0) {
-                                    $categoria = mysqli_fetch_array($query);
-                        ?>        
+                            if ($result->num_rows > 0) {
+                                $categoria = $result->fetch_assoc();
+                                $stmt->close();
+                        ?>
                         <form action="categoria-acciones.php" method="POST">
                             <input type="hidden" name="categoria_id" value="<?php echo $categoria['id_categoria']; ?>">
-                            
+
                             <div class="mb-3">
                                 <label>Nombre de la Categoría</label>
                                 <input type="text" name="nombre_categoria" value="<?php echo $categoria['nombre_categoria']; ?>" class="form-control" required>
@@ -48,10 +53,10 @@ require 'db.php';
                             </div>
                         </form>
                         <?php
-                                } else {
-                                    echo "<h5>Categoría no encontrada</h5>";
-                                }
+                            } else {
+                                echo "<h5>Categoría no encontrada</h5>";
                             }
+                        }
                         ?>
                     </div>
                 </div>

@@ -22,7 +22,7 @@ require 'db.php';
                 padding: 5px 10px;
                 margin: 0 5px;
                 text-decoration: none;
-                border: 1 px solid #ddd;
+                border: 1px solid #ddd;
                 color: #666;
             }
 
@@ -54,7 +54,7 @@ require 'db.php';
                             </h4>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-striped"> <!-- LISTADO DE USUARIOS MODIFICADO -->
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -72,51 +72,58 @@ require 'db.php';
                                 <tbody>
                                     <?php
                                         $resultados_por_pagina = 8;
-                                        $pagina_actual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+                                        $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                                         $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
-                                        $sql_total = 'SELECT COUNT(*) as total FROM usuarios WHERE vigente = 1';
-                                        $resultado_total = mysqli_query($conn, $sql_total);
-                                        $fila_total = mysqli_fetch_assoc($resultado_total);
+                                        
+                                        // Obtener total de registros con consulta preparada
+                                        $sql_total = "SELECT COUNT(*) as total FROM usuarios WHERE vigente = 1";
+                                        $stmt_total = $conn->prepare($sql_total);
+                                        $stmt_total->execute();
+                                        $resultado_total = $stmt_total->get_result();
+                                        $fila_total = $resultado_total->fetch_assoc();
                                         $total_registros = $fila_total['total'];
+                                        $stmt_total->close();
                                         
                                         // Calcular el total de páginas
                                         $total_paginas = ceil($total_registros / $resultados_por_pagina);
                                         
-                                        //Hacer la consulta con LIMIT
-
-                                        $sql = "SELECT * FROM usuarios WHERE vigente = 1 LIMIT $calculo, $resultados_por_pagina";
-                                        $usuarios = mysqli_query($conn, $sql);
-                                        if(mysqli_num_rows($usuarios) > 0) {
-                                            foreach($usuarios as $usuario) {
+                                        // Consulta principal con LIMIT usando prepared statement
+                                        $sql = "SELECT * FROM usuarios WHERE vigente = 1 LIMIT ?, ?";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bind_param("ii", $calculo, $resultados_por_pagina);
+                                        $stmt->execute();
+                                        $usuarios = $stmt->get_result();
+                                        
+                                        if($usuarios->num_rows > 0) {
+                                            while($usuario = $usuarios->fetch_assoc()) {
                                         ?>
                                         <tr>
-                                            <td><?php echo $usuario['idUsuario']?></td>
-                                            <td><?php echo $usuario['nombres']?></td>
-                                            <td><?php echo $usuario['ApPaterno']?></td>
-                                            <td><?php echo $usuario['ApMaterno']?></td>
-                                            <td><?php echo $usuario['NombreUsuario']?></td>
-                                            <td><?php echo $usuario['fonofijo']?></td>                                                                                        
-                                            <td><?php echo $usuario['fonocelular1']?></td>                                     
-                                            <td><?php echo $usuario['fonocelular2']?></td>
-                                            <td><?php echo $usuario['email']?></td>
+                                            <td><?php echo $usuario['idUsuario']; ?></td>
+                                            <td><?php echo $usuario['nombres']; ?></td>
+                                            <td><?php echo $usuario['ApPaterno']; ?></td>
+                                            <td><?php echo $usuario['ApMaterno']; ?></td>
+                                            <td><?php echo $usuario['NombreUsuario']; ?></td>
+                                            <td><?php echo $usuario['fonofijo']; ?></td>                                                                                        
+                                            <td><?php echo $usuario['fonocelular1']; ?></td>                                     
+                                            <td><?php echo $usuario['fonocelular2']; ?></td>
+                                            <td><?php echo $usuario['email']; ?></td>
                                             <td>
-                                                <a href="usuario-ver.php?idUsuario=<?php echo $usuario['idUsuario']?>" class="btn btn-secondary btn-sm"><span class="bi bi-eye-fill"></span>&nbsp;Ver</a>
-                                                <a href="usuario-editar.php?idUsuario=<?php echo $usuario['idUsuario']?>" class="btn btn-success btn-sm"><span class="bi bi-pencil-fill"></span>&nbsp;Editar</a>
-                                                <form action="acciones.php" method="POST" class="d-inline">
-                                                    <button onclick="return confirm('¿Confirma la eliminación del usuario?')" type="submit" name="borrar_usuario" value="<?php echo $usuario['idUsuario']?>" class="btn btn-danger btn-sm">
+                                                <a href="usuario-ver.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-secondary btn-sm"><span class="bi bi-eye-fill"></span>&nbsp;Ver</a>
+                                                <a href="usuario-editar.php?idUsuario=<?php echo $usuario['idUsuario']; ?>" class="btn btn-success btn-sm"><span class="bi bi-pencil-fill"></span>&nbsp;Editar</a>
+                                                <form action="acciones-usuario.php" method="POST" class="d-inline">
+                                                    <button onclick="return confirm('¿Confirma la eliminación del usuario?')" type="submit" name="borrar_usuario" value="<?php echo $usuario['idUsuario']; ?>" class="btn btn-danger btn-sm">
                                                     <span class="bi bi-trash3-fill"></span>&nbsp;Eliminar
                                                     </button>
                                                 </form>
                                             </td>
                                         </tr>
                                     <?php 
-                                    } 
-                                }
-                                    else { 
-                                        echo '<h5>No se encontraron usuarios</h5>';
-                                    }    
+                                            }
+                                            $stmt->close();
+                                        } else { 
+                                            echo '<tr><td colspan="10" class="text-center">No se encontraron usuarios</td></tr>';
+                                        }    
                                     ?>
-
                                 </tbody>
                             </table>
                         </div>
