@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS ciudades (
+    idCiudad INT PRIMARY KEY AUTO_INCREMENT,
+    idRegion INT NOT NULL,
+    nombreCiudad VARCHAR(100) NOT NULL,
+    vigente BOOLEAN DEFAULT 1,
+    FOREIGN KEY (idRegion) REFERENCES regiones(idRegion)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -10,7 +10,8 @@ $menu = [
     'Mantenedores' => [
         ['name' => 'Categorías', 'file' => 'categorias.php'],
         ['name' => 'Productos', 'file' => 'productos.php'],
-        ['name' => 'Usuarios', 'file' => 'inicio.php']
+        ['name' => 'Usuarios', 'file' => 'inicio.php'],
+        ['name' => 'Empresas', 'file' => 'inicio-empresas.php'],
     ],
     'Configuración' => [
         ['name' => 'Parámetros Generales', 'file' => '#'],

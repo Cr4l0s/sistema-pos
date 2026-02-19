@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-02-2026 a las 16:40:25
+-- Tiempo de generación: 20-02-2026 a las 03:02:30
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `practica_sventas`
+-- Base de datos: `practica_sventas_desa`
 --
 
 -- --------------------------------------------------------
@@ -43,6 +43,103 @@ INSERT INTO `categorias` (`id_categoria`, `nombre_categoria`, `descripcion`, `id
 (1, 'Electrónica', 'Productos electrónicos y gadgets', NULL, 1),
 (2, 'Ropa', 'Prendas de vestir', NULL, 1),
 (3, 'Alimentos', 'Productos alimenticios', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ciudades`
+--
+
+CREATE TABLE `ciudades` (
+  `idCiudad` int(11) NOT NULL,
+  `idRegion` int(11) NOT NULL,
+  `nombreCiudad` varchar(100) NOT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ciudades`
+--
+
+INSERT INTO `ciudades` (`idCiudad`, `idRegion`, `nombreCiudad`, `vigente`) VALUES
+(1, 1, 'Santiago', 1),
+(2, 1, 'Puente Alto', 1),
+(3, 2, 'Valparaíso', 1),
+(4, 2, 'Viña del Mar', 1),
+(5, 1, 'Antofagasta', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comunas`
+--
+
+CREATE TABLE `comunas` (
+  `idComuna` int(11) NOT NULL,
+  `idCiudad` int(11) NOT NULL,
+  `nomComuna` varchar(100) NOT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `comunas`
+--
+
+INSERT INTO `comunas` (`idComuna`, `idCiudad`, `nomComuna`, `vigente`) VALUES
+(1, 1, 'Santiago Centro', 1),
+(2, 1, 'Providencia', 1),
+(3, 1, 'Las Condes', 1),
+(4, 2, 'Puente Alto', 1),
+(5, 3, 'Valparaíso', 1),
+(6, 4, 'Viña del Mar', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empresas`
+--
+
+CREATE TABLE `empresas` (
+  `idEmpresa` int(11) NOT NULL,
+  `rut` varchar(20) NOT NULL,
+  `nombreEmpresa` varchar(200) NOT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `idComuna` int(11) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1,
+  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `empresas`
+--
+
+INSERT INTO `empresas` (`idEmpresa`, `rut`, `nombreEmpresa`, `direccion`, `idComuna`, `telefono`, `email`, `vigente`, `fecha_registro`) VALUES
+(1, '76.123.456-7', 'Empresa de Prueba', 'Av. Siempre Viva 123', 1, '+56912345678', 'test@empresa.cl', 1, '2026-02-19 16:06:33');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `paises`
+--
+
+CREATE TABLE `paises` (
+  `idPais` int(11) NOT NULL,
+  `nombrePais` varchar(100) NOT NULL,
+  `siglaPais` varchar(10) DEFAULT NULL,
+  `codMoneda` varchar(10) DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `paises`
+--
+
+INSERT INTO `paises` (`idPais`, `nombrePais`, `siglaPais`, `codMoneda`, `vigente`) VALUES
+(1, 'Chile', 'CL', 'CLP', 1),
+(2, 'Argentina', 'AR', 'ARS', 1),
+(3, 'Perú', 'PE', 'PEN', 1);
 
 -- --------------------------------------------------------
 
@@ -72,6 +169,29 @@ INSERT INTO `productos` (`id_producto`, `codigo_barras`, `nombre_producto`, `des
 (1, NULL, 'Smartphone', NULL, 1, 0.00, 299990.00, 10, 0, 1, '2026-02-16 18:24:30'),
 (2, NULL, 'Camisa', NULL, 2, 0.00, 19990.00, 50, 0, 1, '2026-02-16 18:24:30'),
 (3, NULL, 'Arroz 1kg', NULL, 3, 0.00, 1200.00, 100, 0, 1, '2026-02-16 18:24:30');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `regiones`
+--
+
+CREATE TABLE `regiones` (
+  `idRegion` int(11) NOT NULL,
+  `idPais` int(11) NOT NULL,
+  `nombreRegion` varchar(100) NOT NULL,
+  `codRegion` varchar(20) DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `regiones`
+--
+
+INSERT INTO `regiones` (`idRegion`, `idPais`, `nombreRegion`, `codRegion`, `vigente`) VALUES
+(1, 1, 'Metropolitana', 'RM', 1),
+(2, 1, 'Valparaíso', 'V', 1),
+(3, 1, 'Aysen', 'AY', 0);
 
 -- --------------------------------------------------------
 
@@ -114,17 +234,38 @@ CREATE TABLE `usuarios` (
   `fonofijo` varchar(50) DEFAULT NULL,
   `fonocelular1` varchar(50) DEFAULT NULL,
   `fonocelular2` varchar(50) DEFAULT NULL,
-  `vigente` tinyint(4) NOT NULL DEFAULT 1,
-  `id_rol` int(11) DEFAULT 1
+  `vigente` tinyint(4) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`idUsuario`, `nombres`, `email`, `password`, `fecha_registro`, `fecha_cambio`, `ApPaterno`, `ApMaterno`, `NombreUsuario`, `fonofijo`, `fonocelular1`, `fonocelular2`, `vigente`, `id_rol`) VALUES
-(1, 'Jorge', 'jbravoh@gmail.com', '$2y$10$KBxtAPqWVBl0GXjlUmhkQOs8w0dYfwrRJ1EVmxOFu2g5HOoW0A0Uy', '2026-01-31 18:28:00', '2026-01-31 18:28:00', 'Bravo', 'Hinojosa', 'Jorge', '993123552', '993123552', '993123552', 1, 1),
-(12, 'Carlos', 'carlosolivarescastillo@gmail.com', '$2y$10$6QVLcKOOlncqkeEmKKWUheTHWZgf/vFpPs/yLx7OS1Ih6w3mf5isq', '2026-02-16 17:38:34', '2026-02-16 21:39:46', 'Olivares', 'Castillo', 'Carlos', '+56233179093', '+56963653603', '', 1, 1);
+INSERT INTO `usuarios` (`idUsuario`, `nombres`, `email`, `password`, `fecha_registro`, `fecha_cambio`, `ApPaterno`, `ApMaterno`, `NombreUsuario`, `fonofijo`, `fonocelular1`, `fonocelular2`, `vigente`) VALUES
+(1, 'Jorge', 'jbravoh@gmail.com', '$2y$10$KBxtAPqWVBl0GXjlUmhkQOs8w0dYfwrRJ1EVmxOFu2g5HOoW0A0Uy', '2026-01-31 18:28:00', '2026-01-31 18:28:00', 'Bravo', 'Hinojosa', 'Jorge', '993123552', '993123552', '993123552', 1),
+(12, 'Carlos', 'carlosolivarescastillo@gmail.com', '$2y$10$6QVLcKOOlncqkeEmKKWUheTHWZgf/vFpPs/yLx7OS1Ih6w3mf5isq', '2026-02-16 17:38:34', '2026-02-16 21:39:46', 'Olivares', 'Castillo', 'Carlos', '+56233179093', '+56963653603', '', 1),
+(13, 'Prueba', 'test@roles.com', '$2y$10$nTYe3XHt9jlP003CRtpg2.8CvMvZpkBRZS/irTryooQlLm6IukIyi', '2026-02-18 05:55:37', '2026-02-18 20:23:35', 'Roles', 'Múltiples', 'test_roles', '+56233179093', '+56963653603', '', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios_roles`
+--
+
+CREATE TABLE `usuarios_roles` (
+  `idUsuario` int(11) NOT NULL,
+  `id_rol` int(11) NOT NULL,
+  `fecha_asignacion` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios_roles`
+--
+
+INSERT INTO `usuarios_roles` (`idUsuario`, `id_rol`, `fecha_asignacion`) VALUES
+(1, 1, '2026-02-18 00:21:01'),
+(12, 1, '2026-02-18 00:21:01'),
+(13, 1, '2026-02-18 16:23:35');
 
 --
 -- Índices para tablas volcadas
@@ -138,12 +279,47 @@ ALTER TABLE `categorias`
   ADD KEY `id_categoria_padre` (`id_categoria_padre`);
 
 --
+-- Indices de la tabla `ciudades`
+--
+ALTER TABLE `ciudades`
+  ADD PRIMARY KEY (`idCiudad`),
+  ADD KEY `idRegion` (`idRegion`);
+
+--
+-- Indices de la tabla `comunas`
+--
+ALTER TABLE `comunas`
+  ADD PRIMARY KEY (`idComuna`),
+  ADD KEY `idCiudad` (`idCiudad`);
+
+--
+-- Indices de la tabla `empresas`
+--
+ALTER TABLE `empresas`
+  ADD PRIMARY KEY (`idEmpresa`),
+  ADD UNIQUE KEY `rut` (`rut`),
+  ADD KEY `idComuna` (`idComuna`);
+
+--
+-- Indices de la tabla `paises`
+--
+ALTER TABLE `paises`
+  ADD PRIMARY KEY (`idPais`);
+
+--
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
   ADD PRIMARY KEY (`id_producto`),
   ADD UNIQUE KEY `codigo_barras` (`codigo_barras`),
   ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Indices de la tabla `regiones`
+--
+ALTER TABLE `regiones`
+  ADD PRIMARY KEY (`idRegion`),
+  ADD KEY `idPais` (`idPais`);
 
 --
 -- Indices de la tabla `roles`
@@ -156,7 +332,13 @@ ALTER TABLE `roles`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`idUsuario`),
+  ADD PRIMARY KEY (`idUsuario`);
+
+--
+-- Indices de la tabla `usuarios_roles`
+--
+ALTER TABLE `usuarios_roles`
+  ADD PRIMARY KEY (`idUsuario`,`id_rol`),
   ADD KEY `id_rol` (`id_rol`);
 
 --
@@ -170,10 +352,40 @@ ALTER TABLE `categorias`
   MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `ciudades`
+--
+ALTER TABLE `ciudades`
+  MODIFY `idCiudad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `comunas`
+--
+ALTER TABLE `comunas`
+  MODIFY `idComuna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `empresas`
+--
+ALTER TABLE `empresas`
+  MODIFY `idEmpresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `paises`
+--
+ALTER TABLE `paises`
+  MODIFY `idPais` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
   MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `regiones`
+--
+ALTER TABLE `regiones`
+  MODIFY `idRegion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -185,7 +397,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
@@ -198,20 +410,43 @@ ALTER TABLE `categorias`
   ADD CONSTRAINT `categorias_ibfk_1` FOREIGN KEY (`id_categoria_padre`) REFERENCES `categorias` (`id_categoria`);
 
 --
+-- Filtros para la tabla `ciudades`
+--
+ALTER TABLE `ciudades`
+  ADD CONSTRAINT `ciudades_ibfk_1` FOREIGN KEY (`idRegion`) REFERENCES `regiones` (`idRegion`);
+
+--
+-- Filtros para la tabla `comunas`
+--
+ALTER TABLE `comunas`
+  ADD CONSTRAINT `comunas_ibfk_1` FOREIGN KEY (`idCiudad`) REFERENCES `ciudades` (`idCiudad`);
+
+--
+-- Filtros para la tabla `empresas`
+--
+ALTER TABLE `empresas`
+  ADD CONSTRAINT `empresas_ibfk_1` FOREIGN KEY (`idComuna`) REFERENCES `comunas` (`idComuna`) ON DELETE SET NULL;
+
+--
 -- Filtros para la tabla `productos`
 --
 ALTER TABLE `productos`
   ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`);
 
 --
--- Filtros para la tabla `usuarios`
+-- Filtros para la tabla `regiones`
 --
-ALTER TABLE `usuarios`
-  ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
+ALTER TABLE `regiones`
+  ADD CONSTRAINT `regiones_ibfk_1` FOREIGN KEY (`idPais`) REFERENCES `paises` (`idPais`);
+
+--
+-- Filtros para la tabla `usuarios_roles`
+--
+ALTER TABLE `usuarios_roles`
+  ADD CONSTRAINT `usuarios_roles_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE,
+  ADD CONSTRAINT `usuarios_roles_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
--- Este es un comentario de prueba para Araxis Merge

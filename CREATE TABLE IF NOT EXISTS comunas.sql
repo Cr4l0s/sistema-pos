@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS empresas (
+    idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
+    rut VARCHAR(20) UNIQUE NOT NULL,
+    nombreEmpresa VARCHAR(200) NOT NULL,
+    direccion VARCHAR(255),
+    idComuna INT,
+    telefono VARCHAR(50),
+    email VARCHAR(100),
+    vigente BOOLEAN DEFAULT 1,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (idComuna) REFERENCES comunas(idComuna) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

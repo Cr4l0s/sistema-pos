@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS paises (
+    idPais INT PRIMARY KEY AUTO_INCREMENT,
+    nombrePais VARCHAR(100) NOT NULL,
+    siglaPais VARCHAR(10),
+    codMoneda VARCHAR(10),
+    vigente BOOLEAN DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

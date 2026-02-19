@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS regiones (
+    idRegion INT PRIMARY KEY AUTO_INCREMENT,
+    idPais INT NOT NULL,
+    nombreRegion VARCHAR(100) NOT NULL,
+    codRegion VARCHAR(20),
+    vigente BOOLEAN DEFAULT 1,
+    FOREIGN KEY (idPais) REFERENCES paises(idPais)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
