@@ -1,24 +1,22 @@
 <?php
-session_start();
-require 'db.php';
+include 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $idPais = intval($_POST['idPais']);
-    $nombreRegion = trim($_POST['nombreRegion']);
-    $codRegion = trim($_POST['codRegion']);
+    $idPais = $_POST['idPais'];
+    $nombreRegion = $_POST['nombreRegion'];
+    $codRegion = $_POST['codRegion'];
     $vigente = 1;
 
-    $sql = "INSERT INTO regiones (idPais, nombreRegion, codRegion, vigente) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("issi", $idPais, $nombreRegion, $codRegion, $vigente);
+    $sql = "INSERT INTO regiones (idPais, nombreRegion, codRegion, vigente) VALUES ('$idPais', '$nombreRegion', '$codRegion', '$vigente')";
 
-    if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Región agregada correctamente.';
+    if ($conn->query($sql) === TRUE) {
+       // Mensaje de éxito
+        echo "<script>alert('Nueva región agregada correctamente.');</script>";
     } else {
-        $_SESSION['mensaje'] = 'Error al agregar región: ' . $stmt->error;
+        // Mensaje de error
+        echo "<script>alert('Error al agregar la región: " . $conn->error . "');</script>";
     }
-    $stmt->close();
-    header("Location: gestionar_regiones.php");
-    exit;
+	header("Location: gestionar_regiones.php");
+    $conn->close();
 }
 ?>
