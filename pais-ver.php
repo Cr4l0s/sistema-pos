@@ -1,42 +1,52 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
+
+// Recibir ID por POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idPais'])) {
+    $idPais = intval($_POST['idPais']);
+} else {
+    header('Location: inicio_pais.php');
+    exit;
+}
+
+$sql = "SELECT * FROM paises WHERE idPais = ? AND vigente = 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $idPais);
+$stmt->execute();
+$result = $stmt->get_result();
+$pais = $result->fetch_assoc();
+$stmt->close();
+
+if (!$pais) {
+    $_SESSION['mensaje'] = 'País no encontrado';
+    header('Location: inicio_pais.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Ver País</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
         <div class="card">
-            <div class="card-header">
-                <h4>Ver País
-                    <a href="inicio_pais.php" class="btn btn-danger float-end">Volver</a>
-                </h4>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Ver País</h4>
+                <a href="inicio_pais.php" class="btn btn-danger">
+                    <span class="bi bi-arrow-left"></span> Volver
+                </a>
             </div>
             <div class="card-body">
-                <?php
-                if (isset($_GET['idPais'])) {
-                    $idPais = intval($_GET['idPais']);
-                    
-                    $sql = "SELECT * FROM paises WHERE idPais = ? AND vigente = 1";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("i", $idPais);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    
-                    if ($result->num_rows > 0) {
-                        $pais = $result->fetch_assoc();
-                        $stmt->close();
-                ?>
-                <div class="mb-3">
-                    <label><b>ID</b></label>
-                    <p class="form-control"><?= $pais['idPais'] ?></p>
-                </div>
                 <div class="mb-3">
                     <label><b>Sigla</b></label>
                     <p class="form-control"><?= htmlspecialchars($pais['siglaPais']) ?></p>
@@ -49,15 +59,10 @@ require 'db.php';
                     <label><b>Nombre</b></label>
                     <p class="form-control"><?= htmlspecialchars($pais['nombrePais']) ?></p>
                 </div>
-                <?php
-                    } else {
-                        echo '<h5>País no encontrado</h5>';
-                    }
-                }
-                ?>
             </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

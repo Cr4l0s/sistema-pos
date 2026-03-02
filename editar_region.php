@@ -1,12 +1,38 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
+
+// Recibir ID por POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idRegion'])) {
+    $idRegion = intval($_POST['idRegion']);
+} else {
+    header('Location: gestionar_regiones.php');
+    exit;
+}
+
+// Obtener datos de la región
+$sql = "SELECT * FROM regiones WHERE idRegion = ? AND vigente = 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $idRegion);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    $_SESSION['mensaje'] = 'Región no encontrada';
+    header('Location: gestionar_regiones.php');
+    exit;
+}
+
+$region = $result->fetch_assoc();
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Comuna</title>
+    <title>Editar Región</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -14,42 +40,27 @@ require 'db.php';
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
         <div class="card">
-            <div class="card-header">
-                <h4>Editar Comuna
-                    <a href="gestionar_comunas.php" class="btn btn-danger float-end">Volver</a>
-                </h4>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Editar Región</h4>
+                <a href="gestionar_regiones.php" class="btn btn-danger">
+                    <span class="bi bi-arrow-left"></span> Volver
+                </a>
             </div>
             <div class="card-body">
-                <?php
-                if (isset($_GET['idComuna'])) {
-                    $idComuna = intval($_GET['idComuna']);
-
-                    $sql = "SELECT * FROM comunas WHERE idComuna = ? AND vigente = 1";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("i", $idComuna);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-
-                    if ($result->num_rows > 0) {
-                        $comuna = $result->fetch_assoc();
-                        $stmt->close();
-                ?>
-                <form action="acciones_comuna.php" method="POST">
-                    <input type="hidden" name="idComuna" value="<?= $comuna['idComuna'] ?>">
+                <form action="acciones_region.php" method="POST">
+                    <input type="hidden" name="idRegion" value="<?= $region['idRegion'] ?>">
                     <div class="mb-3">
-                        <label for="nomComuna" class="form-label">Nombre de la Comuna</label>
-                        <input type="text" class="form-control" name="nomComuna" id="nomComuna" value="<?= htmlspecialchars($comuna['nomComuna']) ?>" required>
+                        <label for="nombreRegion" class="form-label">Nombre de la Región</label>
+                        <input type="text" class="form-control" name="nombreRegion" id="nombreRegion" 
+                               value="<?= htmlspecialchars($region['nombreRegion']) ?>" required>
                     </div>
-                    <button type="submit" name="update_comuna" class="btn btn-primary">Actualizar</button>
+                    <div class="mb-3">
+                        <label for="codRegion" class="form-label">Código de la Región</label>
+                        <input type="text" class="form-control" name="codRegion" id="codRegion" 
+                               value="<?= htmlspecialchars($region['codRegion']) ?>" required>
+                    </div>
+                    <button type="submit" name="update_region" class="btn btn-primary">Actualizar</button>
                 </form>
-                <?php
-                    } else {
-                        echo '<h5>Comuna no encontrada</h5>';
-                    }
-                } else {
-                    echo '<h5>ID de comuna no proporcionado.</h5>';
-                }
-                ?>
             </div>
         </div>
     </div>

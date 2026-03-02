@@ -1,7 +1,16 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
 
-$idCiudad = isset($_GET['idCiudad']) ? intval($_GET['idCiudad']) : 0;
+// Recibir ID por POST (NO por GET)
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCiudad'])) {
+    $idCiudad = intval($_POST['idCiudad']);
+} else {
+    header('Location: gestionar_ciudades.php');
+    exit;
+}
 
 $sql = "SELECT c.idCiudad, c.nombreCiudad, r.nombreRegion 
         FROM ciudades c
@@ -13,25 +22,34 @@ $stmt->execute();
 $result = $stmt->get_result();
 $ciudad = $result->fetch_assoc();
 $stmt->close();
+
+if (!$ciudad) {
+    $_SESSION['mensaje'] = 'Ciudad no encontrada';
+    header('Location: gestionar_ciudades.php');
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Ver Ciudad</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
         <div class="card">
-            <div class="card-header">
-                <h4>Ver Ciudad
-                    <a href="gestionar_ciudades.php" class="btn btn-danger float-end">Volver</a>
-                </h4>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Ver Ciudad</h4>
+                <a href="gestionar_ciudades.php" class="btn btn-danger">
+                    <span class="bi bi-arrow-left"></span> Volver
+                </a>
             </div>
             <div class="card-body">
-                <?php if ($ciudad): ?>
                 <div class="mb-3">
                     <label><b>Región</b></label>
                     <p class="form-control"><?= htmlspecialchars($ciudad['nombreRegion']) ?></p>
@@ -40,11 +58,10 @@ $stmt->close();
                     <label><b>Ciudad</b></label>
                     <p class="form-control"><?= htmlspecialchars($ciudad['nombreCiudad']) ?></p>
                 </div>
-                <?php else: ?>
-                <h5>Ciudad no encontrada</h5>
-                <?php endif; ?>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

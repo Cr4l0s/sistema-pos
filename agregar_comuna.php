@@ -1,22 +1,44 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nomComuna'], $_POST['idCiudad'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nombreComuna'], $_POST['idCiudad'])) {
     $idCiudad = intval($_POST['idCiudad']);
-    $nomComuna = trim($_POST['nomComuna']);
+    $nombreComuna = trim($_POST['nombreComuna']);
 
-    if (!empty($nomComuna)) {
-        $sql = "INSERT INTO comunas (idCiudad, nomComuna, vigente) VALUES (?, ?, 1)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $idCiudad, $nomComuna);
+    if (!empty($nombreComuna)) {
+        // Verificar si ya existe (activa o eliminada)
+        $sql_check = "SELECT idComuna, vigente FROM comunas WHERE idCiudad = ? AND nombreComuna = ?";
+        $stmt_check = $conn->prepare($sql_check);
+        $stmt_check->bind_param("is", $idCiudad, $nombreComuna);
+        $stmt_check->execute();
+        $result_check = $stmt_check->get_result();
 
-        if ($stmt->execute()) {
-            $_SESSION['mensaje'] = 'Comuna agregada correctamente.';
+        if ($result_check->num_rows > 0) {
+            $existente = $result_check->fetch_assoc();
+            if ($existente['vigente'] == 1) {
+                $_SESSION['mensaje'] = 'Ya existe una comuna activa con ese nombre.';
+            } else {
+                // Reactivar
+                $sql_reactivar = "UPDATE comunas SET vigente = 1 WHERE idComuna = ?";
+                $stmt_reactivar = $conn->prepare($sql_reactivar);
+                $stmt_reactivar->bind_param("i", $existente['idComuna']);
+                $stmt_reactivar->execute();
+                $stmt_reactivar->close();
+                $_SESSION['mensaje'] = 'Comuna reactivada correctamente.';
+            }
+            $stmt_check->close();
         } else {
-            $_SESSION['mensaje'] = 'Error al agregar la comuna: ' . $stmt->error;
+            // Insertar nueva
+            $sql = "INSERT INTO comunas (idCiudad, nombreComuna, vigente) VALUES (?, ?, 1)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("is", $idCiudad, $nombreComuna);
+            $stmt->execute();
+            $stmt->close();
+            $_SESSION['mensaje'] = 'Comuna agregada correctamente.';
         }
-        $stmt->close();
     } else {
         $_SESSION['mensaje'] = 'El nombre de la comuna no puede estar vacío.';
     }

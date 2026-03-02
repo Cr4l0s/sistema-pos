@@ -1,40 +1,69 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
 
-$idRegion = isset($_GET['idRegion']) ? intval($_GET['idRegion']) : 0;
+// Recibir ID por POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['idRegion'])) {
+    header('Location: gestionar_regiones.php');
+    exit;
+}
 
-$sql = "SELECT r.idRegion, r.nombreRegion, r.codRegion, p.nombrePais 
-        FROM regiones r
-        JOIN paises p ON r.idPais = p.idPais
-        WHERE r.idRegion = ? AND r.vigente = 1";
+$idRegion = intval($_POST['idRegion']);
+
+// Obtener datos de la región
+$sql = "SELECT idRegion, idPais, nombreRegion, codRegion 
+        FROM regiones 
+        WHERE idRegion = ? AND vigente = 1";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $idRegion);
 $stmt->execute();
 $result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    $_SESSION['mensaje'] = 'Región no encontrada';
+    header('Location: gestionar_regiones.php');
+    exit;
+}
+
 $region = $result->fetch_assoc();
 $stmt->close();
+
+// Obtener nombre del país
+$sqlPais = "SELECT nombrePais FROM paises WHERE idPais = ? AND vigente = 1";
+$stmtPais = $conn->prepare($sqlPais);
+$stmtPais->bind_param("i", $region['idPais']);
+$stmtPais->execute();
+$pais = $stmtPais->get_result()->fetch_assoc();
+$stmtPais->close();
+
+$nombrePais = $pais['nombrePais'] ?? 'País no encontrado';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Ver Región</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
         <div class="card">
-            <div class="card-header">
-                <h4>Ver Región
-                    <a href="gestionar_regiones.php" class="btn btn-danger float-end">Volver</a>
-                </h4>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Ver Región</h4>
+                <a href="gestionar_regiones.php" class="btn btn-danger">
+                    <span class="bi bi-arrow-left"></span> Volver
+                </a>
             </div>
             <div class="card-body">
-                <?php if ($region): ?>
                 <div class="mb-3">
                     <label><b>País</b></label>
-                    <p class="form-control"><?= htmlspecialchars($region['nombrePais']) ?></p>
+                    <p class="form-control"><?= htmlspecialchars($nombrePais) ?></p>
                 </div>
                 <div class="mb-3">
                     <label><b>Región</b></label>
@@ -44,11 +73,10 @@ $stmt->close();
                     <label><b>Código</b></label>
                     <p class="form-control"><?= htmlspecialchars($region['codRegion']) ?></p>
                 </div>
-                <?php else: ?>
-                <h5>Región no encontrada</h5>
-                <?php endif; ?>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

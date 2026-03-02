@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
 
 // CREAR CATEGORÍA
@@ -14,7 +16,7 @@ if (isset($_POST['create_categoria'])) {
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Categoría creada exitosamente.';
     } else {
-        $_SESSION['mensaje'] = 'Error al crear la categoría: ' . $conn->error;
+        $_SESSION['mensaje'] = 'Error al crear la categoría: ' . $stmt->error;
     }
     $stmt->close();
     header('Location: categorias.php');
@@ -27,7 +29,7 @@ if (isset($_POST['update_categoria'])) {
     $nombre = trim($_POST['nombre_categoria']);
     $descripcion = trim($_POST['descripcion']);
 
-    $sql = "UPDATE categorias SET nombre_categoria = ?, descripcion = ? WHERE id_categoria = ?";
+    $sql = "UPDATE categorias SET nombre_categoria = ?, descripcion = ? WHERE id_categoria = ? AND activo = 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssi", $nombre, $descripcion, $id);
 
@@ -43,7 +45,7 @@ if (isset($_POST['update_categoria'])) {
 
 // ELIMINAR CATEGORÍA (borrado lógico)
 if (isset($_POST['borrar_categoria'])) {
-    $id = intval($_POST['borrar_categoria']);
+    $id = intval($_POST['id_categoria']);
 
     $sql = "UPDATE categorias SET activo = 0 WHERE id_categoria = ?";
     $stmt = $conn->prepare($sql);

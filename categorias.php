@@ -1,6 +1,9 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,9 +32,6 @@ require 'db.php';
             color: white;
             border: 1px solid #007bff;
         }
-        .paginacion a:hover {
-            background-color: #f5f5f5;
-        }
     </style>
 </head>
 <body>
@@ -42,16 +42,12 @@ require 'db.php';
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Listado de Categorías
-                            <a href="menu.php" class="btn btn-danger float-end"><span class="bi bi-arrow-left"></span>&nbsp;Volver al Menú</a>                                
-                            <a href="categoria-crear.php" class="btn btn-primary float-end"><span class="bi bi-plus-circle-fill"></span>&nbsp;Agregar Categoría</a>
-                        </h4>
+                        <h4>Listado de Categorías</h4>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Descripción</th>
                                     <th>Acción</th>
@@ -59,77 +55,93 @@ require 'db.php';
                             </thead>
                             <tbody>
                                 <?php
-                                    $resultados_por_pagina = 8;
-                                    $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-                                    $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
-                                    
-                                    // Obtener total de registros
-                                    $sql_total = "SELECT COUNT(*) as total FROM categorias WHERE activo = 1";
-                                    $stmt_total = $conn->prepare($sql_total);
-                                    $stmt_total->execute();
-                                    $resultado_total = $stmt_total->get_result();
-                                    $fila_total = $resultado_total->fetch_assoc();
-                                    $total_registros = $fila_total['total'];
-                                    $stmt_total->close();
-                                    
-                                    $total_paginas = ceil($total_registros / $resultados_por_pagina);
-                                    
-                                    // Consulta principal con LIMIT
-                                    $sql = "SELECT * FROM categorias WHERE activo = 1 LIMIT ?, ?";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->bind_param("ii", $calculo, $resultados_por_pagina);
-                                    $stmt->execute();
-                                    $categorias = $stmt->get_result();
-                                    
-                                    if($categorias->num_rows > 0) {
-                                        while($categoria = $categorias->fetch_assoc()) {
+                                $resultados_por_pagina = 8;
+                                $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+                                $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
+
+                                // Total de registros
+                                $sql_total = "SELECT COUNT(*) as total FROM categorias WHERE activo = 1";
+                                $stmt_total = $conn->prepare($sql_total);
+                                $stmt_total->execute();
+                                $total_registros = $stmt_total->get_result()->fetch_assoc()['total'];
+                                $stmt_total->close();
+                                $total_paginas = ceil($total_registros / $resultados_por_pagina);
+
+                                // Consulta paginada
+                                $sql = "SELECT * FROM categorias WHERE activo = 1 ORDER BY nombre_categoria LIMIT ?, ?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("ii", $calculo, $resultados_por_pagina);
+                                $stmt->execute();
+                                $categorias = $stmt->get_result();
+
+                                if ($categorias->num_rows > 0) {
+                                    while ($categoria = $categorias->fetch_assoc()) {
                                 ?>
                                 <tr>
-                                    <td><?php echo $categoria['id_categoria']; ?></td>
-                                    <td><?php echo $categoria['nombre_categoria']; ?></td>
-                                    <td><?php echo $categoria['descripcion']; ?></td>
+                                    <td><?= htmlspecialchars($categoria['nombre_categoria']) ?></td>
+                                    <td><?= htmlspecialchars($categoria['descripcion']) ?></td>
                                     <td>
-                                        <a href="categoria-ver.php?id=<?php echo $categoria['id_categoria']; ?>" class="btn btn-secondary btn-sm"><span class="bi bi-eye-fill"></span>&nbsp;Ver</a>
-                                        <a href="categoria-editar.php?id=<?php echo $categoria['id_categoria']; ?>" class="btn btn-success btn-sm"><span class="bi bi-pencil-fill"></span>&nbsp;Editar</a>
-                                        <form action="categoria-acciones.php" method="POST" class="d-inline">
-                                            <button onclick="return confirm('¿Confirma la eliminación de la categoría?')" type="submit" name="borrar_categoria" value="<?php echo $categoria['id_categoria']; ?>" class="btn btn-danger btn-sm">
-                                            <span class="bi bi-trash3-fill"></span>&nbsp;Eliminar
+                                        <!-- VER -->
+                                        <form action="categoria-ver.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="id" value="<?= $categoria['id_categoria'] ?>">
+                                            <button type="submit" class="btn btn-secondary btn-sm">
+                                                <span class="bi bi-eye-fill"></span> Ver
+                                            </button>
+                                        </form>
+                                        <!-- EDITAR -->
+                                        <form action="categoria-editar.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="id" value="<?= $categoria['id_categoria'] ?>">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <span class="bi bi-pencil-fill"></span> Editar
+                                            </button>
+                                        </form>
+                                        <!-- ELIMINAR -->
+                                        <form action="categoria-acciones.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="id_categoria" value="<?= $categoria['id_categoria'] ?>">
+                                            <button type="submit" name="borrar_categoria" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar categoría?')">
+                                                <span class="bi bi-trash3-fill"></span> Eliminar
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
-                                <?php 
-                                        }
-                                        $stmt->close();
-                                    } else { 
-                                        echo '<tr><td colspan="4" class="text-center">No hay categorías registradas</td></tr>';
-                                    }    
+                                <?php
+                                    }
+                                    $stmt->close();
+                                } else {
+                                    echo '<tr><td colspan="3" class="text-center">No hay categorías registradas</td></tr>';
+                                }
                                 ?>
                             </tbody>
                         </table>
+
+                        <!-- Paginación -->
+                        <div class="paginacion">
+                            <?php if ($pagina_actual > 1): ?>
+                                <a href="?pagina=<?= $pagina_actual-1 ?>">Anterior</a>
+                            <?php endif; ?>
+                            <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                                <?php if ($i == $pagina_actual): ?>
+                                    <span class="actual"><?= $i ?></span>
+                                <?php else: ?>
+                                    <a href="?pagina=<?= $i ?>"><?= $i ?></a>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                            <?php if ($pagina_actual < $total_paginas): ?>
+                                <a href="?pagina=<?= $pagina_actual+1 ?>">Siguiente</a>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- BOTÓN AGREGAR DEBAJO DE LA TABLA -->
+                        <div class="mt-3 text-center">
+                            <a href="categoria-crear.php" class="btn btn-primary">
+                                <span class="bi bi-plus-circle-fill"></span> Agregar Categoría
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    </div> 
-    
-    <!-- Enlaces de paginación -->
-    <div class="paginacion">
-        <?php if($pagina_actual > 1): ?>
-            <a href="?pagina=<?php echo ($pagina_actual-1); ?>">Anterior</a>
-        <?php endif; ?>
-        
-        <?php for($i = 1; $i <= $total_paginas; $i++): ?>
-            <?php if($i == $pagina_actual): ?>
-                <span class="actual"><?php echo $i; ?></span>
-            <?php else: ?>
-                <a href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-            <?php endif;?>
-        <?php endfor; ?>
-        
-        <?php if($pagina_actual < $total_paginas): ?>
-            <a href="?pagina=<?php echo ($pagina_actual + 1); ?>">Siguiente</a>
-        <?php endif; ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,78 +1,561 @@
 <?php
+
+require_once 'config.php';
 session_start();
 
-// Definir las opciones principales y secundarias
+$page = $_GET['page'] ?? '';
+$currentPage = $page;
+
+$nombreSistema = APP_NOMBRE;
+$usuario = $_SESSION['usuario'] ?? 'Invitado';
+
+// Ruta del logo (cambia por tu archivo real)
+$logo = "img/logo.jpeg";
+
 $menu = [
-    'Acceso' => [
-        ['name' => 'Acceso', 'file' => 'login.php'],
-        ['name' => 'Cerrar Sesión', 'file' => 'logout.php']
-    ],
     'Mantenedores' => [
-        ['name' => 'Categorías', 'file' => 'categorias.php'],
-        ['name' => 'Productos', 'file' => 'productos.php'],
-        ['name' => 'Usuarios', 'file' => 'inicio.php'],
-        ['name' => 'Empresas', 'file' => 'inicio-empresas.php'],
+        ['name' => 'Países', 'file' => 'inicio_pais.php', 'icon' => 'bi-globe-americas'],
+        ['name' => 'Regiones', 'file' => 'selector_pais.php', 'icon' => 'bi-map'],
+        ['name' => 'Ciudades', 'file' => 'selector_pais_y_region.php', 'icon' => 'bi-building'],
+        ['name' => 'Comunas', 'file' => 'selector_pais_region_ciudad.php', 'icon' => 'bi-grid'],
+        ['name' => 'Categorías', 'file' => 'categorias.php', 'icon' => 'bi-tags'],
+        ['name' => 'Productos', 'file' => 'productos.php', 'icon' => 'bi-box'],
+        ['name' => 'Usuarios', 'file' => 'inicio-usuarios.php', 'icon' => 'bi-people']
     ],
     'Configuración' => [
-        ['name' => 'Parámetros Generales', 'file' => '#'],
-        ['name' => 'Parámetros Opcionales', 'file' => '#'],
-        ['name' => 'Otros Parámetros', 'file' => '#']
+        ['name' => 'Parámetros Generales', 'file' => '#', 'icon' => 'bi-gear'],
+        ['name' => 'Parámetros Opcionales', 'file' => '#', 'icon' => 'bi-sliders'],
+        ['name' => 'Otros Parámetros', 'file' => '#', 'icon' => 'bi-wrench']
     ]
 ];
-
-// Valores por defecto para evitar warnings
-$textoMantenedor = $_SESSION['textoMantenedor'] ?? '';
-$textoBoton = $_SESSION['textoBoton'] ?? 'Seleccionar';
-$titulo = $_SESSION['titulo'] ?? 'Sistema POS';
-$filas_x_pagina = $_SESSION['filas_x_pagina'] ?? 8;
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $titulo; ?></title>
-    <!-- Bootstrap 5 CSS -->
+    <title><?= $nombreSistema ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --sidebar-bg: <?= SIDEBAR_BG ?>;
+            --sidebar-active-1: <?= SIDEBAR_ACTIVE ?>;
+            --sidebar-active-2: <?= SIDEBAR_ACTIVE_GRADIENT ?>;
+            --topbar-bg: #ffffff;
+            --button-primary: var(--sidebar-active-1);
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: #f3f4f6;
+        }
+
+        .contenido-principal {
+            flex: 1;
+            padding: 30px;
+        }
+  
+        .top-header {
+            background: #111827; /* gris oscuro elegante */
+            color: #fff;
+            padding: 12px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .top-header h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-img {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .navbar {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .nav-link {
+            font-weight: 500;
+        }
+
+        .card {
+            border-radius: 16px;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f3f4f6;
+        }
+
+        .layout {
+            display: flex;
+            height: 100vh;
+        }
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 250px;
+    /* background: <?= SIDEBAR_BG ?>; */
+    background: var(--sidebar-bg);
+    color: #fff;
+    /* transition: all 0.3s ease; */
+    transition: background 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar-header {
+    padding: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.sidebar-menu li {
+    padding: 0;
+}
+
+.sidebar-menu li a {
+    color: #cbd5e1;
+    text-decoration: none;
+    display: block;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.sidebar-menu li a:hover {
+    background: #1f2937;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.sidebar .submenu li a.active-link {
+    /* background: linear-gradient(90deg, #2563eb, #1d4ed8); */
+    /* background: linear-gradient(90deg, <?= SIDEBAR_ACTIVE ?>, <?= SIDEBAR_ACTIVE_GRADIENT ?>); */
+    background: linear-gradient(90deg, var(--sidebar-active-1), var(--sidebar-active-2));
+    color: #fff !important;
+    transition: all 0.4s ease;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.menu-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding: 15px 20px 5px;
+    color: #9ca3af;
+}
+
+/* MAIN */
+
+    .btn-primary {
+        background: var(--button-primary);
+        border-color: var(--button-primary);
+    }
+
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    /* background: #ffffff; */
+    background: var(--topbar-bg);
+    transition: background 0.4s ease;
+
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.content-area {
+    flex: 1;
+    padding: 30px;
+}
+
+.footer {
+    padding: 15px;
+    text-align: center;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* DARK MODE */
+
+.dark-mode {
+    background: #0f172a;
+    color: #fff;
+}
+
+.dark-mode .topbar,
+.dark-mode .footer {
+    background: #1e293b;
+    color: #fff;
+}
+
+.dark-mode .card {
+    background: #1e293b;
+    color: #fff;
+}
+
+.dark-mode .sidebar {
+    background: #0f172a;
+}
+
+.dark-mode .submenu li a {
+    color: #cbd5e1;
+}
+
+.dark-mode .submenu li a.active-link {
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    color: #fff !important;
+}
+
+.dark-mode .sidebar .submenu li a.active-link {
+    /* background: linear-gradient(90deg, #3b82f6, #2563eb); */
+    background: <?= SIDEBAR_BG_DARK ?>;
+    color: #fff !important;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 0px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.menu-group.active .submenu {
+    max-height: 500px;
+}
+
+
+.content-area {
+    animation: fadeIn 0.4s ease;
+}
+
+.theme-picker {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.theme-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border: 2px solid #fff;
+}
+
+.theme-dot:hover {
+    transform: scale(1.2);
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="menu.php">Sistema POS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <?php foreach ($menu as $main => $subs): ?>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                <?php echo $main; ?>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <?php foreach ($subs as $sub): ?>
-                                    <li>
-                                        <a class="dropdown-item" href="<?php echo $sub['file']; ?>">
-                                            <?php echo $sub['name']; ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<div class="layout">
 
-    <div class="container mt-4">
-        <h1>Bienvenido al Sistema POS</h1>
-        <p>Seleccioná una opción del menú para comenzar.</p>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="<?= $logo ?>" class="logo-img">
+            <span class="brand"><?= $nombreSistema ?></span>
+        </div>
+
+        <ul class="sidebar-menu">
+<?php foreach ($menu as $main => $subs): ?>
+
+    <li class="menu-group 
+        <?php 
+            foreach ($subs as $sub) {
+                if ($currentPage == $sub['file']) {
+                    echo 'active';
+                }
+            }
+        ?>">
+
+        <div class="menu-toggle">
+            <span><?= $main ?></span>
+            <i class="bi bi-chevron-down arrow"></i>
+        </div>
+
+        <ul class="submenu">
+            <?php foreach ($subs as $sub): ?>
+                <li>
+                    <a href="menu.php?page=<?= $sub['file'] ?>"
+                       class="<?= ($currentPage == $sub['file']) ? 'active-link' : '' ?>">
+                        <i class="bi <?= $sub['icon'] ?>"></i>
+                        <span><?= $sub['name'] ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+
+    </li>
+
+<?php endforeach; ?>
+
+        </ul>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            
+            <div class="theme-picker">
+                <div class="theme-dot" data-theme="blue" style="background:#2563eb"></div>
+                <div class="theme-dot" data-theme="green" style="background:#10b981"></div>
+                <div class="theme-dot" data-theme="purple" style="background:#8b5cf6"></div>
+                <div class="theme-dot" data-theme="corporate" style="background:#334155"></div>
+                <div class="theme-dot" data-theme="dark" style="background:#111827"></div>
+            </div>
+
+            <button id="toggleSidebar" class="btn btn-sm btn-light">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="topbar-right">
+                <button id="toggleTheme" class="btn btn-sm btn-light">
+                    <i class="bi bi-moon"></i>
+                </button>
+
+                <span class="usuario">
+                    <i class="bi bi-person-circle"></i>
+                    <?= htmlspecialchars($usuario) ?>
+                </span>
+            </div>
+        </header>
+
+        <!-- CONTENIDO -->
+        <main class="content-area">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+
+                <?php
+                    $allowedPages = [];
+
+                    $currentTitle = 'Panel Principal';
+
+                    foreach ($menu as $group) {
+                        foreach ($group as $sub) {
+                            if ($sub['file'] === $currentPage) {
+                                $currentTitle = $sub['name'];
+                            }
+                        }
+                    }
+
+
+                    foreach ($menu as $subs) {
+                        foreach ($subs as $sub) {
+                            $allowedPages[] = $sub['file'];
+                        }
+                    }
+
+                    if (in_array($page, $allowedPages)) {
+                        include $page;
+                    } else {
+                        echo "<h3>$currentTitle</h3>";
+                    }
+
+
+               ?>
+
+            </div>
+        </main>
+        <!-- FOOTER -->
+        <footer class="footer">
+            © <?= APP_ANO ?> <?= APP_EMPRESA ?> · <?= APP_NOMBRE ?> v<?= APP_VERSION ?> - En desarrollo por <?= APP_DEVELOPER ?> -  
+            <span id="fecha-hora"></span>
+        </footer>
+
     </div>
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+
+<script>
+function actualizarFechaHora() {
+
+    const ahora = new Date();
+
+    const opcionesFecha = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+
+    const fecha = ahora.toLocaleDateString('es-CL', opcionesFecha);
+    const hora  = ahora.toLocaleTimeString('es-CL');
+
+    const textoFinal = fecha.charAt(0).toUpperCase() + fecha.slice(1)
+                        + " | " + hora;
+
+    document.getElementById("fecha-hora").innerHTML = textoFinal;
+}
+
+// Actualiza inmediatamente
+actualizarFechaHora();
+
+// Actualiza cada segundo
+setInterval(actualizarFechaHora, 1000);
+</script>
+
+//Script de modo dark
+<script>
+const toggleTheme = document.getElementById("toggleTheme");
+
+toggleTheme.addEventListener("click", function() {
+
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
+    }
+});
+
+window.addEventListener("load", function() {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
+</script>
+
+<script>
+document.querySelectorAll(".menu-toggle").forEach(function(toggle, index) {
+
+    toggle.addEventListener("click", function() {
+
+        const parent = this.closest(".menu-group");
+
+        document.querySelectorAll(".menu-group").forEach(function(group) {
+            if (group !== parent) {
+                group.classList.remove("active");
+            }
+        });
+
+        parent.classList.toggle("active");
+
+        localStorage.setItem("menuOpen", index);
+    });
+});
+
+window.addEventListener("load", function() {
+
+    const savedIndex = localStorage.getItem("menuOpen");
+
+    if (savedIndex !== null) {
+        document.querySelectorAll(".menu-group")[savedIndex]
+            ?.classList.add("active");
+    }
+});
+</script>
+
+    <script>
+
+const themes = {
+    blue: {
+        sidebar: "#111827",
+        active1: "#2563eb",
+        active2: "#1d4ed8",
+        topbar: "#ffffff",
+        button: "#2563eb"
+    },
+    green: {
+        sidebar: "#0f1f17",
+        active1: "#10b981",
+        active2: "#059669",
+        topbar: "#ffffff",
+        button: "#10b981"
+    },
+    purple: {
+        sidebar: "#1e1b2e",
+        active1: "#8b5cf6",
+        active2: "#7c3aed",
+        topbar: "#ffffff",
+        button: "#8b5cf6"
+    },
+    corporate: {
+        sidebar: "#1f2937",
+        active1: "#334155",
+        active2: "#475569",
+        topbar: "#f8fafc",
+        button: "#334155"
+    }
+};
+
+function applyTheme(themeName) {
+    const theme = themes[themeName];
+
+    document.documentElement.style.setProperty('--sidebar-bg', theme.sidebar);
+    document.documentElement.style.setProperty('--sidebar-active-1', theme.active1);
+    document.documentElement.style.setProperty('--sidebar-active-2', theme.active2);
+    document.documentElement.style.setProperty('--topbar-bg', theme.topbar);
+    document.documentElement.style.setProperty('--button-primary', theme.button);
+
+    localStorage.setItem("themeColor", themeName);
+}
+
+document.querySelectorAll(".theme-dot").forEach(dot => {
+    dot.addEventListener("click", function() {
+        const theme = this.getAttribute("data-theme");
+        applyTheme(theme);
+    });
+});
+
+window.addEventListener("load", function() {
+    const saved = localStorage.getItem("themeColor") || "blue";
+    applyTheme(saved);
+});
+
+
+    </script>
+
 </body>
 </html>

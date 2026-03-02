@@ -36,7 +36,7 @@ if (isset($_POST['update_pais'])) {
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'País actualizado exitosamente.';
     } else {
-        $_SESSION['mensaje'] = 'Error al actualizar país.';
+        $_SESSION['mensaje'] = 'Error al actualizar país: ' . $stmt->error;
     }
     $stmt->close();
     header('Location: inicio_pais.php');
@@ -54,7 +54,7 @@ if (isset($_POST['borrar_pais'])) {
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'País eliminado exitosamente.';
     } else {
-        $_SESSION['mensaje'] = 'Error al eliminar país.';
+        $_SESSION['mensaje'] = 'Error al eliminar país: ' . $stmt->error;
     }
     $stmt->close();
     header('Location: inicio_pais.php');

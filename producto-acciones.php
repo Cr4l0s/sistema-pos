@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
 
 // CREAR PRODUCTO
@@ -60,21 +62,7 @@ if (isset($_POST['update_producto'])) {
     exit;
 }
 
-// ELIMINAR PRODUCTO (borrado lógico)
-if (isset($_POST['borrar_producto'])) {
-    $id = intval($_POST['borrar_producto']);
-
-    $sql = "UPDATE productos SET activo = 0 WHERE id_producto = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
-
-    if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Producto eliminado exitosamente.';
-    } else {
-        $_SESSION['mensaje'] = 'Error al eliminar producto.';
-    }
-    $stmt->close();
-    header('Location: productos.php');
-    exit;
-}
+// Si alguien accede directamente sin POST
+header('Location: productos.php');
+exit;
 ?>

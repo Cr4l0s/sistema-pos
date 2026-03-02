@@ -1,6 +1,7 @@
 <?php
-// selector_pais_region_ciudad.php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include 'db.php';
 
 // Obtener lista de países para el primer selector
@@ -14,6 +15,7 @@ $resultPaises = $conn->query($sqlPaises);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seleccionar País, Región y Ciudad</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <?php include('navbar.php'); ?>
@@ -48,17 +50,14 @@ $resultPaises = $conn->query($sqlPaises);
     </div>
 
     <script>
-        // Espera a que todo el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             const paisSelect = document.getElementById('pais');
             const regionSelect = document.getElementById('region');
             const ciudadSelect = document.getElementById('ciudad');
             const btnGestionar = document.getElementById('btnGestionar');
 
-            // --- Cargar Regiones al seleccionar un País ---
             paisSelect.addEventListener('change', function() {
                 const idPais = this.value;
-                // Reset y deshabilitar selectores dependientes
                 regionSelect.innerHTML = '<option value="">-- Cargando regiones... --</option>';
                 regionSelect.disabled = true;
                 ciudadSelect.innerHTML = '<option value="">-- Primero selecciona una región --</option>';
@@ -87,7 +86,6 @@ $resultPaises = $conn->query($sqlPaises);
                 }
             });
 
-            // --- Cargar Ciudades al seleccionar una Región ---
             regionSelect.addEventListener('change', function() {
                 const idRegion = this.value;
                 ciudadSelect.innerHTML = '<option value="">-- Cargando ciudades... --</option>';
@@ -116,7 +114,6 @@ $resultPaises = $conn->query($sqlPaises);
                 }
             });
 
-            // --- Habilitar botón al seleccionar una Ciudad ---
             ciudadSelect.addEventListener('change', function() {
                 btnGestionar.disabled = !this.value;
             });

@@ -4,12 +4,12 @@ require 'db.php';
 
 if (isset($_POST['update_comuna'])) {
     $idComuna = intval($_POST['idComuna']);
-    $nomComuna = trim($_POST['nomComuna']);
+    $nombreComuna = trim($_POST['nombreComuna']); // ✅ CAMBIADO
 
-    if (!empty($nomComuna)) {
-        $sql = "UPDATE comunas SET nomComuna = ? WHERE idComuna = ? AND vigente = 1";
+    if (!empty($nombreComuna)) {
+        $sql = "UPDATE comunas SET nombreComuna = ? WHERE idComuna = ? AND vigente = 1"; // ✅ CAMBIADO
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $nomComuna, $idComuna);
+        $stmt->bind_param("si", $nombreComuna, $idComuna);
 
         if ($stmt->execute()) {
             $_SESSION['mensaje'] = 'Comuna actualizada correctamente.';

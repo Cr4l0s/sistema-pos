@@ -1,6 +1,8 @@
 <?php
-session_start();
-include 'db.php';
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require 'db.php';
 
 // Consulta para obtener los países
 $sqlPaises = "SELECT idPais, nombrePais FROM paises WHERE vigente = 1";
@@ -31,6 +33,7 @@ if (isset($_GET['idPais'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seleccionar País y Región</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script>
         function cargarRegiones() {
             const idPais = document.getElementById('pais').value;
@@ -38,7 +41,7 @@ if (isset($_GET['idPais'])) {
             regionSelect.innerHTML = '<option value="">-- Selecciona una región --</option>';
             
             if (idPais) {
-                fetch(`?idPais=${idPais}`)
+                fetch(`get_regiones.php?idPais=${idPais}`)  
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(region => {
