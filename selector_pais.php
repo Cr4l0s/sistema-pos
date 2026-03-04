@@ -16,11 +16,11 @@ require 'db.php';
     </head>
     
     <body>
-        <?php include('navbar.php'); ?>
+        <!-- NO incluir navbar.php aquí -->
         <div class="container mt-4">
             <?php include('mensaje.php'); ?>
     
-            <form method="POST" action="gestionar_regiones.php">
+            <form method="POST" action="menu.php?page=gestionar_regiones.php">
                 <div class="row">
                     <div class="col-md-4">
                         <select class="form-select" name="idPais" id="idPais" onchange="updateNombrePais()" required>

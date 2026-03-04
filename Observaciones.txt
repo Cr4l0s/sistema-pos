@@ -1,0 +1,42 @@
+Observaciones a piezas de código en subdominio temporal.practica.uno con piezas de Carlos del 28-02-2026
+
+navbar.php
+
+Cambié el color de fondo a la barra de navegación para dejarla del mismo color de fondo de la pantalla
+Le saqué el texto MANTENEDOR
+------------------------------------------------------------------------------------------------------
+inicio_pais.php
+
+Apliqué cambios en el paginador y la cantidad de despliegue por página
+------------------------------------------------------------------------------------------------------
+gestionar_regiones.php
+
+Le eliminé la columna ID
+Apliqué cambios en el paginador y la cantidad de despliegue por página
+
+Se ejecuta fuera de menu.php.
+------------------------------------------------------------------------------------------------------
+selector_pais.php
+
+Se ejecuta fuera de menu.php y no vuelve a menu.php.  Revisar.
+------------------------------------------------------------------------------------------------------
+ver_region.php
+
+No utiliza prepared statement
+------------------------------------------------------------------------------------------------------
+selector_region.php
+
+La consulta no es la correcta porque lista todas las regiones si el campo vigente es igual a 1
+pero no considera el país.  Si hay màs de un paìs con regiones, las listará todas.
+¿Se usa este módulo?
+------------------------------------------------------------------------------------------------------
+menu.php
+
+Falta la opción del mantenedor de comunas
+------------------------------------------------------------------------------------------------------
+ver_comuna.php
+
+Se ve el ID de la comuna.
+------------------------------------------------------------------------------------------------------
+
+

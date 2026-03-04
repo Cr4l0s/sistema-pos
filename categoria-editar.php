@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require 'db.php';
 
 // Recibir ID por POST
@@ -42,7 +44,7 @@ $stmt->close();
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Editar Categoría</h4>
-                <a href="categorias.php" class="btn btn-danger">
+                <a href="menu.php?page=categorias.php" class="btn btn-danger">
                     <span class="bi bi-arrow-left"></span> Volver
                 </a>
             </div>

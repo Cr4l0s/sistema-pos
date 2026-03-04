@@ -50,6 +50,7 @@ if (!$idPais || !$idRegion || !$idCiudad) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Mantenedor de Comunas</title>
@@ -60,6 +61,7 @@ if (!$idPais || !$idRegion || !$idCiudad) {
             margin: 20px 0;
             text-align: center;
         }
+
         .paginacion a {
             padding: 5px 10px;
             margin: 0 5px;
@@ -67,6 +69,7 @@ if (!$idPais || !$idRegion || !$idCiudad) {
             border: 1px solid #ddd;
             color: #666;
         }
+
         .paginacion .actual {
             padding: 5px 10px;
             margin: 0 5px;
@@ -76,6 +79,7 @@ if (!$idPais || !$idRegion || !$idCiudad) {
         }
     </style>
 </head>
+
 <body>
     <?php include('navbar.php'); ?>
 
@@ -83,10 +87,11 @@ if (!$idPais || !$idRegion || !$idCiudad) {
         <?php include('mensaje.php'); ?>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Comunas de la Ciudad: [<?= htmlspecialchars($nombreCiudad) ?>] en [<?= htmlspecialchars($nombreRegion) ?>, <?= htmlspecialchars($nombrePais) ?>]</h3>
-            
+            <h3>Comunas de la Ciudad: [<?= htmlspecialchars($nombreCiudad) ?>] en
+                [<?= htmlspecialchars($nombreRegion) ?>, <?= htmlspecialchars($nombrePais) ?>]</h3>
+
             <!-- BOTÓN VOLVER -->
-            <a href="selector_pais_region_ciudad.php" class="btn btn-danger">
+            <a href="menu.php?page=selector_pais_region_ciudad.php" class="btn btn-danger">
                 <span class="bi bi-arrow-left"></span> Volver
             </a>
         </div>
@@ -106,7 +111,7 @@ if (!$idPais || !$idRegion || !$idCiudad) {
                     <tbody>
                         <?php
                         $resultados_por_pagina = 8;
-                        $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+                        $pagina_actual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
                         $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
 
                         // Total de registros
@@ -127,34 +132,35 @@ if (!$idPais || !$idRegion || !$idCiudad) {
 
                         if ($comunas->num_rows > 0) {
                             while ($comuna = $comunas->fetch_assoc()) {
-                        ?>
-                        <tr>
-                            <td><?= htmlspecialchars($comuna['nombreComuna']) ?></td>
-                            <td>
-                                <!-- VER -->
-                                <form action="ver_comuna.php" method="POST" style="display:inline;">
-                                    <input type="hidden" name="idComuna" value="<?= $comuna['idComuna'] ?>">
-                                    <button type="submit" class="btn btn-secondary btn-sm">
-                                        <span class="bi bi-eye-fill"></span> Ver
-                                    </button>
-                                </form>
-                                <!-- EDITAR -->
-                                <form action="editar_comuna.php" method="POST" style="display:inline;">
-                                    <input type="hidden" name="idComuna" value="<?= $comuna['idComuna'] ?>">
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        <span class="bi bi-pencil-fill"></span> Editar
-                                    </button>
-                                </form>
-                                <!-- ELIMINAR -->
-                                <form action="eliminar_comuna.php" method="POST" style="display:inline;">
-                                    <input type="hidden" name="idComuna" value="<?= $comuna['idComuna'] ?>">
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar comuna?')">
-                                        <span class="bi bi-trash3-fill"></span> Eliminar
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <?php
+                                ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($comuna['nombreComuna']) ?></td>
+                                    <td>
+                                        <!-- VER -->
+                                        <form action="menu.php?page=ver_comuna.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="idComuna" value="<?= $comuna['idComuna'] ?>">
+                                            <button type="submit" class="btn btn-secondary btn-sm">
+                                                <span class="bi bi-eye-fill"></span> Ver
+                                            </button>
+                                        </form>
+                                        <!-- EDITAR -->
+                                        <form action="menu.php?page=editar_comuna.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="idComuna" value="<?= $comuna['idComuna'] ?>">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <span class="bi bi-pencil-fill"></span> Editar
+                                            </button>
+                                        </form>
+                                        <!-- ELIMINAR -->
+                                        <form action="eliminar_comuna.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="idComuna" value="<?= $comuna['idComuna'] ?>">
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('¿Eliminar comuna?')">
+                                                <span class="bi bi-trash3-fill"></span> Eliminar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php
                             }
                             $stmt->close();
                         } else {
@@ -169,7 +175,7 @@ if (!$idPais || !$idRegion || !$idCiudad) {
         <!-- Paginación -->
         <div class="paginacion">
             <?php if ($pagina_actual > 1): ?>
-                <a href="?pagina=<?= $pagina_actual-1 ?>">Anterior</a>
+                <a href="?pagina=<?= $pagina_actual - 1 ?>">Anterior</a>
             <?php endif; ?>
             <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
                 <?php if ($i == $pagina_actual): ?>
@@ -179,7 +185,7 @@ if (!$idPais || !$idRegion || !$idCiudad) {
                 <?php endif; ?>
             <?php endfor; ?>
             <?php if ($pagina_actual < $total_paginas): ?>
-                <a href="?pagina=<?= $pagina_actual+1 ?>">Siguiente</a>
+                <a href="?pagina=<?= $pagina_actual + 1 ?>">Siguiente</a>
             <?php endif; ?>
         </div>
 
@@ -201,4 +207,5 @@ if (!$idPais || !$idRegion || !$idCiudad) {
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

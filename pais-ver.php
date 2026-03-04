@@ -42,7 +42,7 @@ if (!$pais) {
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver País</h4>
-                <a href="inicio_pais.php" class="btn btn-danger">
+                <a href="menu.php?page=inicio_pais.php" class="btn btn-danger">
                     <span class="bi bi-arrow-left"></span> Volver
                 </a>
             </div>

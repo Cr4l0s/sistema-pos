@@ -21,7 +21,7 @@ $resultPaises = $conn->query($sqlPaises);
     <?php include('navbar.php'); ?>
     <div class="container mt-4">
         <h2>Seleccionar Ubicación para Gestionar Comunas</h2>
-        <form method="POST" action="gestionar_comunas.php" id="formUbicacion">
+        <form method="POST" action="menu.php?page=gestionar_comunas.php" id="formUbicacion">
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="pais" class="form-label">País:</label>

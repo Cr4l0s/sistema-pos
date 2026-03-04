@@ -79,7 +79,7 @@ if (!$idPais || !$nombrePais || !$idRegion || !$nombreRegion) {
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Ciudades para la Región: [<?= htmlspecialchars($nombreRegion) ?>] del País:
                 [<?= htmlspecialchars($nombrePais) ?>]</h3>
-            <a href="selector_pais_y_region.php" class="btn btn-danger">
+            <a href="menu.php?page=selector_pais_y_region.php" class="btn btn-danger">
                 <span class="bi bi-arrow-left"></span> Volver
             </a>
         </div>
@@ -125,14 +125,14 @@ if (!$idPais || !$nombrePais || !$idRegion || !$nombreRegion) {
                                     <td><?= htmlspecialchars($ciudad['nombreCiudad']) ?></td>
                                     <td>
                                         <!-- VER -->
-                                        <form action="ver_ciudad.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=ver_ciudad.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="idCiudad" value="<?= $ciudad['idCiudad'] ?>">
                                             <button type="submit" class="btn btn-secondary btn-sm">
                                                 <span class="bi bi-eye-fill"></span> Ver
                                             </button>
                                         </form>
                                         <!-- EDITAR -->
-                                        <form action="editar_ciudad.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=editar_ciudad.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="idCiudad" value="<?= $ciudad['idCiudad'] ?>">
                                             <button type="submit" class="btn btn-success btn-sm">
                                                 <span class="bi bi-pencil-fill"></span> Editar

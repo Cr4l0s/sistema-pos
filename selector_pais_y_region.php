@@ -58,7 +58,7 @@ if (isset($_GET['idPais'])) {
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-4">
-        <form method="POST" action="gestionar_ciudades.php">
+        <form method="POST" action="menu.php?page=gestionar_ciudades.php">
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label>País:</label>

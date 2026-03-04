@@ -82,14 +82,14 @@ require 'db.php';
                                     <td><?= htmlspecialchars($categoria['descripcion']) ?></td>
                                     <td>
                                         <!-- VER -->
-                                        <form action="categoria-ver.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=categoria-ver.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="id" value="<?= $categoria['id_categoria'] ?>">
                                             <button type="submit" class="btn btn-secondary btn-sm">
                                                 <span class="bi bi-eye-fill"></span> Ver
                                             </button>
                                         </form>
                                         <!-- EDITAR -->
-                                        <form action="categoria-editar.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=categoria-editar.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="id" value="<?= $categoria['id_categoria'] ?>">
                                             <button type="submit" class="btn btn-success btn-sm">
                                                 <span class="bi bi-pencil-fill"></span> Editar

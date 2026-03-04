@@ -86,7 +86,7 @@ require 'db.php';
                                     <td><?= htmlspecialchars($usuario['email']) ?></td>
                                     <td>
                                         <!-- VER -->
-                                        <form action="usuario-ver.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=usuario-ver.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="idUsuario" value="<?= $usuario['idUsuario'] ?>">
                                             <button type="submit" class="btn btn-secondary btn-sm">
                                                 <span class="bi bi-eye-fill"></span> Ver
@@ -94,7 +94,7 @@ require 'db.php';
                                         </form>
 
                                         <!-- EDITAR -->
-                                        <form action="usuario-editar.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=usuario-editar.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="idUsuario" value="<?= $usuario['idUsuario'] ?>">
                                             <button type="submit" class="btn btn-success btn-sm">
                                                 <span class="bi bi-pencil-fill"></span> Editar

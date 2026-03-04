@@ -84,7 +84,7 @@ require_once 'config.php';
                                     <td><?= htmlspecialchars($pais['nombrePais']) ?></td>
                                     <td>
                                         <!-- VER -->
-                                        <form action="pais-ver.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=pais-ver.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="idPais" value="<?= $pais['idPais'] ?>">
                                             <button type="submit" class="btn btn-secondary btn-sm">
                                                 <span class="bi bi-eye-fill"></span> Ver
@@ -92,7 +92,7 @@ require_once 'config.php';
                                         </form>
 
                                         <!-- EDITAR -->
-                                        <form action="pais-editar.php" method="POST" style="display:inline;">
+                                        <form action="menu.php?page=pais-editar.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="idPais" value="<?= $pais['idPais'] ?>">
                                             <button type="submit" class="btn btn-success btn-sm">
                                                 <span class="bi bi-pencil-fill"></span> Editar

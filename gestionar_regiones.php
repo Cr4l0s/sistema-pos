@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin: 20px 0;
             text-align: center;
         }
+
         .paginacion a {
             padding: 5px 10px;
             margin: 0 5px;
@@ -46,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: 1px solid #ddd;
             color: #666;
         }
+
         .paginacion .actual {
             padding: 5px 10px;
             margin: 0 5px;
@@ -66,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>Regiones del País: <?= htmlspecialchars($nombrePais) ?></h2>
-                <a href="selector_pais.php" class="btn btn-danger">
+                <a href="menu.php?page=selector_pais.php" class="btn btn-danger">
                     <span class="bi bi-arrow-left"></span> Volver
                 </a>
             </div>
@@ -114,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <td><?= htmlspecialchars($region['codRegion']) ?></td>
                                         <td>
                                             <!-- VER -->
-                                            <form action="ver_region.php" method="POST" style="display:inline;">
+                                            <form action="menu.php?page=ver_region.php" method="POST" style="display:inline;">
                                                 <input type="hidden" name="idRegion" value="<?= $region['idRegion'] ?>">
                                                 <button type="submit" class="btn btn-secondary btn-sm">
                                                     <span class="bi bi-eye-fill"></span> Ver
@@ -122,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </form>
 
                                             <!-- EDITAR -->
-                                            <form action="editar_region.php" method="POST" style="display:inline;">
+                                            <form action="menu.php?page=editar_region.php" method="POST" style="display:inline;">
                                                 <input type="hidden" name="idRegion" value="<?= $region['idRegion'] ?>">
                                                 <button type="submit" class="btn btn-success btn-sm">
                                                     <span class="bi bi-pencil-fill"></span> Editar

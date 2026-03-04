@@ -44,7 +44,7 @@ $stmt->close();
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Editar Producto</h4>
-                <a href="productos.php" class="btn btn-danger">
+                <a href="menu.php?page=productos.php" class="btn btn-danger">
                     <span class="bi bi-arrow-left"></span> Volver
                 </a>
             </div>
