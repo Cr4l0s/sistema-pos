@@ -139,13 +139,162 @@ FECHA: 04 de marzo
 - Corregida paginación para mantener parámetro page en enlaces.
 - Eliminado archivo obsoleto selector_region.php.
 
+===================================================
+## DETALLE TÉCNICO DE CORRECCIONES DE ERRORES
+===================================================
+
+A continuación, se detallan los problemas encontrados y las soluciones
+aplicadas, mostrando el código antes y después de la intervención.
+
+--------------------------------------------------
+1. Error: La Paginación Perdía el Contexto de la Página
+--------------------------------------------------
+* Problema:
+  Al hacer clic en "Siguiente" o en un número de página en cualquier listado
+  (ej. inicio_pais.php), el usuario era redirigido al "Panel Principal".
+
+* Análisis Técnico:
+  Los enlaces de paginación se generaban como "menu.php?pagina=2". Esto hacía
+  que el sistema perdiera el parámetro "page" (ej. page=inicio_pais.php),
+  necesario para que menu.php sepa qué contenido mostrar.
+
+* Solución:
+  Se modificó la lógica para que los enlaces de paginación conserven
+  TODOS los parámetros de la URL original, incluyendo 'page'.
+
+  - Antes (Código Problemático):
+    <div class="paginacion">
+        <?php if ($pagina_actual > 1): ?>
+            <a href="?pagina=<?= $pagina_actual - 1 ?>">Anterior</a>
+        <?php endif; ?>
+    </div>
+
+  - Después (Código Corregido):
+    <?php
+    $page_param = isset($_GET['page']) ? $_GET['page'] : basename($_SERVER['PHP_SELF']);
+    $params = $_GET;
+    unset($params['pagina']);
+    $queryString = http_build_query($params);
+    if (!isset($params['page']) && $page_param) {
+        $queryString = http_build_query(array_merge($params, ['page' => $page_param]));
+    }
+    ?>
+    <div class="paginacion">
+        <?php if ($pagina_actual > 1): ?>
+            <a href="?<?php echo $queryString; ?>&pagina=<?php echo ($pagina_actual - 1); ?>">
+                Anterior
+            </a>
+        <?php endif; ?>
+    </div>
+
+  Archivos afectados:
+  inicio_pais.php, categorias.php, productos.php, inicio-usuarios.php,
+  gestionar_regiones.php, gestionar_ciudades.php, gestionar_comunas.php.
+
+--------------------------------------------------
+2. Error: Número de Filas por Página Hardcodeado
+--------------------------------------------------
+* Problema:
+  El valor de filas por página era un número fijo (8) en cada archivo,
+  dificultando su mantenimiento.
+
+* Solución:
+  Se centralizó en config.php con la constante FILASXPAGINA.
+
+  - Antes:
+    $resultados_por_pagina = 8;
+
+  - Después:
+    require_once 'config.php';
+    $resultados_por_pagina = FILASXPAGINA;
+
+  Archivos afectados:
+  Los mismos 7 archivos de listados.
+
+--------------------------------------------------
+3. Error: Archivo Obsoleto selector_region.php
+--------------------------------------------------
+* Problema:
+  El archivo tenía consultas incorrectas, no filtraba por país y no
+  estaba integrado con menu.php.
+
+* Solución:
+  Se eliminó del repositorio por ser obsoleto.
+
+  - Antes: El archivo existía y podía ser accedido.
+  - Después: Se ejecutó git rm selector_region.php.
+
+--------------------------------------------------
+4. Error: Botones "Editar" y "Ver" No Mantenían el Layout
+--------------------------------------------------
+* Problema:
+  Al hacer clic en "Editar" o "Ver", la página de destino se cargaba
+  sin el menú lateral (fuera de menu.php).
+
+* Solución:
+  Se modificaron los formularios para que apunten a menu.php con el
+  parámetro 'page'.
+
+  - Antes (en gestionar_regiones.php):
+    <form action="editar_region.php" method="POST">
+
+  - Después:
+    <form action="menu.php?page=editar_region.php" method="POST">
+
+  Archivos afectados:
+  gestionar_regiones.php, gestionar_ciudades.php, gestionar_comunas.php,
+  inicio_pais.php, categorias.php, productos.php, inicio-usuarios.php.
+
+--------------------------------------------------
+5. Error: Inconsistencia en la Navegación de Paginación (05/03)
+--------------------------------------------------
+* Problema:
+  Después de corregir el error #1, se descubrió que al ir a la página 2
+  de un listado, la URL era correcta (menu.php?page=inicio_pais.php&pagina=2),
+  pero el sistema volvía al Panel Principal. La paginación no funcionaba.
+
+* Análisis Técnico:
+  La corrección inicial generaba bien los enlaces, pero los archivos de
+  listado no procesaban correctamente el parámetro 'pagina' al ser incluidos
+  por menu.php. La lectura de $_GET['pagina'] no era robusta.
+
+* Solución:
+  Se estandarizó la lectura del parámetro 'pagina' al inicio de cada
+  archivo de listado, asegurando que la variable $pagina_actual se
+  obtenga correctamente.
+
+  - Antes (Lógica vulnerable):
+    // No siempre se aseguraba la lectura correcta del parámetro.
+
+  - Después (Lógica robusta y estandarizada):
+    <?php
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    require 'db.php';
+    require_once 'config.php';
+
+    $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+    $resultados_por_pagina = FILASXPAGINA;
+    $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
+
+    // ... consultas paginadas usando $calculo ...
+
+    // Generación de enlaces (como en el punto 1)
+    ?>
+
+  Archivos afectados:
+  Los mismos 7 archivos de listados.
+
 --------------------------------------------------
 FECHA: 05 de marzo
 --------------------------------------------------
 - Creación de este archivo de documentación (documentacion.txt).
 - Resumen de todos los avances por día.
 - Organización del historial del proyecto.
+- Corrección del error de paginación (punto 5) que impedía ver segundas páginas.
+- Documentación técnica detallada con ejemplos "antes y después".
+
 ==================================================
 Fin del documento
 ==================================================
-
