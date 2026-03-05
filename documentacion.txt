@@ -1,0 +1,151 @@
+==================================================
+DOCUMENTACIÓN DE AVANCES - SISTEMA POS
+==================================================
+
+Proyecto: Sistema de Ventas en Línea (POS)
+Repositorio: https://github.com/Cr4l0s/sistema-pos
+Desarrollador: Carlos Olivares Castillo
+==================================================
+
+--------------------------------------------------
+FECHA: 16 de febrero
+--------------------------------------------------
+- Creación de la estructura inicial del sistema.
+- Definición de tablas principales: usuarios, roles, categorías, productos.
+- Implementación del módulo de usuarios (CRUD básico).
+- Configuración de conexión a base de datos (db.php).
+
+--------------------------------------------------
+FECHA: 17 de febrero
+--------------------------------------------------
+- Avances en módulos geográficos.
+- Creación de tablas: paises, regiones, ciudades.
+- Implementación de selectores AJAX para regiones y ciudades.
+- Corrección de errores en la base de datos (unificación de IDs).
+
+--------------------------------------------------
+FECHA: 18 de febrero
+--------------------------------------------------
+- Implementación de roles múltiples para usuarios.
+- Creación de tabla usuarios_roles (relación muchos a muchos).
+- Corrección de prepared statements en acciones de usuarios.
+- Avances en módulo de productos (CRUD básico).
+
+--------------------------------------------------
+FECHA: 19 de febrero
+--------------------------------------------------
+- Módulo de comunas completo (CRUD + selectores de 3 niveles).
+- Corrección de errores en gestión de regiones y ciudades.
+- Implementación de reactivación inteligente de comunas eliminadas.
+- Subida masiva de cambios a GitHub.
+
+--------------------------------------------------
+FECHA: 20 de febrero
+--------------------------------------------------
+- Mantenimiento general del sistema.
+- Corrección de errores menores en formularios.
+- Optimización de consultas SQL.
+- Mejoras en la interfaz de usuario.
+
+--------------------------------------------------
+FECHA: 21 de febrero
+--------------------------------------------------
+- No se registraron cambios significativos.
+- Día de descanso / planificación.
+
+--------------------------------------------------
+FECHA: 22 de febrero
+--------------------------------------------------
+- No se registraron cambios significativos.
+
+--------------------------------------------------
+FECHA: 23 de febrero
+--------------------------------------------------
+- Revisión general del código.
+- Corrección de errores en gestión de ciudades.
+- Unificación de criterios en botones de acción.
+
+--------------------------------------------------
+FECHA: 24 de febrero
+--------------------------------------------------
+- Módulo de comunas completado con selectores dinámicos.
+- Corrección de duplicados en botones "Volver".
+- Implementación de paginación mejorada.
+- Agregado archivo .gitignore para carpetas de avances.
+
+--------------------------------------------------
+FECHA: 25 de febrero
+--------------------------------------------------
+- Mantenimiento de código.
+- Corrección de errores en selectores.
+- Mejoras en la experiencia de usuario (UX).
+
+--------------------------------------------------
+FECHA: 26 de febrero
+--------------------------------------------------
+- No se registraron cambios significativos.
+
+--------------------------------------------------
+FECHA: 27 de febrero
+--------------------------------------------------
+- No se registraron cambios significativos.
+
+--------------------------------------------------
+FECHA: 28 de febrero
+--------------------------------------------------
+- Correcciones masivas de UI/UX en todos los mantenedores.
+- Eliminadas columnas ID de las tablas en pantalla.
+- Reemplazados enlaces GET por formularios POST (IDs ocultos).
+- Agregados íconos de Bootstrap Icons a botones Ver, Editar y Eliminar.
+- Unificados archivos de eliminación (eliminar_pais.php, eliminar_producto.php, etc.).
+
+--------------------------------------------------
+FECHA: 29 de febrero
+--------------------------------------------------
+- No hubo avances (año bisiesto, pero sin actividad).
+
+--------------------------------------------------
+FECHA: 01 de marzo
+--------------------------------------------------
+- Revisión general del sistema.
+- Corrección de errores en paginación.
+
+--------------------------------------------------
+FECHA: 02 de marzo
+--------------------------------------------------
+- Unificación de estilos y correcciones de UI/UX.
+- Agregados íconos de Bootstrap Icons en todos los selectores.
+- Corregido navbar.php con flecha en "Volver al Menú".
+- Agregada constante FILASXPAGINA en config.php.
+- Paginación mejorada en inicio_pais.php.
+- Agregado categorias.sql con AUTO_INCREMENT corregido.
+- Inserción de 10 países en la base de datos.
+
+--------------------------------------------------
+FECHA: 03 de marzo
+--------------------------------------------------
+- Mantenimiento general.
+- Corrección de errores menores.
+
+--------------------------------------------------
+FECHA: 04 de marzo
+--------------------------------------------------
+- Corrección de navegación y ocultamiento de ítems en menú lateral.
+- Agregados todos los archivos de edición y vista al array $menu con 'hidden' => true.
+- Corregidos botones "Editar" y "Ver" en listados para que apunten a menu.php?page=...
+- Ajustados botones "Volver" en páginas de edición y vista.
+- Agregado require_once 'config.php' en archivos con paginación.
+- Reemplazado valor fijo 8 por constante FILASXPAGINA.
+- Corregida paginación para mantener parámetro page en enlaces.
+- Eliminado archivo obsoleto selector_region.php.
+
+--------------------------------------------------
+FECHA: 05 de marzo
+--------------------------------------------------
+- Creación de este archivo de documentación (documentacion.txt).
+- Resumen de todos los avances por día.
+- Organización del historial del proyecto.
+==================================================
+Fin del documento
+==================================================
+
