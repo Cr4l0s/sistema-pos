@@ -3,9 +3,11 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 require 'db.php';
+require_once 'config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +19,7 @@ require 'db.php';
             margin: 20px 0;
             text-align: center;
         }
+
         .paginacion a {
             padding: 5px 10px;
             margin: 0 5px;
@@ -24,6 +27,7 @@ require 'db.php';
             border: 1px solid #ddd;
             color: #666;
         }
+
         .paginacion .actual {
             padding: 5px 10px;
             margin: 0 5px;
@@ -33,6 +37,7 @@ require 'db.php';
         }
     </style>
 </head>
+
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-4">
@@ -57,8 +62,8 @@ require 'db.php';
                             </thead>
                             <tbody>
                                 <?php
-                                $resultados_por_pagina = 8;
-                                $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+                                $resultados_por_pagina = FILASXPAGINA;
+                                $pagina_actual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
                                 $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
 
                                 // Total de registros
@@ -83,38 +88,44 @@ require 'db.php';
 
                                 if ($productos->num_rows > 0) {
                                     while ($producto = $productos->fetch_assoc()) {
-                                ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($producto['codigo_barras'] ?: '—') ?></td>
-                                    <td><?= htmlspecialchars($producto['nombre_producto']) ?></td>
-                                    <td><?= htmlspecialchars($producto['nombre_categoria'] ?: '—') ?></td>
-                                    <td>$<?= number_format($producto['precio_venta'], 0, ',', '.') ?></td>
-                                    <td><?= $producto['stock_actual'] ?></td>
-                                    <td>
-                                        <!-- VER -->
-                                        <form action="menu.php?page=producto-ver.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="id_producto" value="<?= $producto['id_producto'] ?>">
-                                            <button type="submit" class="btn btn-secondary btn-sm">
-                                                <span class="bi bi-eye-fill"></span> Ver
-                                            </button>
-                                        </form>
-                                        <!-- EDITAR -->
-                                        <form action="menu.php?page=producto-editar.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="id_producto" value="<?= $producto['id_producto'] ?>">
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <span class="bi bi-pencil-fill"></span> Editar
-                                            </button>
-                                        </form>
-                                        <!-- ELIMINAR -->
-                                        <form action="eliminar_producto.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="id_producto" value="<?= $producto['id_producto'] ?>">
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar producto?')">
-                                                <span class="bi bi-trash3-fill"></span> Eliminar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php
+                                        ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($producto['codigo_barras'] ?: '—') ?></td>
+                                            <td><?= htmlspecialchars($producto['nombre_producto']) ?></td>
+                                            <td><?= htmlspecialchars($producto['nombre_categoria'] ?: '—') ?></td>
+                                            <td>$<?= number_format($producto['precio_venta'], 0, ',', '.') ?></td>
+                                            <td><?= $producto['stock_actual'] ?></td>
+                                            <td>
+                                                <!-- VER -->
+                                                <form action="menu.php?page=producto-ver.php" method="POST"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="id_producto"
+                                                        value="<?= $producto['id_producto'] ?>">
+                                                    <button type="submit" class="btn btn-secondary btn-sm">
+                                                        <span class="bi bi-eye-fill"></span> Ver
+                                                    </button>
+                                                </form>
+                                                <!-- EDITAR -->
+                                                <form action="menu.php?page=producto-editar.php" method="POST"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="id_producto"
+                                                        value="<?= $producto['id_producto'] ?>">
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <span class="bi bi-pencil-fill"></span> Editar
+                                                    </button>
+                                                </form>
+                                                <!-- ELIMINAR -->
+                                                <form action="eliminar_producto.php" method="POST" style="display:inline;">
+                                                    <input type="hidden" name="id_producto"
+                                                        value="<?= $producto['id_producto'] ?>">
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('¿Eliminar producto?')">
+                                                        <span class="bi bi-trash3-fill"></span> Eliminar
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <?php
                                     }
                                     $stmt->close();
                                 } else {
@@ -124,21 +135,45 @@ require 'db.php';
                             </tbody>
                         </table>
 
-                        <!-- Paginación -->
+                        <!-- PAGINACIÓN MEJORADA (con queryString) -->
+                        <!-- Antes de la paginación -->
+                        <?php
+                        $page_param = isset($_GET['page']) ? $_GET['page'] : basename($_SERVER['PHP_SELF']);
+
+                        $params = $_GET;
+                        unset($params['pagina']);
+                        $queryString = http_build_query($params);
+
+                        if (!isset($params['page']) && $page_param) {
+                            $queryString = http_build_query(array_merge($params, ['page' => $page_param]));
+                        }
+                        ?>
+
+                        <!-- Enlaces de paginación -->
                         <div class="paginacion">
+
                             <?php if ($pagina_actual > 1): ?>
-                                <a href="?pagina=<?= $pagina_actual-1 ?>">Anterior</a>
+                                <a href="?<?php echo $queryString; ?>&pagina=<?php echo ($pagina_actual - 1); ?>">
+                                    Anterior
+                                </a>
                             <?php endif; ?>
+
                             <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
                                 <?php if ($i == $pagina_actual): ?>
-                                    <span class="actual"><?= $i ?></span>
+                                    <span class="actual"><?php echo $i; ?></span>
                                 <?php else: ?>
-                                    <a href="?pagina=<?= $i ?>"><?= $i ?></a>
+                                    <a href="?<?php echo $queryString; ?>&pagina=<?php echo $i; ?>">
+                                        <?php echo $i; ?>
+                                    </a>
                                 <?php endif; ?>
                             <?php endfor; ?>
+
                             <?php if ($pagina_actual < $total_paginas): ?>
-                                <a href="?pagina=<?= $pagina_actual+1 ?>">Siguiente</a>
+                                <a href="?<?php echo $queryString; ?>&pagina=<?php echo ($pagina_actual + 1); ?>">
+                                    Siguiente
+                                </a>
                             <?php endif; ?>
+
                         </div>
 
                         <!-- BOTÓN AGREGAR DEBAJO DE LA TABLA -->
@@ -156,4 +191,5 @@ require 'db.php';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -11,5 +11,5 @@
     define('SIDEBAR_ACTIVE', '#2563eb');    // color resaltado
     define('SIDEBAR_ACTIVE_GRADIENT', '#1d4ed8'); // segundo color degradado
     define('SIDEBAR_BG_DARK', '#0f172a');
-    define('FILASXPAGINA', 8);               // filas por página en listados
+    define('FILASXPAGINA', 1);               // filas por página en listados
 ?>

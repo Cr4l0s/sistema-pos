@@ -2,7 +2,8 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-include 'db.php';
+require 'db.php';
+require_once 'config.php';
 
 // Capturar idPais y nombrePais desde el formulario y guardarlos en la sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -88,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </thead>
                         <tbody>
                             <?php
-                            $resultados_por_pagina = 8;
+                            $resultados_por_pagina = FILASXPAGINA;
                             $pagina_actual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
                             $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
 
@@ -153,21 +154,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
 
-            <!-- Paginación -->
+            <!-- PAGINACIÓN MEJORADA (con queryString) -->
+            <!-- Antes de la paginación -->
+            <?php
+            $page_param = isset($_GET['page']) ? $_GET['page'] : basename($_SERVER['PHP_SELF']);
+
+            $params = $_GET;
+            unset($params['pagina']);
+            $queryString = http_build_query($params);
+
+            if (!isset($params['page']) && $page_param) {
+                $queryString = http_build_query(array_merge($params, ['page' => $page_param]));
+            }
+            ?>
+
+            <!-- Enlaces de paginación -->
             <div class="paginacion">
+
                 <?php if ($pagina_actual > 1): ?>
-                    <a href="?pagina=<?= $pagina_actual - 1 ?>">Anterior</a>
+                    <a href="?<?php echo $queryString; ?>&pagina=<?php echo ($pagina_actual - 1); ?>">
+                        Anterior
+                    </a>
                 <?php endif; ?>
+
                 <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
                     <?php if ($i == $pagina_actual): ?>
-                        <span class="actual"><?= $i ?></span>
+                        <span class="actual"><?php echo $i; ?></span>
                     <?php else: ?>
-                        <a href="?pagina=<?= $i ?>"><?= $i ?></a>
+                        <a href="?<?php echo $queryString; ?>&pagina=<?php echo $i; ?>">
+                            <?php echo $i; ?>
+                        </a>
                     <?php endif; ?>
                 <?php endfor; ?>
+
                 <?php if ($pagina_actual < $total_paginas): ?>
-                    <a href="?pagina=<?= $pagina_actual + 1 ?>">Siguiente</a>
+                    <a href="?<?php echo $queryString; ?>&pagina=<?php echo ($pagina_actual + 1); ?>">
+                        Siguiente
+                    </a>
                 <?php endif; ?>
+
             </div>
 
             <!-- Formulario para agregar nueva región -->

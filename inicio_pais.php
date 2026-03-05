@@ -120,10 +120,17 @@ require_once 'config.php';
                 </table>
 
                 <!-- PAGINACIÓN MEJORADA (con queryString) -->
+                <!-- Antes de la paginación -->
                 <?php
+                $page_param = isset($_GET['page']) ? $_GET['page'] : basename($_SERVER['PHP_SELF']);
+
                 $params = $_GET;
                 unset($params['pagina']);
                 $queryString = http_build_query($params);
+
+                if (!isset($params['page']) && $page_param) {
+                    $queryString = http_build_query(array_merge($params, ['page' => $page_param]));
+                }
                 ?>
                 <div class="paginacion">
                     <?php if ($pagina_actual > 1): ?>
