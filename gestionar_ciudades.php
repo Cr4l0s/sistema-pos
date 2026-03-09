@@ -1,16 +1,16 @@
 <?php
+ob_start();
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require 'db.php';
+include 'db.php';
 require_once 'config.php';
 
-// Capturar datos del POST y guardarlos en sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['idPais'] = intval($_POST['idPais']);
     $_SESSION['idRegion'] = intval($_POST['idRegion']);
 
-    // Obtener nombres
+    // Usar prepared statements para seguridad
     $sqlPais = "SELECT nombrePais FROM paises WHERE idPais = ?";
     $stmt = $conn->prepare($sqlPais);
     $stmt->bind_param("i", $_SESSION['idPais']);
@@ -26,20 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 }
 
-// Recuperar de sesión
-$idPais = $_SESSION['idPais'] ?? null;
-$nombrePais = $_SESSION['nombrePais'] ?? null;
-$idRegion = $_SESSION['idRegion'] ?? null;
-$nombreRegion = $_SESSION['nombreRegion'] ?? null;
-
-// Verificar que existan país y región
-if (!$idPais || !$nombrePais || !$idRegion || !$nombreRegion) {
-    echo "<h2>No ha seleccionado País y Región</h2>";
-    echo "<a href='selector_pais_y_region.php' class='btn btn-primary'>Volver a Seleccionar</a>";
-    exit;
-}
+$idPais = $_SESSION['idPais'] ?? 1;
+$nombrePais = $_SESSION['nombrePais'] ?? 'Desconocido';
+$idRegion = $_SESSION['idRegion'] ?? 1;
+$nombreRegion = $_SESSION['nombreRegion'] ?? 'Desconocido';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,28 +39,79 @@ if (!$idPais || !$nombrePais || !$idRegion || !$nombreRegion) {
     <title>Mantenedor de Ciudades</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="components/tabla_pro/tabla_pro.css">
     <style>
-        .paginacion {
-            margin: 20px 0;
-            text-align: center;
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid rgba(0, 0, 0, .125);
+            padding: 1rem 1.25rem;
         }
 
-        .paginacion a {
-            padding: 5px 10px;
-            margin: 0 5px;
-            text-decoration: none;
-            border: 1px solid #ddd;
-            color: #666;
+        .card-header h4 {
+            margin-bottom: 0;
+            white-space: nowrap;
         }
 
-        .paginacion .actual {
-            padding: 5px 10px;
-            margin: 0 5px;
-            background-color: #007bff;
-            color: white;
-            border: 1px solid #007bff;
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .header-controls input,
+        .header-controls select {
+            width: 200px;
+        }
+
+        @media (max-width: 992px) {
+
+            .header-controls input,
+            .header-controls select {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-header {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .header-controls {
+                width: auto;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .header-controls input,
+            .header-controls select {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-header {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .header-controls input,
+            .header-controls select {
+                width: 48%;
+            }
         }
     </style>
+
+    <!-- Librerías para PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
 </head>
 
 <body>
@@ -78,7 +120,7 @@ if (!$idPais || !$nombrePais || !$idRegion || !$nombreRegion) {
         <?php include('mensaje.php'); ?>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Ciudades para la Región: [<?= htmlspecialchars($nombreRegion) ?>] del País:
+            <h3>Ciudades de la Región: [<?= htmlspecialchars($nombreRegion) ?>] del País:
                 [<?= htmlspecialchars($nombrePais) ?>]</h3>
             <a href="menu.php?page=selector_pais_y_region.php" class="btn btn-danger">
                 <span class="bi bi-arrow-left"></span> Volver
@@ -86,140 +128,50 @@ if (!$idPais || !$nombrePais || !$idRegion || !$nombreRegion) {
         </div>
 
         <div class="card">
-            <div class="card-header">
-                <h4>Listado de Ciudades</h4>
+            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                <h4 class="mb-0">Listado de Ciudades</h4>
+                <div class="header-controls">
+                    <input type="text" id="buscarTabla" class="form-control" placeholder="Buscar...">
+                    <select id="filasTabla" class="form-select">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nombre Ciudad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $resultados_por_pagina = FILASXPAGINA;
-                        $pagina_actual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
-                        $calculo = ($pagina_actual - 1) * $resultados_por_pagina;
+                <?php 
+                require_once 'components/tabla_pro/tabla_pro.php';
+                
+                $columnas = [
+                    'nombreCiudad' => 'Nombre de la Ciudad'
+                ];
+                
+                tablaPro("components/tabla_pro/tabla_endpoint_ciudades.php", 'nombreCiudad', $columnas); 
+                ?>
 
-                        // Total de registros
-                        $sql_total = "SELECT COUNT(*) as total FROM ciudades WHERE idRegion = ? AND vigente = 1";
-                        $stmt_total = $conn->prepare($sql_total);
-                        $stmt_total->bind_param("i", $idRegion);
-                        $stmt_total->execute();
-                        $total_registros = $stmt_total->get_result()->fetch_assoc()['total'];
-                        $stmt_total->close();
-                        $total_paginas = ceil($total_registros / $resultados_por_pagina);
-
-                        // Consulta paginada
-                        $sql = "SELECT * FROM ciudades WHERE idRegion = ? AND vigente = 1 ORDER BY nombreCiudad LIMIT ?, ?";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->bind_param("iii", $idRegion, $calculo, $resultados_por_pagina);
-                        $stmt->execute();
-                        $ciudades = $stmt->get_result();
-
-                        if ($ciudades->num_rows > 0) {
-                            while ($ciudad = $ciudades->fetch_assoc()) {
-                                ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($ciudad['nombreCiudad']) ?></td>
-                                    <td>
-                                        <!-- VER -->
-                                        <form action="menu.php?page=ver_ciudad.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="idCiudad" value="<?= $ciudad['idCiudad'] ?>">
-                                            <button type="submit" class="btn btn-secondary btn-sm">
-                                                <span class="bi bi-eye-fill"></span> Ver
-                                            </button>
-                                        </form>
-                                        <!-- EDITAR -->
-                                        <form action="menu.php?page=editar_ciudad.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="idCiudad" value="<?= $ciudad['idCiudad'] ?>">
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <span class="bi bi-pencil-fill"></span> Editar
-                                            </button>
-                                        </form>
-                                        <!-- ELIMINAR -->
-                                        <form action="eliminar_ciudad.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="idCiudad" value="<?= $ciudad['idCiudad'] ?>">
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('¿Confirma la eliminación?')">
-                                                <span class="bi bi-trash3-fill"></span> Eliminar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php
-                            }
-                            $stmt->close();
-                        } else {
-                            echo '<tr><td colspan="2" class="text-center">No hay ciudades registradas</td></tr>';
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                <!-- Formulario para agregar -->
+                <br>
+                <h3>Agregar Nueva Ciudad</h3>
+                <form method="POST" action="agregar_ciudad.php">
+                    <input type="hidden" name="idRegion" value="<?= $idRegion ?>">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label for="nombreCiudad" class="form-label">Nombre de la Ciudad:</label>
+                            <input type="text" class="form-control" name="nombreCiudad" id="nombreCiudad" required>
+                        </div>
+                        <div class="col-md-4 align-self-end">
+                            <button type="submit" class="btn btn-primary">Agregar Ciudad</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <!-- PAGINACIÓN MEJORADA (con queryString) -->
-        <!-- Antes de la paginación -->
-        <?php
-        $page_param = isset($_GET['page']) ? $_GET['page'] : basename($_SERVER['PHP_SELF']);
-
-        $params = $_GET;
-        unset($params['pagina']);
-        $queryString = http_build_query($params);
-
-        if (!isset($params['page']) && $page_param) {
-            $queryString = http_build_query(array_merge($params, ['page' => $page_param]));
-        }
-        ?>
-
-        <!-- Enlaces de paginación -->
-        <div class="paginacion">
-
-            <?php if ($pagina_actual > 1): ?>
-                <a href="?<?php echo $queryString; ?>&pagina=<?php echo ($pagina_actual - 1); ?>">
-                    Anterior
-                </a>
-            <?php endif; ?>
-
-            <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
-                <?php if ($i == $pagina_actual): ?>
-                    <span class="actual"><?php echo $i; ?></span>
-                <?php else: ?>
-                    <a href="?<?php echo $queryString; ?>&pagina=<?php echo $i; ?>">
-                        <?php echo $i; ?>
-                    </a>
-                <?php endif; ?>
-            <?php endfor; ?>
-
-            <?php if ($pagina_actual < $total_paginas): ?>
-                <a href="?<?php echo $queryString; ?>&pagina=<?php echo ($pagina_actual + 1); ?>">
-                    Siguiente
-                </a>
-            <?php endif; ?>
-
-        </div>
-
-        <!-- Formulario para agregar nueva ciudad -->
-        <br>
-        <h3>Agregar Nueva Ciudad</h3>
-        <form method="POST" action="agregar_ciudad.php">
-            <input type="hidden" name="idRegion" value="<?= $idRegion ?>">
-            <div class="row">
-                <div class="col-md-8">
-                    <label for="nombreCiudad" class="form-label">Nombre de la Ciudad:</label>
-                    <input type="text" class="form-control" name="nombreCiudad" id="nombreCiudad" required>
-                </div>
-                <div class="col-md-4 align-self-end">
-                    <button type="submit" class="btn btn-primary">Agregar Ciudad</button>
-                </div>
-            </div>
-        </form>
-
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="components/tabla_pro/tabla_pro.js"></script>
 </body>
 
 </html>
+<?php ob_end_flush(); ?>

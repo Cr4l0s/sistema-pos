@@ -45,7 +45,15 @@ $resultPaises = $conn->query($sqlPaises);
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" id="btnGestionar" disabled>Gestionar Comunas</button>
+
+            <!-- Botón con el mismo tamaño que en selector_pais_y_region.php -->
+            <div class="row">
+                <div class="col-md-4 offset-md-8">
+                    <button type="submit" class="btn btn-primary" id="btnGestionar" disabled>
+                        Gestionar Comunas
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 

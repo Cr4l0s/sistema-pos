@@ -1,0 +1,24 @@
+.table-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+.table-search {
+    max-width: 250px;
+}
+.table-pagination {
+    margin-top: 15px;
+    text-align: center;
+}
+.table-pagination button {
+    margin: 2px;
+}
+.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+.sortable i {
+    margin-left: 5px;
+    font-size: 0.8rem;
+}

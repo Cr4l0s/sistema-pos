@@ -1,0 +1,182 @@
+==================================================
+OBSERVACIONES TÉCNICAS - 09 DE MARZO
+==================================================
+
+IMPLEMENTACIÓN DE TABLA PRO EN TODOS LOS MANTENEDORES
+-----------------------------------------------------
+
+1. OBJETIVO
+   Unificar la experiencia de usuario en todos los mantenedores del sistema,
+   implementando una tabla profesional con búsqueda en vivo, paginación dinámica,
+   ordenamiento por columnas y selector de filas, todo mediante AJAX.
+
+2. ARQUITECTURA IMPLEMENTADA
+   └── components/
+       └── tabla_pro/
+           ├── tabla_pro.php          (Componente visual reutilizable)
+           ├── tabla_pro.js           (Lógica AJAX, búsqueda, ordenamiento)
+           ├── tabla_pro.css          (Estilos específicos)
+           ├── tabla_endpoint_regiones.php
+           ├── tabla_endpoint_ciudades.php
+           ├── tabla_endpoint_comunas.php
+           ├── tabla_endpoint_categorias.php
+           ├── tabla_endpoint_paises.php
+           ├── tabla_endpoint_usuarios.php
+           └── tabla_endpoint_productos.php
+
+3. MANTENEDORES ACTUALIZADOS
+   - gestionar_regiones.php
+   - gestionar_ciudades.php
+   - gestionar_comunas.php
+   - categorias.php
+   - inicio_pais.php
+   - inicio-usuarios.php
+   - productos.php
+
+   Cada uno ahora:
+   ✅ Incluye el componente tabla_pro()
+   ✅ Tiene buscador en el card-header
+   ✅ Selector de filas (10, 25, 50, 100)
+   ✅ Carga de datos vía fetch a su endpoint específico
+   ✅ Ordenamiento por columnas (sortable)
+   ✅ Paginación generada por el endpoint
+   ✅ Botón "Agregar" debajo de la tabla
+
+==================================================
+📝 OBSERVACIONES TÉCNICAS DETALLADAS - 09/03/2026
+==================================================
+
+1. SISTEMA DE TABLAS (tabla_pro)
+---------------------------------
+
+1.1 Corrección de error crítico en tabla_pro.js
+    🔴 Problema: Línea errónea tablaPro("endpoint.php", "nombreCiudad") dentro del JavaScript
+    ✅ Solución: Se eliminó esta línea y se configuró lectura correcta desde data-orden-default
+    📁 Archivo modificado: components/tabla_pro/tabla_pro.js
+
+1.2 Mejora en tabla_pro.php
+    ✅ Se agregaron parámetros $ordenDefault y $columnas para personalización por módulo
+    ✅ Se añadió data-orden-default al elemento <table> para comunicación con JavaScript
+    📁 Archivo modificado: components/tabla_pro/tabla_pro.php
+
+1.3 Nuevo botón de impresión
+    ✅ Se agregó botón "Imprimir" con ícono bi-printer (color btn-info)
+    ✅ Posición: entre Excel y PDF (Excel → Imprimir → PDF)
+    ✅ Función: abre ventana de impresión y se cierra automáticamente
+    📁 Archivo modificado: components/tabla_pro/tabla_pro.php
+
+1.4 Exportación PDF mejorada
+    ✅ Se implementó función de descarga real de PDF usando jsPDF
+    ✅ Se agregaron librerías CDN en cada mantenedor
+    ✅ El PDF incluye: título, cabeceras, datos, formato profesional
+    📁 Archivos modificados: components/tabla_pro/tabla_pro.js + todos los mantenedores
+
+1.5 Exportación Excel mejorada
+    ✅ Se agregó nombre de archivo con fecha (exportacion_YYYY-MM-DD.xls)
+    📁 Archivo modificado: includes/exportar_excel.php
+
+2. SELECTORES DE UBICACIÓN
+---------------------------
+
+2.1 Selector País-Región (para Ciudades) - selector_pais_y_region.php
+    ✅ Estructura: Selectores en fila (País | Región)
+    ✅ Botón: "Gestionar Ciudades" en col-md-4 offset-md-8 (alineado bajo Región)
+    ✅ Validación: Botón deshabilitado hasta seleccionar región
+
+2.2 Selector País-Región-Ciudad (para Comunas) - selector_pais_region_ciudad.php
+    ✅ Estructura: Selectores en fila (País | Región | Ciudad)
+    ✅ Botón: "Gestionar Comunas" en col-md-4 offset-md-8 (alineado bajo Ciudad)
+    ✅ Validación: Botón deshabilitado hasta seleccionar ciudad
+    ✅ Color: Forzado a btn-primary (azul oscuro) eliminando tono celeste
+    ✅ Estilo: Sin w-100 para mantener tamaño estándar
+
+2.3 Archivos AJAX auxiliares
+    ✅ get_regiones.php: retorna JSON con regiones según país
+    ✅ get_ciudades_por_region.php: retorna JSON con ciudades según región
+
+3. MANTENEDORES ACTUALIZADOS CON NUEVAS FUNCIONALIDADES
+--------------------------------------------------------
+
+| Archivo              | Módulo    | Columnas                                          | Orden default     |
+|----------------------|-----------|---------------------------------------------------|-------------------|
+| categorias.php       | Categorías| nombre_categoria, descripcion                     | nombre_categoria  |
+| gestionar_ciudades.php| Ciudades | nombreCiudad                                       | nombreCiudad      |
+| gestionar_comunas.php | Comunas   | nombreComuna                                       | nombreComuna      |
+| gestionar_regiones.php| Regiones  | nombreRegion, codRegion                            | nombreRegion      |
+| inicio_pais.php       | Países    | siglaPais, codMoneda, nombrePais                   | nombrePais        |
+| inicio-usuarios.php   | Usuarios  | nombres, apellidos, NombreUsuario, email           | nombres           |
+| productos.php         | Productos | codigo_barras, nombre_producto, precio_venta, stock_actual, categoria | nombre_producto |
+
+Todos incluyen:
+✅ Librerías jsPDF y jsPDF-AutoTable
+✅ Botones Excel, Imprimir, PDF funcionales
+✅ Selector de filas (10, 25, 50, 100)
+✅ Búsqueda en tiempo real
+
+4. ARCHIVOS ELIMINADOS (CÓDIGO MUERTO)
+---------------------------------------
+❌ tabla_admin.php
+❌ tabla_admin.js
+❌ tabla_utils.php
+❌ paginacion.php
+❌ tabla_sort.js
+
+Motivo: Sistema obsoleto, reemplazado por tabla_pro que es más moderno y funcional.
+
+5. PROBLEMAS TÉCNICOS RESUELTOS
+--------------------------------
+| Problema                              | Solución                                   |
+|---------------------------------------|--------------------------------------------|
+| Error tablaPro("endpoint.php") en JS  | Eliminado, ahora usa data-orden-default    |
+| Botón PDF abría nueva pestaña         | Cambiado a descarga directa con jsPDF      |
+| Botón "Gestionar Comunas" mal alineado| Ajustado con offset-md-8 en fila separada  |
+| Botón "Gestionar Comunas" color celeste| Forzado btn-primary con CSS                |
+| Selectores desalineados               | Uso de align-items-end en fila             |
+| Exportación Excel sin fecha           | Agregado date('Y-m-d') al nombre           |
+
+6. PENDIENTE / RECOMENDACIONES
+-------------------------------
+🔲 Refactorizar endpoints a Prepared Statements (seguridad)
+🔲 Centralizar validación de columnas en todos los endpoints
+🔲 Agregar filtros avanzados por columna
+🔲 Implementar caché de consultas para mejorar rendimiento
+
+7. CORRECCIONES REALIZADAS
+---------------------------
+🔴 Error: El CSS se incluía como "tabla_proc.ss" en lugar de "tabla_pro.css"
+✅ Solución: Corregida la ruta en todos los mantenedores.
+
+🔴 Error: Faltaba la inclusión de tabla_pro.js en algunos archivos
+✅ Solución: Agregado <script> al final de cada mantenedor.
+
+🔴 Error: El atributo data-endpoint llegaba vacío por sintaxis incorrecta
+✅ Solución: Corregida la llamada a tablaPro("ruta") sin parámetros nombrados.
+
+8. MEJORAS TÉCNICAS LOGRADAS
+-----------------------------
+✅ Rendimiento: Carga de datos sin recargar la página (AJAX)
+✅ UX: Búsqueda instantánea sin esperar recarga
+✅ UX: Selector de filas que actualiza la tabla al instante
+✅ UX: Ordenamiento con un clic en los encabezados
+✅ Mantenibilidad: Lógica centralizada en componentes reutilizables
+✅ Consistencia: Todos los mantenedores con el mismo diseño y comportamiento
+
+9. PRUEBAS REALIZADAS
+----------------------
+✅ Carga inicial de datos en cada mantenedor
+✅ Búsqueda por nombre/código
+✅ Cambio de cantidad de filas
+✅ Navegación entre páginas
+✅ Ordenamiento ascendente/descendente
+✅ Botones Ver/Editar/Eliminar (redirigen correctamente a menu.php?page=...)
+
+10. CONCLUSIÓN
+--------------
+El sistema ahora cuenta con una interfaz profesional y unificada en todos
+sus mantenedores, con excelente rendimiento y experiencia de usuario.
+La arquitectura basada en componentes reutilizables facilitará futuras
+extensiones y mantenimiento.
+
+==================================================
+FIN DEL DOCUMENTO
+==================================================
