@@ -2,6 +2,7 @@
 session_start();
 require 'db.php';
 
+// CREAR USUARIO
 if (isset($_POST['create_usuario'])) {
     $nombres = mysqli_real_escape_string($conn, trim($_POST['nombres']));
     $email = mysqli_real_escape_string($conn, trim($_POST['email']));
@@ -14,32 +15,34 @@ if (isset($_POST['create_usuario'])) {
     $fonocelular2 = mysqli_real_escape_string($conn, trim($_POST['fonocelular2']));
     $vigente = 1;
 
-	// Al tratarse de una condición de email único, vamos a verificar si ya existe un usuario con el mismo email.  Nos basta con un solo caso.
-	$sql = "SELECT * FROM usuarios WHERE email = '$email' AND vigente = 1 LIMIT 1";
-
+    // Verificar email único
+    $sql = "SELECT * FROM usuarios WHERE email = '$email' AND vigente = 1 LIMIT 1";
     mysqli_query($conn, $sql);
 
     if(mysqli_affected_rows($conn) > 0) {
-        $_SESSION['mensaje'] ='Ya existe un usuario con el mismo email, por lo que no se agregará.';
-        header('Location: inicio-usuarios.php');
-        exit;
-	}
-
-    $sql = "INSERT INTO usuarios (nombres, ApPaterno, ApMaterno, NombreUsuario, fonofijo, fonocelular1, fonocelular2, email, password, vigente) VALUES ('$nombres', '$apPaterno', '$apMaterno', '$username', '$fonofijo', '$fonocelular1', '$fonocelular2', '$email', '$password', '1')";
-
-    mysqli_query($conn, $sql);
-
-    if(mysqli_affected_rows($conn) > 0) {
-        $_SESSION['mensaje'] ='Usuario creado en forma exitosa.';
-        header('Location: inicio-usuarios.php');
-        exit;
-    } else {
-        $_SESSION['mensaje'] ='Usuario no se pudo crear.';
-        header('Location: inicio-usuarios.php');
+        $_SESSION['mensaje'] = 'Ya existe un usuario con el mismo email, por lo que no se agregará.';
+        $_SESSION['tipo_mensaje'] = 'warning';  // 🟡 Amarillo
+        header('Location: menu.php?page=inicio-usuarios.php');
         exit;
     }
+
+    $sql = "INSERT INTO usuarios (nombres, ApPaterno, ApMaterno, NombreUsuario, fonofijo, fonocelular1, fonocelular2, email, password, vigente) 
+            VALUES ('$nombres', '$apPaterno', '$apMaterno', '$username', '$fonofijo', '$fonocelular1', '$fonocelular2', '$email', '$password', '1')";
+
+    mysqli_query($conn, $sql);
+
+    if(mysqli_affected_rows($conn) > 0) {
+        $_SESSION['mensaje'] = 'Usuario creado en forma exitosa.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
+    } else {
+        $_SESSION['mensaje'] = 'Usuario no se pudo crear.';
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
+    }
+    header('Location: menu.php?page=inicio-usuarios.php');
+    exit;
 }
  
+// ACTUALIZAR USUARIO
 if (isset($_POST['update_usuario'])) {
     $usuario_id = mysqli_real_escape_string($conn, $_POST['usuario_id']);
     $nombres = mysqli_real_escape_string($conn, trim($_POST['nombres']));
@@ -52,9 +55,10 @@ if (isset($_POST['update_usuario'])) {
     $email = mysqli_real_escape_string($conn, trim($_POST['email']));
     $password = mysqli_real_escape_string($conn, trim($_POST['password']));
     $fecha_update = date('Y-m-d H:i:s');
-    //$fecha_cambio = $fecha_update->format('Y-m-d H:i:s');
 
-    $sql = "UPDATE usuarios SET nombres = '$nombres', ApPaterno = '$apPaterno', ApMaterno = '$apMaterno', NombreUsuario = '$username', fonofijo = '$fonofijo', fonocelular1 = '$fonocelular1', fonocelular2 = '$fonocelular2', email = '$email', fecha_cambio = '$fecha_update'";
+    $sql = "UPDATE usuarios SET nombres = '$nombres', ApPaterno = '$apPaterno', ApMaterno = '$apMaterno', 
+            NombreUsuario = '$username', fonofijo = '$fonofijo', fonocelular1 = '$fonocelular1', 
+            fonocelular2 = '$fonocelular2', email = '$email', fecha_cambio = '$fecha_update'";
 
     if(!empty($password)) {
         $sql.= ", password = '" . password_hash($password, PASSWORD_DEFAULT) . "'";
@@ -65,30 +69,31 @@ if (isset($_POST['update_usuario'])) {
     mysqli_query($conn, $sql);
 
     if(mysqli_affected_rows($conn) > 0) {
-        $_SESSION['mensaje'] ='Usuario actualizado en forma exitosa.';
-        header('Location: inicio-usuarios.php');
-        exit;
+        $_SESSION['mensaje'] = 'Usuario actualizado en forma exitosa.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
-        $_SESSION['mensaje'] ='Usuario no se pudo actualizar.';
-        header('Location: inicio-usuarios.php');
-        exit;
+        $_SESSION['mensaje'] = 'Usuario no se pudo actualizar.';
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
+    header('Location: menu.php?page=inicio-usuarios.php');
+    exit;
 }
+
+// ELIMINAR USUARIO
 if (isset($_POST['borrar_usuario'])) {
     $usuario_id = mysqli_real_escape_string($conn, $_POST['borrar_usuario']);
     
-    //$sql = "DELETE FROM usuarios WHERE idUsuario = '$usuario_id'";
-    $sql = "UPDATE usuarios SET vigente = 0 WHERE idUsuario = '$usuario_id' AND vigente = 1"; // Cambiamos el campo vigente a 0 para simular la eliminación lógica.
-
+    $sql = "UPDATE usuarios SET vigente = 0 WHERE idUsuario = '$usuario_id' AND vigente = 1";
     mysqli_query($conn, $sql);
+    
     if(mysqli_affected_rows($conn) > 0) {
         $_SESSION['mensaje'] = 'El usuario ha sido eliminado exitosamente.';
-        header('Location: inicio-usuarios.php');
-        exit;
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'El usuario no se pudo eliminar.';
-        header('Location: inicio-usuarios.php');
-        exit;
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
+    header('Location: menu.php?page=inicio-usuarios.php');
+    exit;
 }
 ?>

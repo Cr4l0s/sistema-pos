@@ -9,7 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         empty($_POST['nombreRegion']) ||
         empty($_POST['codRegion'])
     ) {
-        header("Location: gestionar_regiones.php?status=empty");
+        $_SESSION['mensaje'] = 'Error: Todos los campos son requeridos.';
+        $_SESSION['tipo_mensaje'] = 'danger';
+        header("Location: menu.php?page=gestionar_regiones.php");
         exit();
     }
 
@@ -24,20 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     if ($stmt === false) {
-        $error = urlencode($conn->error);
-        header("Location: gestionar_regiones.php?status=error&msg=$error");
+        $_SESSION['mensaje'] = 'Error al preparar la consulta: ' . $conn->error;
+        $_SESSION['tipo_mensaje'] = 'danger';
+        header("Location: menu.php?page=gestionar_regiones.php");
         exit();
     }
 
     $stmt->bind_param("issi", $idPais, $nombreRegion, $codRegion, $vigente);
 
     if ($stmt->execute()) {
-        setMensaje("Región agregada correctamente", "success");
-        header("Location: gestionar_regiones.php?status=ok");
+        $_SESSION['mensaje'] = 'Región agregada correctamente.';
+        $_SESSION['tipo_mensaje'] = 'success';
+        header("Location: menu.php?page=gestionar_regiones.php");
     } else {
-        $error = urlencode($stmt->error);
-        setMensaje("Error al agregar la región", "error");
-        header("Location: gestionar_regiones.php?status=error&msg=$error");
+        $_SESSION['mensaje'] = 'Error al agregar la región: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';
+        header("Location: menu.php?page=gestionar_regiones.php");
     }
 
     $stmt->close();
@@ -45,4 +49,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 ?>
-

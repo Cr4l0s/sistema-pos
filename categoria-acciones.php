@@ -15,11 +15,14 @@ if (isset($_POST['create_categoria'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Categoría creada exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al crear la categoría: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
-    header('Location: categorias.php');
+    
+    header('Location: menu.php?page=categorias.php');
     exit;
 }
 
@@ -35,15 +38,18 @@ if (isset($_POST['update_categoria'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Categoría actualizada exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al actualizar la categoría.';
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
-    header('Location: categorias.php');
+    
+    header('Location: menu.php?page=categorias.php');
     exit;
 }
 
-// ELIMINAR CATEGORÍA (borrado lógico)
+// ELIMINAR CATEGORÍA
 if (isset($_POST['borrar_categoria'])) {
     $id = intval($_POST['id_categoria']);
 
@@ -53,11 +59,14 @@ if (isset($_POST['borrar_categoria'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Categoría eliminada exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al eliminar la categoría.';
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
-    header('Location: categorias.php');
+    
+    header('Location: menu.php?page=categorias.php');
     exit;
 }
 ?>

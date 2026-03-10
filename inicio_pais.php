@@ -112,21 +112,21 @@ require_once 'config.php';
                 </div>
             </div>
             <div class="card-body">
-                <?php 
+                <?php
                 require_once 'components/tabla_pro/tabla_pro.php';
-                
+
                 $columnas = [
                     'siglaPais' => 'Sigla',
                     'codMoneda' => 'Moneda',
                     'nombrePais' => 'País'
                 ];
-                
-                tablaPro("components/tabla_pro/tabla_endpoint_paises.php", 'nombrePais', $columnas); 
+
+                tablaPro("components/tabla_pro/tabla_endpoint_paises.php", 'nombrePais', $columnas);
                 ?>
 
-                <!-- BOTÓN AGREGAR -->
                 <div class="btn-agregar">
-                    <a href="pais-crear.php" class="btn btn-primary">
+                    <a href="menu.php?page=pais-crear.php" class="btn btn-primary"
+                        onclick="console.log('HACIENDO CLIC'); return true;">
                         <span class="bi bi-plus-circle-fill"></span> Agregar País
                     </a>
                 </div>

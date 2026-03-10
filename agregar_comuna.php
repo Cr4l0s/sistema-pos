@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nombreComuna'], $_POST
     $nombreComuna = trim($_POST['nombreComuna']);
 
     if (!empty($nombreComuna)) {
-        // Verificar si ya existe (activa o eliminada)
+        // Verificar si ya existe
         $sql_check = "SELECT idComuna, vigente FROM comunas WHERE idCiudad = ? AND nombreComuna = ?";
         $stmt_check = $conn->prepare($sql_check);
         $stmt_check->bind_param("is", $idCiudad, $nombreComuna);
@@ -20,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nombreComuna'], $_POST
             $existente = $result_check->fetch_assoc();
             if ($existente['vigente'] == 1) {
                 $_SESSION['mensaje'] = 'Ya existe una comuna activa con ese nombre.';
+                $_SESSION['tipo_mensaje'] = 'warning';  // 🟡 Amarillo
             } else {
                 // Reactivar
                 $sql_reactivar = "UPDATE comunas SET vigente = 1 WHERE idComuna = ?";
@@ -28,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nombreComuna'], $_POST
                 $stmt_reactivar->execute();
                 $stmt_reactivar->close();
                 $_SESSION['mensaje'] = 'Comuna reactivada correctamente.';
+                $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
             }
             $stmt_check->close();
         } else {
@@ -38,13 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nombreComuna'], $_POST
             $stmt->execute();
             $stmt->close();
             $_SESSION['mensaje'] = 'Comuna agregada correctamente.';
+            $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
         }
     } else {
         $_SESSION['mensaje'] = 'El nombre de la comuna no puede estar vacío.';
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
 } else {
     $_SESSION['mensaje'] = 'Solicitud inválida.';
+    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
 }
-header('Location: gestionar_comunas.php');
+
+header('Location: menu.php?page=gestionar_comunas.php');
 exit;
 ?>

@@ -1,0 +1,164 @@
+==================================================
+OBSERVACIONES TÉCNICAS - 10 DE MARZO 2026
+==================================================
+
+1. OBJETIVO DEL DÍA
+   -------------------------------------------------
+   Unificar el sistema de mensajes en todos los mantenedores
+   y corregir problemas de redirecciones y visualización del menú lateral.
+
+
+2. SISTEMA DE MENSAJES UNIFICADO
+   -------------------------------------------------
+   Se implementó un sistema estándar para todos los mensajes del sistema:
+
+   ```php
+   $_SESSION['mensaje'] = 'Texto del mensaje';
+   $_SESSION['tipo_mensaje'] = 'success'; // success, danger, warning, info
+Archivo mensaje.php actualizado para mostrar el tipo correcto:
+
+php
+<?php 
+if(isset($_SESSION['mensaje'])):
+    $tipo = $_SESSION['tipo_mensaje'] ?? 'warning';
+?>
+<div class="alert alert-<?= $tipo ?> alert-dismissible fade show" role="alert">
+    <?php echo $_SESSION['mensaje']; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<?php
+    unset($_SESSION['mensaje']);
+    unset($_SESSION['tipo_mensaje']);
+    endif;
+?>
+Colores estandarizados:
+
+🟢 success → Verde (operaciones exitosas)
+
+🔴 danger → Rojo (errores)
+
+🟡 warning → Amarillo (advertencias)
+
+🔵 info → Azul (información neutral)
+
+ARCHIVOS CORREGIDOS CON TIPO_MENSAJE
+
+Se agregó $_SESSION['tipo_mensaje'] en todos los archivos de acciones:
+
+✅ acciones-pais.php
+✅ acciones-usuario.php
+✅ acciones_ciudad.php
+✅ acciones_comuna.php
+✅ acciones_region.php (nuevo)
+✅ agregar_ciudad.php
+✅ agregar_comuna.php
+✅ agregar_region.php
+✅ categoria-acciones.php
+✅ eliminar_ciudad.php
+✅ eliminar_comuna.php
+✅ eliminar_pais.php
+✅ eliminar_producto.php
+✅ eliminar_region.php
+✅ producto-acciones.php
+
+CORRECCIÓN DE REDIRECCIONES
+
+Todas las redirecciones fueron modificadas para pasar por menu.php:
+
+php
+// ANTES (mal - perdía el menú)
+header('Location: inicio_pais.php');
+
+// DESPUÉS (bien - mantiene el menú)
+header('Location: menu.php?page=inicio_pais.php');
+Archivos corregidos:
+
+acciones-pais.php
+
+acciones-usuario.php
+
+acciones_ciudad.php
+
+acciones_comuna.php
+
+agregar_ciudad.php
+
+agregar_comuna.php
+
+agregar_region.php
+
+categoria-acciones.php
+
+eliminar_*.php
+
+producto-acciones.php
+
+ARCHIVOS CREADOS
+
+✅ acciones_region.php
+
+php
+// Maneja la actualización de regiones
+if (isset($_POST['update_region'])) {
+    // Validación y actualización
+    $_SESSION['mensaje'] = 'Región actualizada correctamente.';
+    $_SESSION['tipo_mensaje'] = 'success';
+    header('Location: menu.php?page=gestionar_regiones.php');
+}
+CORRECCIÓN DE ERRORES ESPECÍFICOS
+
+Problema	Solución
+Mensajes siempre en amarillo	Agregado tipo_mensaje en todos los archivos
+Error 404 en acciones_region.php	Archivo creado
+Redirecciones perdían el menú	Cambiadas a menu.php?page=...
+Error de headers en editar_region.php	Eliminados espacios antes de <?php
+Conflicto entre mensaje.php y mensajes.php	Unificado usando solo mensaje.php
+Botón Agregar País iba directo	Corregido a menu.php?page=pais-crear.php
+Parámetros ?status ensuciaban $page	Limpieza en menu.php
+ARCHIVOS ELIMINADOS / LIMPIADOS
+
+Código PHP muerto en usuario-crear.php (función validarFormulario)
+
+Bloques de depuración en menu.php
+
+HTML redundante en archivos de creación
+
+VERIFICACIÓN POR MANTENEDOR
+
+Mantenedor	Crear	Editar	Eliminar	Mensajes
+Países	✅	✅	✅	🟢 🔴 🟡
+Regiones	✅	✅	✅	🟢 🔴 🟡
+Ciudades	✅	✅	✅	🟢 🔴
+Comunas	✅	✅	✅	🟢 🔴 🟡
+Categorías	✅	✅	✅	🟢 🔴
+Productos	✅	✅	✅	🟢 🔴
+Usuarios	✅	✅	✅	🟢 🔴 🟡
+MEJORAS TÉCNICAS LOGRADAS
+
+✅ Mensajes con colores semánticos (verde, rojo, amarillo)
+✅ Redirecciones consistentes que mantienen el menú lateral
+✅ Código más limpio y mantenible
+✅ Todos los archivos de acciones usan el mismo patrón
+✅ Eliminación de código duplicado y muerto
+✅ Sistema preparado para futuras extensiones
+
+PENDIENTE (OPCIONAL)
+
+Refactorizar consultas a prepared statements completos
+
+Agregar confirmación con modal en lugar de confirm() de JavaScript
+
+Implementar caché de consultas para mejorar rendimiento
+
+Unificar estilos de botones en todos los mantenedores
+
+CONCLUSIÓN
+
+El sistema ahora cuenta con un sistema de mensajes unificado y profesional,
+con colores semánticos que mejoran la experiencia del usuario.
+Todas las redirecciones mantienen el menú lateral visible y el código
+es más limpio y mantenible.
+
+==================================================
+FIN DEL DOCUMENTO
+==================================================

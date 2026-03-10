@@ -10,7 +10,11 @@ $buscar = $_GET['buscar'] ?? '';
 
 $offset = ($pagina - 1) * $filas;
 
-$orden_validado = in_array($orden, ['nombre_producto', 'precio_venta', 'stock_actual']) ? $orden : 'nombre_producto';
+// ===== CORRECCIÓN: Agregar 'categoria' a los campos válidos =====
+$campos_validos = ['nombre_producto', 'precio_venta', 'stock_actual', 'categoria'];
+$orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombre_producto';
+// =================================================================
+
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
 
@@ -19,12 +23,21 @@ if (!empty($buscar)) {
     $where .= " AND (p.nombre_producto LIKE '%$buscar_escapado%' OR p.codigo_barras LIKE '%$buscar_escapado%')";
 }
 
+// ===== MEJORA: Mapear 'categoria' al campo real en la BD =====
+if ($orden_validado == 'categoria') {
+    $campo_orden = 'c.nombre_categoria';
+} else {
+    $campo_orden = "p.$orden_validado";
+}
+// =============================================================
+
 $sql = "SELECT p.*, c.nombre_categoria 
         FROM productos p
         LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
         $where
-        ORDER BY $orden_validado $direccion_validada
+        ORDER BY $campo_orden $direccion_validada
         LIMIT $offset, $filas";
+
 $result = $conn->query($sql);
 
 $html = "";

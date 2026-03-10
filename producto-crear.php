@@ -17,7 +17,10 @@ require 'db.php';
                 <div class="card">
                     <div class="card-header">
                         <h4>Agregar Producto
-                            <a href="productos.php" class="btn btn-danger float-end"><span class="bi bi-arrow-left"></span>&nbsp;Volver</a>
+                            <!-- ✅ CORREGIDO: Botón Volver a través de menu.php -->
+                            <a href="menu.php?page=productos.php" class="btn btn-danger float-end">
+                                <span class="bi bi-arrow-left"></span>&nbsp;Volver
+                            </a>
                         </h4>
                     </div>
                     <div class="card-body">

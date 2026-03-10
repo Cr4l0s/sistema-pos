@@ -16,19 +16,22 @@ if (isset($_POST['update_ciudad'])) {
 
         if ($stmt->execute()) {
             $_SESSION['mensaje'] = 'Ciudad actualizada correctamente.';
+            $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
         } else {
             $_SESSION['mensaje'] = 'Error al actualizar la ciudad: ' . $stmt->error;
+            $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
         }
         $stmt->close();
     } else {
         $_SESSION['mensaje'] = 'El nombre de la ciudad no puede estar vacío.';
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
 
-    header('Location: gestionar_ciudades.php');
+    header('Location: menu.php?page=gestionar_ciudades.php');
     exit;
 }
 
 // Si alguien accede directamente sin POST
-header('Location: gestionar_ciudades.php');
+header('Location: menu.php?page=gestionar_ciudades.php');
 exit;
 ?>

@@ -9,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idPais'])) {
     $idPais = intval($_POST['idPais']);
 } else {
     $_SESSION['mensaje'] = 'ID de país no proporcionado.';
-    header('Location: inicio-pais.php');
+    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
+    header('Location: menu.php?page=inicio_pais.php');
     exit;
 }
 
@@ -27,14 +28,17 @@ $stmt->bind_param("i", $idPais);
 if ($stmt->execute()) {
     if ($stmt->affected_rows > 0) {
         $_SESSION['mensaje'] = 'País eliminado correctamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'El país no existe o ya fue eliminado.';
+        $_SESSION['tipo_mensaje'] = 'warning';  // 🟡 Amarillo
     }
 } else {
     $_SESSION['mensaje'] = 'Error al eliminar el país: ' . $stmt->error;
+    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
 }
 
 $stmt->close();
-header('Location: inicio_pais.php');
+header('Location: menu.php?page=inicio_pais.php');
 exit;
 ?>

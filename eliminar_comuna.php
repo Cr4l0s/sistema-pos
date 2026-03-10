@@ -11,13 +11,17 @@ if (isset($_POST['idComuna'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Comuna eliminada correctamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al eliminar la comuna: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
 } else {
     $_SESSION['mensaje'] = 'ID de comuna no proporcionado.';
+    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
 }
-header('Location: gestionar_comunas.php');
+
+header('Location: menu.php?page=gestionar_comunas.php');
 exit;
 ?>

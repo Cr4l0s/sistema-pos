@@ -10,19 +10,35 @@ $buscar = $_GET['buscar'] ?? '';
 
 $offset = ($pagina - 1) * $filas;
 
-$orden_validado = in_array($orden, ['nombres', 'NombreUsuario', 'email']) ? $orden : 'nombres';
+// ===== CORRECCIÓN: Agregar 'apellidos' a los campos válidos =====
+$campos_validos = ['nombres', 'apellidos', 'NombreUsuario', 'email'];
+$orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombres';
+// ===============================================================
+
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
 
 $where = "WHERE vigente = 1";
 if (!empty($buscar)) {
-    $where .= " AND (nombres LIKE '%$buscar_escapado%' OR email LIKE '%$buscar_escapado%')";
+    $where .= " AND (nombres LIKE '%$buscar_escapado%' OR email LIKE '%$buscar_escapado%' OR ApPaterno LIKE '%$buscar_escapado%' OR ApMaterno LIKE '%$buscar_escapado%')";
 }
 
-$sql = "SELECT * FROM usuarios
-        $where
-        ORDER BY $orden_validado $direccion_validada
-        LIMIT $offset, $filas";
+// ===== MEJORA: Manejar ordenamiento por apellidos =====
+if ($orden_validado == 'apellidos') {
+    // Ordenar por apellido paterno + materno
+    $campo_orden = "ApPaterno $direccion_validada, ApMaterno $direccion_validada";
+    $sql = "SELECT * FROM usuarios
+            $where
+            ORDER BY $campo_orden
+            LIMIT $offset, $filas";
+} else {
+    $sql = "SELECT * FROM usuarios
+            $where
+            ORDER BY $orden_validado $direccion_validada
+            LIMIT $offset, $filas";
+}
+// =====================================================
+
 $result = $conn->query($sql);
 
 $html = "";

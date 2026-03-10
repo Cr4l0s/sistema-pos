@@ -14,11 +14,14 @@ if (isset($_POST['create_pais'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'País creado exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // ✅ VERDE
     } else {
         $_SESSION['mensaje'] = 'Error al crear país: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';   // ✅ ROJO
     }
     $stmt->close();
-    header('Location: inicio_pais.php');
+    
+    header('Location: menu.php?page=inicio_pais.php');
     exit;
 }
 
@@ -35,15 +38,18 @@ if (isset($_POST['update_pais'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'País actualizado exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // ✅ VERDE
     } else {
         $_SESSION['mensaje'] = 'Error al actualizar país: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';   // ✅ ROJO
     }
     $stmt->close();
-    header('Location: inicio_pais.php');
+    
+    header('Location: menu.php?page=inicio_pais.php');
     exit;
 }
 
-// ELIMINAR PAÍS (borrado lógico)
+// ELIMINAR PAÍS
 if (isset($_POST['borrar_pais'])) {
     $idPais = intval($_POST['borrar_pais']);
 
@@ -53,11 +59,14 @@ if (isset($_POST['borrar_pais'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'País eliminado exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // ✅ VERDE
     } else {
         $_SESSION['mensaje'] = 'Error al eliminar país: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';   // ✅ ROJO
     }
     $stmt->close();
-    header('Location: inicio_pais.php');
+    
+    header('Location: menu.php?page=inicio_pais.php');
     exit;
 }
 ?>

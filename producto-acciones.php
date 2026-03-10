@@ -21,11 +21,14 @@ if (isset($_POST['create_producto'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Producto creado exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al crear producto: ' . $conn->error;
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
-    header('Location: productos.php');
+    
+    header('Location: menu.php?page=productos.php');
     exit;
 }
 
@@ -54,15 +57,18 @@ if (isset($_POST['update_producto'])) {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Producto actualizado exitosamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al actualizar producto.';
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
-    header('Location: productos.php');
+    
+    header('Location: menu.php?page=productos.php');
     exit;
 }
 
 // Si alguien accede directamente sin POST
-header('Location: productos.php');
+header('Location: menu.php?page=productos.php');
 exit;
 ?>

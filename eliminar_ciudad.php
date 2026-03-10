@@ -12,14 +12,17 @@ if (isset($_POST['idCiudad'])) {
     
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Ciudad eliminada correctamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al eliminar la ciudad: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
 } else {
     $_SESSION['mensaje'] = 'ID de ciudad no proporcionado.';
+    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
 }
 
-header('Location: gestionar_ciudades.php');
+header('Location: menu.php?page=gestionar_ciudades.php');
 exit;
 ?>

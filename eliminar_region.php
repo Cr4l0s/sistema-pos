@@ -9,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idRegion'])) {
     $idRegion = intval($_POST['idRegion']);
 } else {
     $_SESSION['mensaje'] = 'ID de región no proporcionado.';
-    header('Location: gestionar_regiones.php');
+    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
+    header('Location: menu.php?page=gestionar_regiones.php');
     exit;
 }
 
@@ -22,8 +23,9 @@ $result_check = $stmt_check->get_result();
 
 if ($result_check->num_rows == 0) {
     $_SESSION['mensaje'] = 'La región no existe o ya fue eliminada.';
+    $_SESSION['tipo_mensaje'] = 'warning';  // 🟡 Amarillo
     $stmt_check->close();
-    header('Location: gestionar_regiones.php');
+    header('Location: menu.php?page=gestionar_regiones.php');
     exit;
 }
 $stmt_check->close();
@@ -35,11 +37,13 @@ $stmt->bind_param("i", $idRegion);
 
 if ($stmt->execute()) {
     $_SESSION['mensaje'] = 'Región eliminada correctamente.';
+    $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
 } else {
     $_SESSION['mensaje'] = 'Error al eliminar la región: ' . $stmt->error;
+    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
 }
 
 $stmt->close();
-header('Location: gestionar_regiones.php');
+header('Location: menu.php?page=gestionar_regiones.php');
 exit;
 ?>

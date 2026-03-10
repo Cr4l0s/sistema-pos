@@ -13,11 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Ciudad agregada correctamente.';
+        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
     } else {
         $_SESSION['mensaje'] = 'Error al agregar ciudad: ' . $stmt->error;
+        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
     }
     $stmt->close();
-    header("Location: gestionar_ciudades.php");
+    
+    header("Location: menu.php?page=gestionar_ciudades.php");
     exit;
 }
 ?>
