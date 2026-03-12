@@ -1,0 +1,914 @@
+2026-03-10 23:52:39 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 00:06:42 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 00:06:51 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 00:06:52 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 00:07:16 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 01:10:51 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 17:43:37 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 17:43:43 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 17:43:45 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 18:14:08 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 18:19:46 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 18:37:38 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 18:37:42 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 18:38:24 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 18:38:25 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:00 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:00 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:01 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:01 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:01 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:01 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:01 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:02 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:02 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:02 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:02 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:00:48 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:17:15 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:20:50 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:20:52 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:20:53 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:33 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:34 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:35 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:36 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:37 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:38 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:38 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:39 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:42 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:42 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:22:42 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:28:29 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:30:32 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:25 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto DESC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:25 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:26 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto DESC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:27 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto DESC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:42 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:58 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto DESC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:44:59 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:45:00 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto DESC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:45:02 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:45:15 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto DESC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 19:45:16 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:18:37 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:29:19 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:35:38 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:36:11 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:43:39 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:43:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:43:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:43:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:43:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:43:41 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:51:11 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:56:53 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:59:24 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 20:59:44 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 4
+2026-03-11 20:59:49 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:03:53 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:05:50 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:09:04 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:10:34 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:22:34 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:24:38 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:26:04 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:27:10 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:28:47 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:36:53 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:39:04 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:42:33 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:44:43 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:45:39 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 21:47:18 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:09:39 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:10:45 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:11:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:21:02 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:21:40 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:21:58 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:27:15 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:30:19 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:30:57 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:35:10 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:35:21 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:35:27 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:38:20 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:38:29 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:38:31 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:38:34 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:39:17 - Inicio del endpoint
+SQL: SELECT p.*, c.nombre_categoria 
+        FROM productos p
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+        ORDER BY p.nombre_producto ASC
+        LIMIT 0, 10
+Número de filas: 3
+2026-03-11 22:43:11 - Inicio del endpoint
+2026-03-11 22:45:02 - Inicio del endpoint
+2026-03-11 22:45:05 - Inicio del endpoint
+2026-03-11 22:45:06 - Inicio del endpoint
+2026-03-11 22:45:17 - Inicio del endpoint
+2026-03-11 22:45:29 - Inicio del endpoint
+2026-03-11 22:48:32 - Inicio del endpoint
+2026-03-11 22:51:34 - Inicio del endpoint
+2026-03-11 22:54:02 - Inicio del endpoint
+2026-03-11 22:54:19 - Inicio del endpoint
+2026-03-11 22:55:05 - Inicio del endpoint
+2026-03-11 22:55:33 - Inicio del endpoint
+2026-03-11 23:03:05 - Inicio del endpoint
+2026-03-11 23:03:50 - Inicio del endpoint
+2026-03-11 23:04:04 - Inicio del endpoint
+2026-03-11 23:04:35 - Inicio del endpoint
+2026-03-11 23:04:45 - Inicio del endpoint
+2026-03-11 23:05:02 - Inicio del endpoint
+2026-03-11 23:05:09 - Inicio del endpoint
+2026-03-11 23:05:15 - Inicio del endpoint
+2026-03-11 23:05:20 - Inicio del endpoint
+2026-03-11 23:16:42 - Inicio del endpoint
+2026-03-11 23:16:57 - Inicio del endpoint
+2026-03-11 23:17:05 - Inicio del endpoint
+2026-03-11 23:17:39 - Inicio del endpoint
+2026-03-11 23:19:03 - Inicio del endpoint

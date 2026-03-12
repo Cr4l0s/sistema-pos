@@ -70,8 +70,20 @@ if (!$producto) {
                         <p class="form-control"><?= htmlspecialchars($producto['nombre_categoria'] ?: '—') ?></p>
                     </div>
                     <div class="col-md-6 mb-3">
+                        <label><b>Precio de Costo</b></label>
+                        <p class="form-control">$<?= number_format($producto['precio_compras'] ?? 0, 0, ',', '.') ?></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
                         <label><b>Precio de Venta</b></label>
                         <p class="form-control">$<?= number_format($producto['precio_venta'], 0, ',', '.') ?></p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label><b>Mostrar en Tienda Virtual</b></label>
+                        <p class="form-control">
+                            <?= ($producto['mostrar_en_tienda'] ?? 1) ? '✅ Sí' : '❌ No' ?>
+                        </p>
                     </div>
                 </div>
                 <div class="row">

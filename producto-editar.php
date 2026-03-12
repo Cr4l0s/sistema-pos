@@ -52,6 +52,7 @@ $stmt->close();
                 <form action="producto-acciones.php" method="POST">
                     <input type="hidden" name="producto_id" value="<?= $producto['id_producto'] ?>">
 
+                    <!-- Fila 1: Nombre y Código -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Nombre del Producto</label>
@@ -62,16 +63,18 @@ $stmt->close();
                         <div class="col-md-6 mb-3">
                             <label>Código de Barras</label>
                             <input type="text" name="codigo_barras"
-                                value="<?= htmlspecialchars($producto['codigo_barras']) ?>" class="form-control">
+                                value="<?= htmlspecialchars($producto['codigo_barras'] ?? '') ?>" class="form-control">
                         </div>
                     </div>
 
+                    <!-- Fila 2: Descripción -->
                     <div class="mb-3">
                         <label>Descripción</label>
                         <textarea name="descripcion" class="form-control"
-                            rows="3"><?= htmlspecialchars($producto['descripcion']) ?></textarea>
+                            rows="3"><?= htmlspecialchars($producto['descripcion'] ?? '') ?></textarea>
                     </div>
 
+                    <!-- Fila 3: Categoría y Precio de Costo -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Categoría</label>
@@ -88,12 +91,30 @@ $stmt->close();
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label>Precio de Costo</label>
+                            <input type="number" step="0.01" name="precio_compras"
+                                value="<?= number_format($producto['precio_compras'] ?? 0, 2, '.', '') ?>"
+                                class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!-- Fila 4: Precio de Venta y Mostrar en Tienda -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <label>Precio de Venta</label>
                             <input type="number" step="0.01" name="precio_venta"
                                 value="<?= $producto['precio_venta'] ?>" class="form-control" required>
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Mostrar en Tienda Virtual</label>
+                            <select class="form-control" name="mostrar_en_tienda">
+                                <option value="1" <?= ($producto['mostrar_en_tienda'] ?? 1) == 1 ? 'selected' : '' ?>>Sí</option>
+                                <option value="0" <?= ($producto['mostrar_en_tienda'] ?? 1) == 0 ? 'selected' : '' ?>>No</option>
+                            </select>
+                        </div>
                     </div>
 
+                    <!-- Fila 5: Stock Actual y Stock Mínimo -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Stock Actual</label>
@@ -107,6 +128,7 @@ $stmt->close();
                         </div>
                     </div>
 
+                    <!-- Botón Actualizar -->
                     <div class="mb-3">
                         <button type="submit" name="update_producto" class="btn btn-primary">Actualizar</button>
                     </div>

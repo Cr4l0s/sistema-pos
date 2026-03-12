@@ -7,13 +7,12 @@ $filas = $_GET['filas'] ?? 10;
 $orden = $_GET['orden'] ?? 'nombres';
 $direccion = $_GET['direccion'] ?? 'ASC';
 $buscar = $_GET['buscar'] ?? '';
+$sin_acciones = isset($_GET['sin_acciones']) ? true : false;
 
 $offset = ($pagina - 1) * $filas;
 
-// ===== CORRECCIÓN: Agregar 'apellidos' a los campos válidos =====
 $campos_validos = ['nombres', 'apellidos', 'NombreUsuario', 'email'];
 $orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombres';
-// ===============================================================
 
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
@@ -23,9 +22,7 @@ if (!empty($buscar)) {
     $where .= " AND (nombres LIKE '%$buscar_escapado%' OR email LIKE '%$buscar_escapado%' OR ApPaterno LIKE '%$buscar_escapado%' OR ApMaterno LIKE '%$buscar_escapado%')";
 }
 
-// ===== MEJORA: Manejar ordenamiento por apellidos =====
 if ($orden_validado == 'apellidos') {
-    // Ordenar por apellido paterno + materno
     $campo_orden = "ApPaterno $direccion_validada, ApMaterno $direccion_validada";
     $sql = "SELECT * FROM usuarios
             $where
@@ -37,7 +34,6 @@ if ($orden_validado == 'apellidos') {
             ORDER BY $orden_validado $direccion_validada
             LIMIT $offset, $filas";
 }
-// =====================================================
 
 $result = $conn->query($sql);
 
@@ -48,8 +44,10 @@ while ($r = $result->fetch_assoc()) {
         <td>" . htmlspecialchars($r['nombres']) . "</td>
         <td>" . htmlspecialchars($apellidos) . "</td>
         <td>" . htmlspecialchars($r['NombreUsuario']) . "</td>
-        <td>" . htmlspecialchars($r['email']) . "</td>
-        <td>
+        <td>" . htmlspecialchars($r['email']) . "</td>";
+    
+    if (!$sin_acciones) {
+        $html .= "<td>
             <form action='menu.php?page=usuario-ver.php' method='POST' style='display:inline;'>
                 <input type='hidden' name='idUsuario' value='{$r['idUsuario']}'>
                 <button type='submit' class='btn btn-sm btn-secondary'><i class='bi bi-eye'></i></button>
@@ -62,8 +60,10 @@ while ($r = $result->fetch_assoc()) {
                 <input type='hidden' name='borrar_usuario' value='{$r['idUsuario']}'>
                 <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Eliminar?\")'><i class='bi bi-trash'></i></button>
             </form>
-        </td>
-    </tr>";
+        </td>";
+    }
+    
+    $html .= "</tr>";
 }
 
 $sql_total = "SELECT COUNT(*) as total FROM usuarios $where";

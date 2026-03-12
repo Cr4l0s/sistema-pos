@@ -1,0 +1,97 @@
+<table id="tablaPro" class="table table-striped table-bordered" data-endpoint="components/tabla_pro/tabla_endpoint_productos.php" data-orden-default="nombre_producto" data-base-url="/practica_sventas_desa/">
+        <thead>
+            <tr>
+                                    <!-- Columnas personalizadas -->
+                                            <th class="sortable" data-col="codigo_barras">
+                            Código <i class="bi bi-arrow-down-up"></i>
+                        </th>
+                                            <th class="sortable" data-col="nombre_producto">
+                            Producto <i class="bi bi-arrow-down-up"></i>
+                        </th>
+                                            <th class="sortable" data-col="categoria">
+                            Categoría <i class="bi bi-arrow-down-up"></i>
+                        </th>
+                                            <th class="sortable" data-col="precio_compras">
+                            Costo <i class="bi bi-arrow-down-up"></i>
+                        </th>
+                                            <th class="sortable" data-col="precio_venta">
+                            Precio <i class="bi bi-arrow-down-up"></i>
+                        </th>
+                                            <th class="sortable" data-col="stock_actual">
+                            Stock <i class="bi bi-arrow-down-up"></i>
+                        </th>
+                                            <th class="sortable" data-col="mostrar_en_tienda">
+                            Tienda <i class="bi bi-arrow-down-up"></i>
+                        </th>
+                                                    <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaProBody"><tr>
+    <th>Código</th>
+    <th>Producto</th>
+    <th>Categoría</th>
+    <th>Costo</th>
+    <th>Precio</th>
+    <th>Stock</th>
+    <th>Tienda</th><th>Acciones</th></tr><tr>
+            <td>—</td>
+            <td>Arroz 1kg</td>
+            <td>Alimentos</td>
+            <td>$0</td>
+            <td>$1.500</td>
+            <td>100</td>
+            <td>Sí</td><td>
+                <form action="menu.php?page=producto-ver.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="4">
+                    <button type="submit" class="btn btn-sm btn-secondary"><i class="bi bi-eye"></i></button>
+                </form>
+                <form action="menu.php?page=producto-editar.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="4">
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-pencil"></i></button>
+                </form>
+                <form action="eliminar_producto.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="4">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(&quot;¿Eliminar?&quot;)"><i class="bi bi-trash"></i></button>
+                </form>
+            </td></tr><tr>
+            <td>—</td>
+            <td>Camisa</td>
+            <td>Ropa</td>
+            <td>$0</td>
+            <td>$19.990</td>
+            <td>50</td>
+            <td>Sí</td><td>
+                <form action="menu.php?page=producto-ver.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="2">
+                    <button type="submit" class="btn btn-sm btn-secondary"><i class="bi bi-eye"></i></button>
+                </form>
+                <form action="menu.php?page=producto-editar.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="2">
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-pencil"></i></button>
+                </form>
+                <form action="eliminar_producto.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="2">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(&quot;¿Eliminar?&quot;)"><i class="bi bi-trash"></i></button>
+                </form>
+            </td></tr><tr>
+            <td>—</td>
+            <td>Smartphone</td>
+            <td>Electrónica</td>
+            <td>$0</td>
+            <td>$299.990</td>
+            <td>10</td>
+            <td>Sí</td><td>
+                <form action="menu.php?page=producto-ver.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="1">
+                    <button type="submit" class="btn btn-sm btn-secondary"><i class="bi bi-eye"></i></button>
+                </form>
+                <form action="menu.php?page=producto-editar.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="1">
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-pencil"></i></button>
+                </form>
+                <form action="eliminar_producto.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="id_producto" value="1">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(&quot;¿Eliminar?&quot;)"><i class="bi bi-trash"></i></button>
+                </form>
+            </td></tr></tbody>
+    </table>

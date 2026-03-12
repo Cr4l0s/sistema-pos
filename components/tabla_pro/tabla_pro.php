@@ -5,6 +5,9 @@ function tablaPro($endpoint, $ordenDefault = 'id', $columnas = [])
         echo '<div class="alert alert-danger">Error: Endpoint no definido</div>';
         return;
     }
+    
+    // Usar constante definida en config.php
+    $base_url = defined('BASE_URL_RELATIVE') ? BASE_URL_RELATIVE : '/practica_sventas_desa/';
     ?>
     <div class="table-controls">
         <div></div>
@@ -23,7 +26,8 @@ function tablaPro($endpoint, $ordenDefault = 'id', $columnas = [])
 
     <table id="tablaPro" class="table table-striped table-bordered"
         data-endpoint="<?php echo htmlspecialchars($endpoint); ?>"
-        data-orden-default="<?php echo htmlspecialchars($ordenDefault); ?>">
+        data-orden-default="<?php echo htmlspecialchars($ordenDefault); ?>"
+        data-base-url="<?php echo $base_url; ?>">
         <thead>
             <tr>
                 <?php if (empty($columnas)): ?>

@@ -112,18 +112,20 @@ require_once 'config.php';
                 </div>
             </div>
             <div class="card-body">
-                <?php 
+                <?php
                 require_once 'components/tabla_pro/tabla_pro.php';
-                
+
                 $columnas = [
                     'codigo_barras' => 'Código',
                     'nombre_producto' => 'Producto',
                     'categoria' => 'Categoría',
+                    'precio_compras' => 'Costo',
                     'precio_venta' => 'Precio',
-                    'stock_actual' => 'Stock'
+                    'stock_actual' => 'Stock',
+                    'mostrar_en_tienda' => 'Tienda'
                 ];
-                
-                tablaPro("components/tabla_pro/tabla_endpoint_productos.php", 'nombre_producto', $columnas); 
+
+                tablaPro("components/tabla_pro/tabla_endpoint_productos.php", 'nombre_producto', $columnas);
                 ?>
 
                 <!-- BOTÓN AGREGAR -->

@@ -1,0 +1,226 @@
+==================================================
+OBSERVACIONES TÉCNICAS - 11 Y 12 DE MARZO 2026
+==================================================
+
+1. OBJETIVO
+   -------------------------------------------------
+   Unificar y optimizar el sistema de tablas, impresión y exportaciones
+   en todos los mantenedores del sistema POS, agregando nuevas
+   funcionalidades requeridas por el cliente.
+
+
+2. ALCANCE DEL TRABAJO
+   -------------------------------------------------
+   Se intervinieron más de 30 archivos, incluyendo:
+   - Todos los endpoints de tablas (componentes/tabla_pro/)
+   - Todos los mantenedores (productos, países, regiones, etc.)
+   - Archivos de exportación (PDF, Excel)
+   - Base de datos (estructura y datos)
+   - JavaScript y CSS del sistema de tablas
+
+
+3. CAMBIOS EN BASE DE DATOS
+   -------------------------------------------------
+
+   3.1 Tabla `paises`
+       └── Agregada columna: `simbolo_moneda VARCHAR(10) NOT NULL DEFAULT '$'`
+           Permite almacenar el símbolo de la moneda de cada país
+           (ej: $, €, £, ¥, etc.)
+       
+       └── Insertados 100 países con sus respectivos símbolos monetarios
+           desde un script SQL masivo.
+
+   3.2 Tabla `productos`
+       └── Eliminada columna duplicada `precio_compra` (sin "s")
+           Se consolidó en `precio_compras` (con "s")
+       
+       └── Insertados 30 productos de ejemplo para pruebas
+           con variedad de categorías, precios y stock.
+
+
+4. NUEVA FUNCIONALIDAD: SÍMBOLO DE MONEDA EN PAÍSES
+   -------------------------------------------------
+   Se agregó el campo `simbolo_moneda` en:
+   ✅ `inicio_pais.php` - Ahora se muestra en la tabla
+   ✅ `pais-crear.php` - Campo en formulario de creación
+   ✅ `pais-editar.php` - Campo en formulario de edición
+   ✅ `acciones-pais.php` - INSERT y UPDATE actualizados
+   ✅ `tabla_endpoint_paises.php` - Incluido en consulta y ordenamiento
+
+
+5. SISTEMA DE IMPRESIÓN UNIFICADO
+   -------------------------------------------------
+   Se implementó un sistema que:
+   ✅ Excluye la columna "Acciones" en la impresión
+   ✅ Usa el parámetro `&sin_acciones=1` en la URL
+   ✅ Construye la tabla con encabezados obtenidos del DOM
+   ✅ Cierra automáticamente la ventana después de imprimir/cancelar
+
+   Archivos modificados:
+   - `tabla_pro.js` - Función `exportPrint` con logs y cierre automático
+   - Todos los `tabla_endpoint_*.php` - Agregado parámetro `$sin_acciones`
+
+
+6. CORRECCIÓN DE ENDPOINTS
+   -------------------------------------------------
+   Cada endpoint ahora:
+   ✅ Incluye la variable `$sin_acciones = isset($_GET['sin_acciones']) ? true : false;`
+   ✅ Genera la columna de acciones SOLO si `!$sin_acciones`
+   ✅ Mantiene la paginación y ordenamiento
+
+   Archivos corregidos:
+   - `tabla_endpoint_categorias.php`
+   - `tabla_endpoint_ciudades.php`
+   - `tabla_endpoint_comunas.php`
+   - `tabla_endpoint_paises.php`
+   - `tabla_endpoint_productos.php`
+   - `tabla_endpoint_regiones.php`
+   - `tabla_endpoint_usuarios.php`
+
+
+7. EXPORTACIONES MEJORADAS
+   -------------------------------------------------
+
+   7.1 Exportación a PDF (`exportar_pdf.php`)
+       ✅ Elimina la columna de acciones del HTML
+       ✅ Convierte ✅/❌ a "Sí"/"No" en la columna Tienda
+       ✅ Muestra la tabla con bordes negros para mejor legibilidad
+       ✅ Se cierra automáticamente después de imprimir
+
+   7.2 Exportación a Excel (`exportar_excel.php`)
+       ✅ Elimina la columna de acciones
+       ✅ Elimina los íconos de la columna Tienda
+       ✅ Genera archivo .xls con nombre y fecha
+
+
+8. ORDENAMIENTO EN PRODUCTOS
+   -------------------------------------------------
+   Se agregaron los campos faltantes a la lista de ordenamiento:
+   ✅ `precio_compras` (Costo)
+   ✅ `codigo_barras` (Código)
+   
+   Ahora todas las columnas de productos son ordenables:
+   - Código (alfabético)
+   - Producto (alfabético)
+   - Categoría (alfabético)
+   - Costo (numérico)
+   - Precio (numérico)
+   - Stock (numérico)
+   - Tienda (flag, no ordenable)
+
+
+9. FORMULARIOS DE PRODUCTOS
+   -------------------------------------------------
+   Se reorganizaron los formularios para eliminar campos duplicados:
+
+   ✅ `producto-crear.php` - Ahora tiene estructura limpia:
+       - Fila 1: Nombre + Código
+       - Fila 2: Descripción
+       - Fila 3: Categoría + Precio de Costo
+       - Fila 4: Precio de Venta + Mostrar en Tienda
+       - Fila 5: Stock Actual + Stock Mínimo
+
+   ✅ `producto-editar.php` - Misma estructura con valores precargados
+   ✅ `producto-ver.php` - Muestra todos los campos incluyendo los nuevos
+
+
+10. MENSAJES UNIFICADOS
+    -------------------------------------------------
+    Todos los mensajes del sistema ahora usan:
+    ```php
+    $_SESSION['mensaje'] = 'Texto del mensaje';
+    $_SESSION['tipo_mensaje'] = 'success'; // success, danger, warning, info
+Archivo mensaje.php actualizado para mostrar el color dinámico.
+
+Colores:
+🟢 success - Verde (operaciones exitosas)
+🔴 danger - Rojo (errores)
+🟡 warning - Amarillo (advertencias)
+🔵 info - Azul (información)
+
+RUTAS Y REDIRECCIONES
+
+✅ config.php - Mejorada detección de entorno (funciona con/sin www)
+✅ Todas las redirecciones pasan por menu.php?page=...
+✅ Eliminados archivos obsoletos del sistema anterior
+
+JAVASCRIPT MEJORADO (tabla_pro.js)
+
+✅ Se fuerza el endpoint correcto según la página (inicio_pais, etc.)
+✅ Función de impresión con logs detallados para debugging
+✅ Cierre automático de ventana después de imprimir
+✅ Exportación PDF con jsPDF excluye columna de acciones
+✅ Variable endpoint cambiada de const a let para permitir reasignación
+
+PROBLEMAS TÉCNICOS RESUELTOS
+
+Problema	Solución
+Error 500 en endpoint de países	Agregada columna simbolo_moneda en servidor
+Columna vacía en impresión	Excluida última columna con &sin_acciones=1
+Ventana de impresión no se cerraba	Agregado window.onafterprint = window.close
+Ordenamiento por costo no funcionaba	Agregado precio_compras a campos válidos
+Campos duplicados en formularios	Reorganizada estructura HTML
+Rutas con espacios en JS	Corregido nombre de endpoints
+Endpoint devolvía encabezado	Ahora solo devuelve filas (<tr>)
+ARCHIVOS MODIFICADOS (LISTA COMPLETA)
+
+text
+components/tabla_pro/tabla_endpoint_categorias.php
+components/tabla_pro/tabla_endpoint_ciudades.php
+components/tabla_pro/tabla_endpoint_comunas.php
+components/tabla_pro/tabla_endpoint_paises.php
+components/tabla_pro/tabla_endpoint_productos.php
+components/tabla_pro/tabla_endpoint_regiones.php
+components/tabla_pro/tabla_endpoint_usuarios.php
+components/tabla_pro/tabla_pro.js
+components/tabla_pro/tabla_pro.php
+includes/exportar_pdf.php
+includes/exportar_excel.php
+inicio_pais.php
+pais-crear.php
+pais-editar.php
+acciones-pais.php
+producto-crear.php
+producto-editar.php
+producto-acciones.php
+producto-ver.php
+productos.php
+gestionar_regiones.php
+gestionar_ciudades.php
+gestionar_comunas.php
+categorias.php
+inicio-usuarios.php
+selector_pais.php
+selector_pais_y_region.php
+selector_pais_region_ciudad.php
+mensaje.php
+mensajes.php
+config.php
+db.php
+PENDIENTE (OPCIONAL)
+
+Agregar confirmación con modal en lugar de confirm() de JavaScript
+
+Implementar caché de consultas para mejorar rendimiento
+
+Unificar estilos de botones en todos los mantenedores
+
+Agregar filtros avanzados por columna
+
+CONCLUSIÓN
+
+El sistema ha sido actualizado y ahora cuenta con:
+✅ Impresión sin botones de acción en todos los mantenedores
+✅ Símbolo de moneda en países para soporte multi-moneda
+✅ Exportaciones a PDF y Excel limpias
+✅ Mensajes con colores semánticos
+✅ Ordenamiento correcto en todas las columnas
+✅ Formularios sin campos duplicados
+✅ Base de datos con 100 países y 30 productos de ejemplo
+✅ Ventana de impresión con cierre automático
+
+El sistema está 100% funcional y listo para producción.
+
+==================================================
+FIN DEL DOCUMENTO
+==================================================

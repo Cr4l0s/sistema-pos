@@ -118,6 +118,7 @@ require_once 'config.php';
                 $columnas = [
                     'siglaPais' => 'Sigla',
                     'codMoneda' => 'Moneda',
+                    'simbolo_moneda' => 'Símbolo', 
                     'nombrePais' => 'País'
                 ];
 

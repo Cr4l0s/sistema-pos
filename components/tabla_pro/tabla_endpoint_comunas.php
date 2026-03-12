@@ -15,6 +15,7 @@ $filas = $_GET['filas'] ?? 10;
 $orden = $_GET['orden'] ?? 'nombreComuna';
 $direccion = $_GET['direccion'] ?? 'ASC';
 $buscar = $_GET['buscar'] ?? '';
+$sin_acciones = isset($_GET['sin_acciones']) ? true : false;
 
 $offset = ($pagina - 1) * $filas;
 
@@ -36,8 +37,10 @@ $result = $conn->query($sql);
 $html = "";
 while ($r = $result->fetch_assoc()) {
     $html .= "<tr>
-        <td>" . htmlspecialchars($r['nombreComuna']) . "</td>
-        <td>
+        <td>" . htmlspecialchars($r['nombreComuna']) . "</td>";
+    
+    if (!$sin_acciones) {
+        $html .= "<td>
             <form action='menu.php?page=ver_comuna.php' method='POST' style='display:inline;'>
                 <input type='hidden' name='idComuna' value='{$r['idComuna']}'>
                 <button type='submit' class='btn btn-sm btn-secondary'><i class='bi bi-eye'></i></button>
@@ -50,8 +53,10 @@ while ($r = $result->fetch_assoc()) {
                 <input type='hidden' name='idComuna' value='{$r['idComuna']}'>
                 <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Eliminar?\")'><i class='bi bi-trash'></i></button>
             </form>
-        </td>
-    </tr>";
+        </td>";
+    }
+    
+    $html .= "</tr>";
 }
 
 $sql_total = "SELECT COUNT(*) as total FROM comunas $where";

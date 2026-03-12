@@ -6,28 +6,52 @@ require 'db.php';
 
 // CREAR PRODUCTO
 if (isset($_POST['create_producto'])) {
-    $codigo_barras = trim($_POST['codigo_barras']) ?: null;
+    $codigo_barras = !empty(trim($_POST['codigo_barras'])) ? trim($_POST['codigo_barras']) : null;
     $nombre = trim($_POST['nombre_producto']);
-    $descripcion = trim($_POST['descripcion']) ?: null;
+    $descripcion = !empty(trim($_POST['descripcion'])) ? trim($_POST['descripcion']) : null;
     $id_categoria = !empty($_POST['id_categoria']) ? intval($_POST['id_categoria']) : null;
-    $precio_venta = floatval($_POST['precio_venta']);
-    $stock_actual = intval($_POST['stock_actual']);
-    $stock_minimo = intval($_POST['stock_minimo']);
+    $precio_compras = !empty($_POST['precio_compras']) ? floatval($_POST['precio_compras']) : 0;
+    $precio_venta = !empty($_POST['precio_venta']) ? floatval($_POST['precio_venta']) : 0;
+    $stock_actual = !empty($_POST['stock_actual']) ? intval($_POST['stock_actual']) : 0;
+    $stock_minimo = !empty($_POST['stock_minimo']) ? intval($_POST['stock_minimo']) : 0;
+    $mostrar_en_tienda = isset($_POST['mostrar_en_tienda']) ? intval($_POST['mostrar_en_tienda']) : 1;
 
-    $sql = "INSERT INTO productos (codigo_barras, nombre_producto, descripcion, id_categoria, precio_venta, stock_actual, stock_minimo, activo) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+    $sql = "INSERT INTO productos (codigo_barras, nombre_producto, descripcion, id_categoria, 
+            precio_compras, precio_venta, stock_actual, stock_minimo, mostrar_en_tienda, activo) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+    
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssiddi", $codigo_barras, $nombre, $descripcion, $id_categoria, $precio_venta, $stock_actual, $stock_minimo);
+    if (!$stmt) {
+        error_log("Error prepare CREATE: " . $conn->error);
+        $_SESSION['mensaje'] = 'Error al preparar la consulta';
+        $_SESSION['tipo_mensaje'] = 'danger';
+        header('Location: menu.php?page=productos.php');
+        exit;
+    }
+
+    $stmt->bind_param(
+        "sssiddiii",
+        $codigo_barras,
+        $nombre,
+        $descripcion,
+        $id_categoria,
+        $precio_compras,
+        $precio_venta,
+        $stock_actual,
+        $stock_minimo,
+        $mostrar_en_tienda
+    );
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Producto creado exitosamente.';
-        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
+        $_SESSION['tipo_mensaje'] = 'success';
     } else {
-        $_SESSION['mensaje'] = 'Error al crear producto: ' . $conn->error;
-        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
+        error_log("Error execute CREATE: " . $stmt->error);
+        $_SESSION['mensaje'] = 'Error al crear producto';
+        $_SESSION['tipo_mensaje'] = 'danger';
     }
     $stmt->close();
-    
+
     header('Location: menu.php?page=productos.php');
     exit;
 }
@@ -35,35 +59,61 @@ if (isset($_POST['create_producto'])) {
 // ACTUALIZAR PRODUCTO
 if (isset($_POST['update_producto'])) {
     $id = intval($_POST['producto_id']);
-    $codigo_barras = trim($_POST['codigo_barras']) ?: null;
+    $codigo_barras = !empty(trim($_POST['codigo_barras'])) ? trim($_POST['codigo_barras']) : null;
     $nombre = trim($_POST['nombre_producto']);
-    $descripcion = trim($_POST['descripcion']) ?: null;
+    $descripcion = !empty(trim($_POST['descripcion'])) ? trim($_POST['descripcion']) : null;
     $id_categoria = !empty($_POST['id_categoria']) ? intval($_POST['id_categoria']) : null;
-    $precio_venta = floatval($_POST['precio_venta']);
-    $stock_actual = intval($_POST['stock_actual']);
-    $stock_minimo = intval($_POST['stock_minimo']);
+    $precio_compras = !empty($_POST['precio_compras']) ? floatval($_POST['precio_compras']) : 0;
+    $precio_venta = !empty($_POST['precio_venta']) ? floatval($_POST['precio_venta']) : 0;
+    $stock_actual = !empty($_POST['stock_actual']) ? intval($_POST['stock_actual']) : 0;
+    $stock_minimo = !empty($_POST['stock_minimo']) ? intval($_POST['stock_minimo']) : 0;
+    $mostrar_en_tienda = isset($_POST['mostrar_en_tienda']) ? intval($_POST['mostrar_en_tienda']) : 1;
 
     $sql = "UPDATE productos SET 
             codigo_barras = ?,
             nombre_producto = ?,
             descripcion = ?,
             id_categoria = ?,
+            precio_compras = ?,
             precio_venta = ?,
             stock_actual = ?,
-            stock_minimo = ?
+            stock_minimo = ?,
+            mostrar_en_tienda = ?
             WHERE id_producto = ?";
+    
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssiddii", $codigo_barras, $nombre, $descripcion, $id_categoria, $precio_venta, $stock_actual, $stock_minimo, $id);
+    if (!$stmt) {
+        error_log("Error prepare UPDATE: " . $conn->error);
+        $_SESSION['mensaje'] = 'Error al preparar la consulta';
+        $_SESSION['tipo_mensaje'] = 'danger';
+        header('Location: menu.php?page=productos.php');
+        exit;
+    }
+
+    $stmt->bind_param(
+        "sssiddiiii",
+        $codigo_barras,
+        $nombre,
+        $descripcion,
+        $id_categoria,
+        $precio_compras,
+        $precio_venta,
+        $stock_actual,
+        $stock_minimo,
+        $mostrar_en_tienda,
+        $id
+    );
 
     if ($stmt->execute()) {
         $_SESSION['mensaje'] = 'Producto actualizado exitosamente.';
-        $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
+        $_SESSION['tipo_mensaje'] = 'success';
     } else {
-        $_SESSION['mensaje'] = 'Error al actualizar producto.';
-        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
+        error_log("Error execute UPDATE: " . $stmt->error);
+        $_SESSION['mensaje'] = 'Error al actualizar producto';
+        $_SESSION['tipo_mensaje'] = 'danger';
     }
     $stmt->close();
-    
+
     header('Location: menu.php?page=productos.php');
     exit;
 }

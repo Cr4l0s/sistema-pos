@@ -5,7 +5,6 @@ require_once '../../config.php';
 session_start();
 $idRegion = $_SESSION['idRegion'] ?? 0;
 
-// Configurar header para JSON
 header('Content-Type: application/json');
 
 if (!$idRegion) {
@@ -21,14 +20,12 @@ $filas = isset($_GET['filas']) ? (int)$_GET['filas'] : 10;
 $orden = $_GET['orden'] ?? 'nombreCiudad';
 $direccion = $_GET['direccion'] ?? 'ASC';
 $buscar = $_GET['buscar'] ?? '';
+$sin_acciones = isset($_GET['sin_acciones']) ? true : false;
 
 $offset = ($pagina - 1) * $filas;
 
-// Validar orden
 $orden_validado = in_array($orden, ['nombreCiudad']) ? $orden : 'nombreCiudad';
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
-
-// Escapar búsqueda
 $buscar_escapado = $conn->real_escape_string($buscar);
 
 $where = "WHERE idRegion = $idRegion AND vigente = 1";
@@ -36,7 +33,6 @@ if (!empty($buscar)) {
     $where .= " AND nombreCiudad LIKE '%$buscar_escapado%'";
 }
 
-// Obtener datos
 $sql = "SELECT * FROM ciudades
         $where
         ORDER BY $orden_validado $direccion_validada
@@ -54,8 +50,10 @@ if (!$result) {
 $html = "";
 while ($r = $result->fetch_assoc()) {
     $html .= "<tr>
-        <td>" . htmlspecialchars($r['nombreCiudad']) . "</td>
-        <td>
+        <td>" . htmlspecialchars($r['nombreCiudad']) . "</td>";
+    
+    if (!$sin_acciones) {
+        $html .= "<td>
             <form action='menu.php?page=ver_ciudad.php' method='POST' style='display:inline;'>
                 <input type='hidden' name='idCiudad' value='{$r['idCiudad']}'>
                 <button type='submit' class='btn btn-sm btn-secondary'><i class='bi bi-eye'></i></button>
@@ -68,11 +66,12 @@ while ($r = $result->fetch_assoc()) {
                 <input type='hidden' name='idCiudad' value='{$r['idCiudad']}'>
                 <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Eliminar?\")'><i class='bi bi-trash'></i></button>
             </form>
-        </td>
-    </tr>";
+        </td>";
+    }
+    
+    $html .= "</tr>";
 }
 
-// Obtener total para paginación
 $sql_total = "SELECT COUNT(*) as total FROM ciudades $where";
 $total_result = $conn->query($sql_total);
 $total = $total_result ? $total_result->fetch_assoc()['total'] : 0;
