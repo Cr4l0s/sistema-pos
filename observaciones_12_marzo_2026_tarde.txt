@@ -1,0 +1,130 @@
+==================================================
+OBSERVACIONES TÉCNICAS - TARDE DEL 12 DE MARZO 2026
+==================================================
+
+1. OBJETIVO
+   -------------------------------------------------
+   Mejorar la experiencia de usuario en el mantenedor de países,
+   implementando buscadores independientes para país y moneda,
+   permitiendo combinaciones libres (ej: Chile con Dólar).
+
+
+2. CAMBIOS REALIZADOS
+   -------------------------------------------------
+
+   2.1 Nuevos buscadores independientes
+       └── 🔍 Buscar País (arriba) - Afecta SOLO sigla y nombre del país
+       └── 💱 Buscar Moneda (abajo) - Afecta SOLO código y símbolo de moneda
+       
+       Beneficio: El usuario puede elegir cualquier combinación:
+       - 🇨🇱 Chile con 💶 Euro
+       - 🇦🇷 Argentina con 💵 Dólar
+       - 🇯🇵 Japón con 🇧🇷 Real brasileño
+
+   2.2 Interfaz mejorada
+       └── Tarjetas diferenciadas para cada grupo de datos
+       └── Selectores con búsqueda en español
+       └── Campos editables manualmente
+       └── Indicadores visuales de qué campos afecta cada buscador
+
+   2.3 Base de datos
+       └── Verificada columna `simbolo_moneda` en tabla `paises`
+       └── Confirmado que se guarda correctamente en INSERT y UPDATE
+
+
+3. ARCHIVOS MODIFICADOS
+   -------------------------------------------------
+/practica_sventas_desa/pais-editar.php
+/practica_sventas_desa/pais-crear.php
+/practica_sventas_desa/acciones-pais.php
+
+
+4. ARCHIVOS VERIFICADOS (SIN CAMBIOS)
+-------------------------------------------------
+/practica_sventas_desa/components/tabla_pro/tabla_endpoint_paises.php
+/practica_sventas_desa/inicio_pais.php
+
+
+5. FUNCIONALIDADES IMPLEMENTADAS
+-------------------------------------------------
+✅ Buscador de país con autocompletado
+✅ Buscador de moneda con autocompletado
+✅ Independencia total entre ambos buscadores
+✅ Persistencia correcta del símbolo de moneda
+✅ Interfaz responsive con Bootstrap
+✅ Selectores en español
+
+
+6. CAPTURAS DE FUNCIONAMIENTO
+-------------------------------------------------
+
+Al editar un país:
+┌─────────────────────────────────────┐
+│ 🔍 Buscar País │
+│ [Buscar país... ______________▼] │
+│ Al seleccionar, se completan: │
+│ - Sigla del País │
+│ - Nombre del País │
+├─────────────────────────────────────┤
+│ 💱 Buscar Moneda │
+│ [Buscar moneda... _____________▼] │
+│ Al seleccionar, se completan: │
+│ - Código de Moneda │
+│ - Símbolo │
+└─────────────────────────────────────┘
+
+
+
+7. PRUEBAS REALIZADAS
+-------------------------------------------------
+✅ Editar Chile con moneda Dólar (CLP → USD, $)
+✅ Editar Argentina con moneda Euro (ARS → EUR, €)
+✅ Editar Japón con moneda Real brasileño (JPY → BRL, R$)
+✅ Guardar y verificar en listado que el símbolo persiste
+✅ Limpiar selecciones y restaurar valores originales
+
+
+8. PROBLEMAS RESUELTOS
+-------------------------------------------------
+| Problema | Solución |
+|----------|----------|
+| Símbolo no se guardaba | Agregado `simbolo_moneda` en acciones-pais.php |
+| Buscadores se afectaban entre sí | Separados en dos selectores independientes |
+| Interfaz confusa | Tarjetas diferenciadas por color y función |
+| Textos en inglés | Select2 configurado en español |
+
+
+9. MEJORAS TÉCNICAS IMPLEMENTADAS
+-------------------------------------------------
+- Uso de Select2 para búsqueda con autocompletado
+- Base de datos local de países (200+ registros)
+- Base de datos local de monedas (40+ registros)
+- Eventos independientes para cada buscador
+- Restauración de valores al limpiar selección
+
+
+10. PENDIENTE (OPCIONAL)
+ -------------------------------------------------
+ - Agregar más monedas a la base de datos local
+ - Sincronizar con API externa para datos actualizados
+ - Agregar banderas de países en los resultados
+
+
+11. CONCLUSIÓN
+ -------------------------------------------------
+ El mantenedor de países ahora ofrece una experiencia
+ mucho más flexible y amigable, permitiendo combinaciones
+ libres de país y moneda. Los datos se guardan correctamente
+ y la interfaz es clara e intuitiva.
+
+==================================================
+FIN DEL DOCUMENTO
+==================================================
+# Crear el archivo
+touch observaciones_12_marzo_2026_tarde.txt
+
+# Abrir con nano y pegar el contenido
+nano observaciones_12_marzo_2026_tarde.txt
+
+# Guardar (Ctrl+O, Enter) y salir (Ctrl+X)
+
