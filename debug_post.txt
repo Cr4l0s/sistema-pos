@@ -1,0 +1,142 @@
+Array
+(
+    [create_pais] => 1
+    [siglaPais] => TD
+    [nombrePais] => CHAD
+    [monedas] => Array
+        (
+            [0] => 17
+            [1] => 22
+        )
+
+)
+2026-03-16 21:35:54 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 94
+    [siglaPais] => CL
+    [nombrePais] => CHINA
+)
+
+2026-03-16 21:36:08 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 94
+    [siglaPais] => CL
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 21:43:07 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 94
+    [siglaPais] => CL
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 21:53:00 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 94
+    [siglaPais] => CL
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 21:53:29 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 94
+    [siglaPais] => CF
+    [nombrePais] => CHAD
+)
+
+2026-03-16 22:02:23 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => CN
+    [nombrePais] => CHAD
+    [monedas] => Array
+        (
+            [0] => 48
+            [1] => 271
+        )
+
+)
+
+2026-03-16 22:16:28 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 22:16:51 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 22:18:46 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => JP
+    [nombrePais] => CHAD
+    [monedas] => Array
+        (
+            [0] => 55
+        )
+
+)
+
+2026-03-16 22:24:21 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => AU
+    [nombrePais] => CHAD
+    [monedas] => Array
+        (
+            [0] => 55
+        )
+
+)
+
+2026-03-16 22:30:00 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 22:48:47 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 22:49:00 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-16 22:50:55 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => JP
+    [nombrePais] => KAZAJISTÁN
+    [monedas] => Array
+        (
+            [0] => 55
+            [1] => 271
+        )
+
+)
+

@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 require_once 'config.php';
 session_start();
 
@@ -9,7 +9,6 @@ if (strpos($page, '?') !== false) {
     $page = substr($page, 0, strpos($page, '?'));
 }
 $currentPage = $page;
-
 $nombreSistema = APP_NOMBRE;
 $usuario = $_SESSION['usuario'] ?? 'Invitado';
 
@@ -58,6 +57,7 @@ $menu = [
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title><?= $nombreSistema ?></title>
@@ -66,13 +66,25 @@ $menu = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         :root {
-            --sidebar-bg: <?= SIDEBAR_BG ?>;
-            --sidebar-active-1: <?= SIDEBAR_ACTIVE ?>;
-            --sidebar-active-2: <?= SIDEBAR_ACTIVE_GRADIENT ?>;
+            --sidebar-bg:
+                <?= SIDEBAR_BG ?>
+            ;
+            --sidebar-active-1:
+                <?= SIDEBAR_ACTIVE ?>
+            ;
+            --sidebar-active-2:
+                <?= SIDEBAR_ACTIVE_GRADIENT ?>
+            ;
             --topbar-bg: #ffffff;
             --button-primary: var(--sidebar-active-1);
         }
-        html, body { height: 100%; margin: 0; }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
             display: flex;
             flex-direction: column;
@@ -80,7 +92,12 @@ $menu = [
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
         }
-        .layout { display: flex; height: 100vh; }
+
+        .layout {
+            display: flex;
+            height: 100vh;
+        }
+
         .sidebar {
             width: 250px;
             background: var(--sidebar-bg);
@@ -89,7 +106,11 @@ $menu = [
             display: flex;
             flex-direction: column;
         }
-        .sidebar.collapsed { width: 70px; }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
         .sidebar-header {
             padding: 20px;
             font-weight: bold;
@@ -97,13 +118,19 @@ $menu = [
             align-items: center;
             gap: 10px;
         }
-        .logo-img { height: 50px; object-fit: contain; }
+
+        .logo-img {
+            height: 50px;
+            object-fit: contain;
+        }
+
         .sidebar-menu {
             list-style: none;
             padding: 0;
             margin: 0;
             flex: 1;
         }
+
         .sidebar-menu li a {
             color: #cbd5e1;
             text-decoration: none;
@@ -111,17 +138,20 @@ $menu = [
             padding: 10px 20px;
             transition: 0.2s;
         }
+
         .sidebar-menu li a:hover {
             background: #1f2937;
             border-radius: 8px;
             color: #fff;
         }
+
         .sidebar .submenu li a.active-link {
             background: linear-gradient(90deg, var(--sidebar-active-1), var(--sidebar-active-2));
             color: #fff !important;
             border-radius: 8px;
             font-weight: 600;
         }
+
         .submenu {
             list-style: none;
             padding-left: 0;
@@ -129,42 +159,53 @@ $menu = [
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
+
         .menu-group.active .submenu {
             max-height: 500px;
         }
+
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
+
         .topbar {
             background: var(--topbar-bg);
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
+
         .content-area {
             flex: 1;
             padding: 30px;
         }
+
         .footer {
             padding: 15px;
             text-align: center;
             background: #fff;
             border-top: 1px solid #e5e7eb;
         }
-        .card { border-radius: 16px; }
+
+        .card {
+            border-radius: 16px;
+        }
+
         .btn-primary {
             background: var(--button-primary);
             border-color: var(--button-primary);
         }
+
         .theme-picker {
             display: flex;
             gap: 8px;
             align-items: center;
         }
+
         .theme-dot {
             width: 18px;
             height: 18px;
@@ -172,30 +213,37 @@ $menu = [
             cursor: pointer;
             border: 2px solid #fff;
         }
+
         .dark-mode {
             background: #0f172a;
             color: #fff;
         }
+
         .dark-mode .topbar,
         .dark-mode .footer {
             background: #1e293b;
             color: #fff;
         }
+
         .dark-mode .card {
             background: #1e293b;
             color: #fff;
         }
+
         .dark-mode .sidebar {
             background: #0f172a;
         }
+
         .dark-mode .submenu li a {
             color: #cbd5e1;
         }
+
         .dark-mode .submenu li a.active-link {
             background: linear-gradient(90deg, #3b82f6, #2563eb);
         }
     </style>
 </head>
+
 <body>
     <div class="layout">
         <!-- SIDEBAR -->
@@ -210,9 +258,16 @@ $menu = [
                     $subs_visibles = array_filter($subs, function ($item) {
                         return !isset($item['hidden']) || $item['hidden'] !== true;
                     });
-                    if (empty($subs_visibles)) continue;
+                    if (empty($subs_visibles))
+                        continue;
                     ?>
-                    <li class="menu-group <?php foreach ($subs_visibles as $sub) { if ($currentPage == $sub['file']) { echo 'active'; break; } } ?>">
+                    <li
+                        class="menu-group <?php foreach ($subs_visibles as $sub) {
+                            if ($currentPage == $sub['file']) {
+                                echo 'active';
+                                break;
+                            }
+                        } ?>">
                         <div class="menu-toggle">
                             <span><?= $main ?></span>
                             <i class="bi bi-chevron-down arrow"></i>
@@ -265,7 +320,7 @@ $menu = [
                     // Construir lista de páginas permitidas
                     $allowedPages = [];
                     $currentTitle = 'Panel Principal';
-                    
+
                     foreach ($menu as $group) {
                         foreach ($group as $sub) {
                             $allowedPages[] = $sub['file'];
@@ -274,7 +329,7 @@ $menu = [
                             }
                         }
                     }
-                    
+
                     // Agregar archivos extra si es necesario
                     $archivos_extra = ['pais-crear.php'];
                     foreach ($archivos_extra as $archivo) {
@@ -282,9 +337,9 @@ $menu = [
                             $allowedPages[] = $archivo;
                         }
                     }
-                    
+
                     $allowedPages = array_unique($allowedPages);
-                    
+
                     if (in_array($page, $allowedPages)) {
                         $ruta_archivo = __DIR__ . '/' . $page;
                         if (file_exists($ruta_archivo)) {
@@ -302,7 +357,8 @@ $menu = [
 
             <!-- FOOTER -->
             <footer class="footer">
-                © <?= APP_ANO ?> <?= APP_EMPRESA ?> · <?= APP_NOMBRE ?> v<?= APP_VERSION ?> - En desarrollo por <?= APP_DEVELOPER ?> -
+                © <?= APP_ANO ?> <?= APP_EMPRESA ?> · <?= APP_NOMBRE ?> v<?= APP_VERSION ?> - En desarrollo por
+                <?= APP_DEVELOPER ?> -
                 <span id="fecha-hora"></span>
             </footer>
         </div>
@@ -379,4 +435,5 @@ $menu = [
         });
     </script>
 </body>
+
 </html>

@@ -118,7 +118,7 @@ require_once 'config.php';
                 $columnas = [
                     'siglaPais' => 'Sigla',
                     'codMoneda' => 'Moneda',
-                    'simbolo_moneda' => 'Símbolo', 
+                    'simbolo_moneda' => 'Símbolo',
                     'nombrePais' => 'País'
                 ];
 
@@ -126,8 +126,7 @@ require_once 'config.php';
                 ?>
 
                 <div class="btn-agregar">
-                    <a href="menu.php?page=pais-crear.php" class="btn btn-primary"
-                        onclick="console.log('HACIENDO CLIC'); return true;">
+                    <a href="menu.php?page=pais-crear.php" class="btn btn-primary">
                         <span class="bi bi-plus-circle-fill"></span> Agregar País
                     </a>
                 </div>

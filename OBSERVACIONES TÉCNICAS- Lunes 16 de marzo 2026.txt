@@ -1,0 +1,278 @@
+INFORME TÉCNICO DETALLADO - MANTENEDOR DE PAÍSES
+================================================================================
+
+FECHA: 2026-03-16
+PROYECTO: practica_sventas_desa
+MÓDULO: Mantenedor de Países (CRUD: Crear, Editar, Ver)
+SOLICITANTE: Jefe de Proyecto
+
+--------------------------------------------------------------------------------
+1. OBJETIVO DEL DÍA
+--------------------------------------------------------------------------------
+
+Homologar el funcionamiento del mantenedor de países con el mantenedor de 
+productos, permitiendo:
+
+• Libertad total para asignar cualquier sigla a cualquier país
+• Selectores de búsqueda que NO fuercen la relación sigla-nombre
+• Flujo de usuario intuitivo: después de crear/editar, mostrar el resultado
+• Interfaz consistente entre crear y editar
+
+--------------------------------------------------------------------------------
+2. PROBLEMAS INICIALES DETECTADOS
+--------------------------------------------------------------------------------
+
+2.1. Error Técnico - Headers Already Sent
+     • Archivo: pais-editar.php línea 11
+     • Síntoma: "Warning: Cannot modify header information - headers already sent"
+     • Causa raíz: En menu.php línea 71 se estaba imprimiendo HTML (</li>) antes 
+       de incluir pais-editar.php, lo que imposibilitaba el envío de headers
+     • Impacto: Las redirecciones no funcionaban, errores de PHP visibles
+
+2.2. Comportamiento Incorrecto de Selectores
+     • Archivo: pais-editar.php y pais-crear.php
+     • Síntoma: Al seleccionar un país en el buscador, automáticamente se 
+       completaban AMBOS campos (sigla y nombre)
+     • Causa raíz: La función actualizarInputs() modificaba ambos campos
+     • Ejemplo concreto: Si se seleccionaba "Chile (CL)", se llenaba sigla="CL" y 
+       nombre="Chile", impidiendo combinaciones personalizadas
+     • Impacto: No se podía tener un país llamado "Chile" con sigla "XX"
+
+2.3. Validación de Duplicados Innecesaria
+     • Archivo: acciones-pais.php
+     • Síntoma: Mensaje "Ya existe otro país con esa sigla o nombre"
+     • Causa raíz: Consulta SQL que verificaba existencia de sigla o nombre en 
+       otros registros
+     • Impacto: No se permitía tener países con misma sigla (ej: "CL" para Chile 
+       y "CL" para China) o mismo nombre con diferentes siglas
+
+2.4. Flujo de Redirección Incorrecto
+     • Archivo: acciones-pais.php
+     • Síntoma: Después de guardar, el usuario volvía al listado o a la edición
+     • Causa raíz: Redirecciones a inicio_pais.php o pais-editar.php
+     • Impacto: El usuario no veía el resultado de su acción inmediatamente
+     • Requerimiento del jefe: "Que el usuario vea cómo quedó el país"
+
+2.5. pais-ver.php con Diseño Incorrecto
+     • Archivo: pais-ver.php
+     • Síntoma: Solo aceptaba POST, mostraba campo "Código Moneda" inexistente
+     • Causa raíz: 
+        - Solo validaba $_POST['idPais'] pero se enviaba por GET
+        - Tenía campo "codMoneda" que no existe en tabla paises
+        - No mostraba las monedas asociadas
+     • Impacto: Redirecciones fallaban, información incorrecta mostrada
+
+--------------------------------------------------------------------------------
+3. SOLUCIONES IMPLEMENTADAS
+--------------------------------------------------------------------------------
+
+3.1. Corrección de Headers (menu.php y pais-editar.php)
+     • Se agregó ob_start() al inicio de ambos archivos
+     • Esto captura toda la salida en buffer y la envía solo cuando es seguro
+     • Técnicamente: El buffer de salida evita que headers se envíen antes de 
+       tiempo, permitiendo redirecciones en cualquier punto del código
+     • Resultado: Error "headers already sent" eliminado
+
+3.2. Separación de Selectores (pais-editar.php y pais-crear.php)
+     • Se crearon funciones independientes:
+        - actualizarSigla(code): Solo modifica campo sigla
+        - actualizarNombre(name): Solo modifica campo nombre
+     • Se cambió evento de 'select2:select' a 'change' para mayor compatibilidad
+     • Se poblaron selectores con valores simples (value="CL" en siglas, 
+       value="Chile" en nombres)
+     • Se agregó feedback visual (borde verde) para confirmar selección
+     • Resultado: El usuario puede seleccionar una sigla de un país y escribir 
+       manualmente cualquier nombre, o viceversa
+
+3.3. Eliminación de Validación de Duplicados (acciones-pais.php)
+     • Se comentó/eliminó todo el bloque de verificación:
+        $check = $conn->prepare("SELECT idPais FROM paises WHERE (siglaPais = ? 
+                                   OR nombrePais = ?) AND idPais != ? ...")
+     • Se mantuvieron solo validaciones básicas:
+        - Longitud de sigla = 2 caracteres
+        - Campos requeridos no vacíos
+        - Al menos una moneda seleccionada (solo en creación)
+     • Resultado: Libertad total para crear combinaciones arbitrarias
+
+3.4. Nuevo Flujo de Redirección (acciones-pais.php)
+     • En creación: header("Location: menu.php?page=pais-ver.php&id=$idPais")
+     • En edición: header("Location: menu.php?page=pais-ver.php&id=$idPais")
+     • Se eliminó header redundante después del try-catch
+     • Resultado: Usuario ve inmediatamente el resultado después de guardar
+
+3.5. Reestructuración de pais-ver.php
+     • Se modificó para aceptar GET y POST:
+        if (isset($_GET['id'])) { ... } elseif (isset($_POST['idPais'])) { ... }
+     • Se eliminó campo incorrecto "codMoneda"
+     • Se agregó consulta de monedas asociadas:
+        SELECT m.*, pm.es_principal FROM monedas m 
+        JOIN paises_monedas pm ON m.idMoneda = pm.idMoneda 
+        WHERE pm.idPais = ?
+     • Se agregó botón "Editar" para volver a la edición
+     • Resultado: Vista completa y funcional del país
+
+--------------------------------------------------------------------------------
+4. CAMBIOS ESPECÍFICOS POR ARCHIVO
+--------------------------------------------------------------------------------
+
+4.1. acciones-pais.php
+     • Línea 1: Agregado error_reporting(E_ALL) para depuración
+     • Línea 6: Agregado file_put_contents para debug de POST
+     • Línea 17-54: NUEVA sección editar_pais (antes no existía)
+     • Línea 30: Eliminada validación de duplicados
+     • Línea 46: Cambio de redirección a pais-ver.php
+     • Línea 58-132: Sección create_pais modificada
+     • Línea 126: Redirección a pais-ver.php con ID
+     • Línea 135: Eliminado header redundante
+
+4.2. pais-editar.php
+     • Línea 2: Agregado ob_start()
+     • Línea 35-60: Eliminada validación de duplicados (era innecesaria en frontend)
+     • Línea 153-162: Formulario modificado:
+        - action="acciones-pais.php"
+        - name="editar_pais" en lugar de "guardar_datos"
+        - Agregado input hidden idPais
+     • Línea 207-214: Función actualizarSigla() creada
+     • Línea 216-226: Función actualizarNombre() creada
+     • Línea 239-249: Poblado de selector de siglas con value="codigo"
+     • Línea 251-260: Poblado de selector de nombres con value="nombre"
+     • Línea 283-295: Eventos change para selectores
+
+4.3. pais-crear.php
+     • Línea 120-127: Agregado console.log para depuración
+     • Línea 129-136: Función actualizarSigla() (igual que editar)
+     • Línea 138-146: Función actualizarNombre() (igual que editar)
+     • Línea 155-165: Poblado de selector de siglas
+     • Línea 167-176: Poblado de selector de nombres
+     • Línea 192-203: Eventos change para selectores
+     • Línea 252: Función crearPais() con campo create_pais
+
+4.4. pais-ver.php
+     • Línea 6-12: Modificado para aceptar GET y POST
+     • Línea 15-22: Consulta de país
+     • Línea 24-30: NUEVA consulta de monedas asociadas
+     • Línea 44-48: Agregados botones Editar y Volver
+     • Línea 50-70: Diseño con tabla para datos y lista para monedas
+     • Línea 55: Eliminado campo incorrecto "codMoneda"
+
+4.5. menu.php
+     • Línea 2: Agregado ob_start() al inicio
+     • Línea 71: Verificación de etiqueta HTML (no modificada, pero se identificó 
+       como causa del error de headers)
+
+--------------------------------------------------------------------------------
+5. COMPORTAMIENTO ACTUAL DEL SISTEMA
+--------------------------------------------------------------------------------
+
+5.1. Creación de País
+     • Usuario ingresa sigla (2 caracteres) manualmente o usando buscador
+     • Usuario ingresa nombre manualmente o usando buscador
+     • Usuario agrega monedas (obligatorio, al menos una)
+     • Al hacer click en "Crear País":
+        - Se valida: sigla 2 chars, nombre no vacío, al menos una moneda
+        - Se inserta en tabla paises
+        - Se insertan monedas en paises_monedas (primera como principal)
+        - Se redirige a pais-ver.php con el ID del nuevo país
+        - Se muestra mensaje de éxito
+
+5.2. Edición de País
+     • Usuario modifica sigla y/o nombre (combinaciones libres)
+     • Usuario puede agregar/quitar monedas (vía AJAX)
+     • Usuario puede cambiar moneda principal (vía AJAX)
+     • Al hacer click en "Actualizar datos":
+        - Se valida: sigla 2 chars, nombre no vacío
+        - Se actualiza registro en paises
+        - Se redirige a pais-ver.php
+        - Se muestra mensaje de éxito
+
+5.3. Visualización de País
+     • Muestra sigla y nombre en tabla
+     • Muestra todas las monedas asociadas con indicador de principal
+     • Botones: Editar (vuelve a edición), Volver al listado
+
+--------------------------------------------------------------------------------
+6. DECISIONES TÉCNICAS IMPORTANTES
+--------------------------------------------------------------------------------
+
+6.1. Por qué se eliminó la validación de duplicados
+     • Homologación con mantenedor de productos (no valida duplicados)
+     • Casos de uso reales: Un mismo país puede tener múltiples registros con 
+       diferentes siglas (ej: "CH" y "CL" para Chile) o una misma sigla puede 
+       representar diferentes países en diferentes contextos
+     • Simplicidad: El usuario debe tener control total
+
+6.2. Por qué se separaron los selectores
+     • Experiencia de usuario: El buscador es una AYUDA, no una RESTRICCIÓN
+     • Flexibilidad: Permitir combinaciones como "Chile" con sigla "XX"
+     • Consistencia con productos: Los selectores en productos no fuerzan 
+       relaciones
+
+6.3. Por qué se usa GET en lugar de POST para pais-ver.php
+     • Semántica HTTP: GET para obtener/ver recursos, POST para modificarlos
+     • URL compartible: pais-ver.php?id=123 puede ser enlace directo
+     • Coherencia con el resto del sistema
+
+6.4. Por qué se mantuvo la validación de sigla de 2 caracteres
+     • Regla de negocio: Las siglas de países son estándar ISO de 2 caracteres
+     • Validación básica de integridad de datos
+     • Consistente con el editor de productos (códigos de barras tienen formato)
+
+--------------------------------------------------------------------------------
+7. PRUEBAS REALIZADAS
+--------------------------------------------------------------------------------
+
+7.1. Casos de prueba exitosos:
+     ✓ Crear país "Chile" con sigla "XX"
+     ✓ Crear país "Chile" con sigla "YY" (mismo nombre)
+     ✓ Crear país "Argentina" con sigla "CL" (misma sigla)
+     ✓ Editar "Chile" de sigla "CL" a "XX"
+     ✓ Editar nombre sin cambiar sigla
+     ✓ Editar sigla sin cambiar nombre
+     ✓ Agregar monedas a país existente
+     ✓ Eliminar monedas
+     ✓ Cambiar moneda principal
+     ✓ Ver país después de crear
+     ✓ Ver país después de editar
+
+7.2. Validaciones correctas:
+     ✓ Error si sigla no tiene 2 caracteres
+     ✓ Error si nombre vacío
+     ✓ Error si no se seleccionan monedas al crear
+     ✓ Error si se intenta eliminar moneda principal (deshabilitado)
+
+--------------------------------------------------------------------------------
+8. LECCIONES APRENDIDAS
+--------------------------------------------------------------------------------
+
+• La validación excesiva puede limitar la funcionalidad deseada por el usuario
+• Los selectores de búsqueda deben ser ayudas, no restricciones
+• ob_start() es útil para prevenir errores de headers en aplicaciones complejas
+• La consistencia entre módulos (países y productos) mejora la experiencia
+• El debug con file_put_contents facilita la identificación de problemas
+• Las transacciones son esenciales para operaciones que afectan múltiples tablas
+
+--------------------------------------------------------------------------------
+9. PRÓXIMOS PASOS RECOMENDADOS
+--------------------------------------------------------------------------------
+
+• Implementar búsqueda avanzada en inicio_pais.php
+• Agregar paginación para listados extensos
+• Implementar confirmación antes de eliminar (JavaScript)
+• Validar dependencias antes de eliminar (ej: regiones asociadas)
+• Agregar auditoría de cambios (quién, cuándo, qué modificó)
+• Mejorar interfaz de gestión de monedas con drag & drop para orden
+
+--------------------------------------------------------------------------------
+10. CONCLUSIÓN
+--------------------------------------------------------------------------------
+
+El mantenedor de países ahora funciona de manera idéntica al mantenedor de 
+productos, con libertad total para asignar siglas y nombres, selectores de ayuda
+independientes, y un flujo intuitivo que muestra el resultado inmediatamente 
+después de cada acción. Todos los problemas técnicos identificados (headers, 
+validaciones, redirecciones) han sido resueltos satisfactoriamente.
+
+---
+FECHA: 2026-03-16
+ELABORADO POR: Carlos Olivares
+VERSIÓN: 1.0

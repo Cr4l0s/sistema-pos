@@ -11,31 +11,39 @@ $sin_acciones = isset($_GET['sin_acciones']) ? true : false;
 
 $offset = ($pagina - 1) * $filas;
 
-// ===== CAMPOS VÁLIDOS PARA ORDENAMIENTO (INCLUYE símbolo_moneda) =====
-$campos_validos = ['siglaPais', 'codMoneda', 'simbolo_moneda', 'nombrePais'];
+// Campos válidos para ordenamiento
+$campos_validos = ['siglaPais', 'nombrePais', 'codMoneda', 'simbolo_moneda'];
 $orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombrePais';
-// =====================================================================
 
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
 
-$where = "WHERE vigente = 1";
+// Consulta con JOIN para obtener la moneda principal
+$sql = "SELECT 
+            p.idPais,
+            p.siglaPais,
+            p.nombrePais,
+            m.codMoneda,
+            m.simbolo as simbolo_moneda
+        FROM paises p
+        LEFT JOIN paises_monedas pm ON p.idPais = pm.idPais AND pm.es_principal = 1
+        LEFT JOIN monedas m ON pm.idMoneda = m.idMoneda
+        WHERE p.vigente = 1";
+
 if (!empty($buscar)) {
-    $where .= " AND (siglaPais LIKE '%$buscar_escapado%' OR nombrePais LIKE '%$buscar_escapado%')";
+    $sql .= " AND (p.nombrePais LIKE '%$buscar_escapado%' OR p.siglaPais LIKE '%$buscar_escapado%' OR m.codMoneda LIKE '%$buscar_escapado%')";
 }
 
-$sql = "SELECT idPais, siglaPais, codMoneda, simbolo_moneda, nombrePais 
-        FROM paises
-        $where
-        ORDER BY $orden_validado $direccion_validada
-        LIMIT $offset, $filas";
+$sql .= " ORDER BY p.$orden_validado $direccion_validada
+          LIMIT $offset, $filas";
+
 $result = $conn->query($sql);
 
 $html = "";
 while ($r = $result->fetch_assoc()) {
     $html .= "<tr>
         <td>" . htmlspecialchars($r['siglaPais']) . "</td>
-        <td>" . htmlspecialchars($r['codMoneda']) . "</td>
+        <td>" . htmlspecialchars($r['codMoneda'] ?? '—') . "</td>
         <td>" . htmlspecialchars($r['simbolo_moneda'] ?? '$') . "</td>
         <td>" . htmlspecialchars($r['nombrePais']) . "</td>";
     
@@ -59,7 +67,8 @@ while ($r = $result->fetch_assoc()) {
     $html .= "</tr>";
 }
 
-$sql_total = "SELECT COUNT(*) as total FROM paises $where";
+// Total de registros (para paginación)
+$sql_total = "SELECT COUNT(*) as total FROM paises WHERE vigente = 1";
 $total = $conn->query($sql_total)->fetch_assoc()['total'];
 $totalPaginas = ceil($total / $filas);
 
