@@ -1,7 +1,5 @@
-==================================================
-OBSERVACIONES TÉCNICAS - TARDE DEL 12 DE MARZO 2026
-==================================================
-
+================================================== OBSERVACIONES TÉCNICAS - TARDE DEL 12 DE MARZO 2026 ==================================================
+xx
 1. OBJETIVO
    -------------------------------------------------
    Mejorar la experiencia de usuario en el mantenedor de países,
