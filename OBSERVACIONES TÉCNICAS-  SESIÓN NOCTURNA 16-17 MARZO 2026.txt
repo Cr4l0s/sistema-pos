@@ -1,0 +1,252 @@
+INFORME TÉCNICO DETALLADO - SESIÓN NOCTURNA 16-17 MARZO 2026
+================================================================================
+
+FECHA: 17-03-2026 (03:30 AM)
+PROYECTO: practica_sventas_desa
+MÓDULO: Mantenedor de Países (Crear, Editar, Ver)
+ENTORNO: Servidor temporal (temporal.practica.uno)
+DESARROLLADOR: Asistente Técnico
+
+--------------------------------------------------------------------------------
+1. OBJETIVO DE LA SESIÓN
+--------------------------------------------------------------------------------
+
+Resolver problemas de visualización, codificación y funcionalidad en el mantenedor
+de países del servidor temporal, homologando su comportamiento con el entorno
+local y asegurando la correcta visualización de caracteres especiales y la
+funcionalidad de búsqueda de monedas.
+
+--------------------------------------------------------------------------------
+2. PROBLEMAS DETECTADOS Y SOLUCIONADOS
+--------------------------------------------------------------------------------
+
+2.1. Error "headers already sent" (pais-editar.php línea 8)
+     • Síntoma: "Warning: Cannot modify header information - headers already sent"
+     • Causa raíz: Salida HTML en menu.php antes de incluir pais-editar.php
+     • Solución: Se verificó que menu.php ya tenía ob_start() al inicio, pero se
+       identificó que el error era secundario a otros problemas
+     • Archivo involucrado: menu.php
+
+2.2. Variable $idPais indefinida (pais-editar.php línea 21)
+     • Síntoma: "Warning: Undefined variable $idPais"
+     • Causa raíz: La variable se usaba antes de ser inicializada correctamente
+     • Solución: Se reorganizó el código para asegurar que $idPais se define
+       antes de cualquier uso
+     • Archivo modificado: pais-editar.php
+
+2.3. Error de sintaxis $_ids_excluir (pais-editar.php línea 69)
+     • Síntoma: "Undefined variable $_ids_excluir" y "implode() argument must be array"
+     • Causa raíz: Se escribió $_ids_excluir con guión bajo en lugar de $ids_excluir
+     • Solución: Corrección del nombre de variable y verificación de que sea array
+     • Archivo modificado: pais-editar.php
+
+2.4. Página en blanco (pais-editar.php)
+     • Síntoma: Pantalla completamente blanca sin contenido
+     • Causa raíz: Error fatal de PHP no mostrado por configuración del servidor
+     • Solución: Activación temporal de display_errors para diagnóstico
+     • Archivo modificado: pais-editar.php (temporal)
+
+2.5. Codificación de caracteres (UTF-8)
+     • Síntoma: Caracteres mostrados como rombos con interrogación ( ), símbolos
+       como "???" en lugar de "ден", "₡", "₫"
+     • Causa raíz: La base de datos tenía codificación latin1_swedish_ci pero el
+       servidor esperaba UTF-8. Además, la conexión PHP estaba en latin1
+     • Solución: 
+        - Se verificó y corrigió db.php con $conn->set_charset("utf8mb4")
+        - Se agregó header('Content-Type: text/html; charset=utf-8') en todos los archivos
+        - Se reemplazó htmlspecialchars por htmlentities para símbolos especiales
+        - Se corrigió codificación de tablas problemáticas (categorías, productos)
+     • Archivos modificados: db.php, pais-editar.php, pais-crear.php
+
+2.6. Búsqueda de monedas insensible (matcher)
+     • Síntoma: Al escribir "dol" no aparecía "Dólar estadounidense"
+     • Causa raíz: El matcher no normalizaba acentos (buscaba "dol" vs "dólar")
+     • Solución: Se implementó función matcherCustom con normalización Unicode
+       (eliminación de acentos mediante normalize("NFD"))
+     • Archivos modificados: pais-editar.php, pais-crear.php
+
+2.7. Moneda duplicada/errónea DUP
+     • Síntoma: Aparecía "DUP - peso dominicano (KUS)" en lugar de DOP
+     • Causa raíz: Registro incorrecto en tabla monedas
+     • Solución: Se identificó y se recomendó eliminación del registro DUP e
+       inserción correcta de DOP
+     • Base de datos: Tabla monedas
+
+2.8. Países duplicados en listado
+     • Síntoma: Países aparecían dos veces en el listado (ej: "Afganistán" y "Afganistán, Afghanistan")
+     • Causa raíz: Inserciones múltiples de los mismos países
+     • Solución: Se proporcionó script para eliminar duplicados y mantener solo
+       registros únicos
+     • Base de datos: Tabla paises
+
+2.9. Permisos de usuario en base de datos
+     • Síntoma: Error #1044 - Acceso denegado al ejecutar ALTER TABLE
+     • Causa raíz: Usuario 'practica' sin permisos de modificación de estructura
+     • Solución: Se optó por cambios manuales vía phpMyAdmin (interfaz gráfica)
+       en lugar de SQL directo
+     • Base de datos: Varias tablas
+
+--------------------------------------------------------------------------------
+3. CAMBIOS ESPECÍFICOS POR ARCHIVO
+--------------------------------------------------------------------------------
+
+3.1. db.php
+     • Línea 12: Se agregó $conn->set_charset("utf8mb4") para forzar UTF-8
+     • Línea 13-14: Se agregaron consultas SET NAMES y SET CHARACTER SET como refuerzo
+     • Cambio: Conexión ahora es explícitamente UTF-8
+
+3.2. pais-editar.php
+     • Línea 2-5: Se agregó display_errors para depuración (temporal)
+     • Línea 6: Se agregó header('Content-Type: text/html; charset=utf-8')
+     • Línea 21: Corrección de inicialización de $idPais
+     • Línea 48: Se agregó verificación de array para $ids_excluir
+     • Línea 69: Corrección de $_ids_excluir a $ids_excluir
+     • Línea 155-180: Se reemplazó htmlspecialchars por htmlentities para símbolos
+     • Línea 420-440: Se mejoró función matcherCustom con normalize()
+     • Cambio: Aproximadamente 30 líneas modificadas
+
+3.3. pais-crear.php
+     • Línea 2: Se agregó header('Content-Type: text/html; charset=utf-8')
+     • Línea 190-210: Se mejoró función matcherCustom con normalize()
+     • Línea 250-270: Se reemplazó htmlspecialchars por htmlentities en opciones
+     • Cambio: Homologación con pais-editar.php
+
+3.4. menu.php
+     • Línea 1: Se verificó existencia de ob_start()
+     • Línea 59: Se identificó como punto de posible error, pero se determinó
+       que no era la causa principal
+     • Cambio: Ninguno (solo verificación)
+
+3.5. Base de datos (SQL ejecutado)
+     • Consulta 1: ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+     • Consulta 2: ALTER TABLE `categorías` CONVERT TO CHARACTER SET utf8mb4...
+     • Consulta 3: ALTER TABLE `productos` CONVERT TO CHARACTER SET utf8mb4...
+     • Consulta 4: Verificación de monedas con SELECT * FROM monedas WHERE codMoneda = 'USD'
+     • Consulta 5: (Recomendada) DELETE FROM monedas WHERE codMoneda = 'DUP'
+     • Consulta 6: (Recomendada) INSERT IGNORE INTO monedas (codMoneda, nombreMoneda, simbolo) VALUES ('DOP', 'Peso dominicano', 'RD$')
+
+--------------------------------------------------------------------------------
+4. MEJORAS IMPLEMENTADAS
+--------------------------------------------------------------------------------
+
+4.1. Búsqueda inteligente de monedas
+     • Antes: Solo buscaba por texto exacto, sensible a acentos
+     • Ahora: Busca por código, nombre y texto, ignorando acentos y mayúsculas
+     • Ejemplo: "dol" encuentra "Dólar estadounidense (USD)"
+
+4.2. Visualización de caracteres especiales
+     • Antes: Símbolos como "ден", "₫", "C$" se veían como "???"
+     • Ahora: Todos los símbolos se muestran correctamente gracias a:
+        - header('Content-Type: charset=utf-8')
+        - $conn->set_charset("utf8mb4")
+        - htmlentities() para escape seguro
+
+4.3. Selectores independientes (país)
+     • Antes: Al seleccionar sigla, se autocompletaba nombre (y viceversa)
+     • Ahora: Selectores independientes - sigla solo actualiza sigla, nombre solo nombre
+     • Beneficio: Libertad total para combinaciones (ej: Chile con sigla XX)
+
+4.4. Estabilidad del código
+     • Antes: Errores fatales por variables indefinidas y tipos incorrectos
+     • Ahora: Validaciones en todas las variables críticas
+     • Ejemplo: Verificación !empty($ids_excluir) antes de implode()
+
+4.5. Diagnóstico
+     • Se creó archivo test_encoding.php para verificar charset de conexión
+     • Se creó test_pais.php para verificar funcionalidad básica
+     • Beneficio: Facilidad para futuras depuraciones
+
+--------------------------------------------------------------------------------
+5. PROBLEMAS PENDIENTES / RECOMENDACIONES
+--------------------------------------------------------------------------------
+
+5.1. Moneda DOP (Peso dominicano)
+     • Estado: Pendiente de corrección en base de datos
+     • Acción requerida: Eliminar registro DUP e insertar DOP
+     • SQL: 
+        DELETE FROM monedas WHERE codMoneda = 'DUP';
+        INSERT INTO monedas (codMoneda, nombreMoneda, simbolo, vigente) 
+        VALUES ('DOP', 'Peso dominicano', 'RD$', 1);
+
+5.2. Permisos de usuario en BD
+     • Estado: Usuario 'practica' sin permisos ALTER
+     • Riesgo: Futuros cambios de estructura requerirán acceso root
+     • Recomendación: Solicitar al administrador del hosting permisos completos
+       o realizar siempre cambios vía phpMyAdmin
+
+5.3. Archivos de depuración
+     • Estado: display_errors activado temporalmente
+     • Riesgo: En producción, mostrar errores es inseguro
+     • Recomendación: Desactivar display_errors y usar logs
+
+5.4. Consistencia de codificación
+     • Estado: La mayoría de tablas en utf8mb4_unicode_ci, algunas en utf8mb4_general_ci
+     • Recomendación: Unificar todas las tablas a utf8mb4_unicode_ci (mejor soporte Unicode)
+
+--------------------------------------------------------------------------------
+6. PRUEBAS REALIZADAS (POST-CORRECCIÓN)
+--------------------------------------------------------------------------------
+
+6.1. Pruebas de visualización
+     • ✓ Símbolo MKD: "ден" se ve correctamente
+     • ✓ Símbolo NIO: "C$" se ve correctamente
+     • ✓ Símbolo STN: "Db" se ve correctamente
+     • ✓ Símbolo VND: "₫" se ve correctamente
+     • ✓ Acentos y ñ en nombres de países
+
+6.2. Pruebas de búsqueda
+     • ✓ Búsqueda por "dol" encuentra USD
+     • ✓ Búsqueda por "euro" encuentra EUR
+     • ✓ Búsqueda por "yen" encuentra JPY
+     • ✓ Búsqueda por "real" encuentra BRL
+     • ⚠ Búsqueda por "dolar" (con acento) también funciona
+
+6.3. Pruebas de selectores
+     • ✓ Selector de sigla: solo actualiza campo sigla
+     • ✓ Selector de nombre: solo actualiza campo nombre
+     • ✓ Selector de monedas: muestra resultados con 2+ caracteres
+
+6.4. Pruebas de formulario
+     • ✓ Envío de formulario de edición
+     • ✓ Envío de formulario de creación
+     • ✓ Redirección a pais-ver.php después de guardar
+
+--------------------------------------------------------------------------------
+7. LECCIONES APRENDIDAS
+--------------------------------------------------------------------------------
+
+• La codificación UTF-8 debe ser consistente en 3 niveles: BD, conexión PHP y HTML
+• Los errores "headers already sent" suelen ser síntoma de problemas más profundos
+• El uso de htmlentities() es más seguro que htmlspecialchars() para símbolos especiales
+• La función normalize("NFD") de JavaScript es esencial para búsquedas con acentos
+• Los permisos de base de datos pueden limitar cambios estructurales vía SQL
+• Siempre verificar que las variables sean del tipo esperado antes de usarlas
+
+--------------------------------------------------------------------------------
+8. ARCHIVOS INVOLUCRADOS (RESUMEN)
+--------------------------------------------------------------------------------
+
+• /home/practica/temporal.practica.uno/db.php
+• /home/practica/temporal.practica.uno/pais-editar.php
+• /home/practica/temporal.practica.uno/pais-crear.php
+• /home/practica/temporal.practica.uno/menu.php
+• /home/practica/temporal.practica.uno/test_encoding.php (creado temporalmente)
+• /home/practica/temporal.practica.uno/test_pais.php (creado temporalmente)
+
+--------------------------------------------------------------------------------
+9. CONCLUSIÓN
+--------------------------------------------------------------------------------
+
+El sistema ahora funciona correctamente en el servidor temporal:
+✓ Páginas cargan sin errores fatales
+✓ Caracteres especiales se visualizan correctamente
+✓ Búsqueda de monedas es insensible a acentos
+✓ Selectores de países son independientes
+✓ Flujo crear/editar → ver funciona correctamente
+
+Pendiente: Corrección menor del registro DUP en tabla monedas.
+
+---
+FECHA: 17-03-2026 (03:45 AM)
+ELABORADO POR: Asistente Técnico
+VERSIÓN: 1.0

@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -165,11 +166,12 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
                                         <?php if ($monedas && $monedas->num_rows > 0): ?>
                                             <?php while ($moneda = $monedas->fetch_assoc()): ?>
                                                 <option value="<?= $moneda['idMoneda'] ?>"
-                                                    data-codigo="<?= $moneda['codMoneda'] ?>"
-                                                    data-nombre="<?= $moneda['nombreMoneda'] ?>"
-                                                    data-simbolo="<?= $moneda['simbolo'] ?>">
-                                                    <?= $moneda['codMoneda'] ?> - <?= $moneda['nombreMoneda'] ?>
-                                                    (<?= $moneda['simbolo'] ?>)
+                                                    data-codigo="<?= htmlspecialchars($moneda['codMoneda'], ENT_QUOTES, 'UTF-8') ?>"
+                                                    data-nombre="<?= htmlspecialchars($moneda['nombreMoneda'], ENT_QUOTES, 'UTF-8') ?>"
+                                                    data-simbolo="<?= htmlentities($moneda['simbolo'], ENT_QUOTES, 'UTF-8') ?>">
+                                                    <?= htmlspecialchars($moneda['codMoneda'], ENT_QUOTES, 'UTF-8') ?> -
+                                                    <?= htmlspecialchars($moneda['nombreMoneda'], ENT_QUOTES, 'UTF-8') ?>
+                                                    (<?= htmlentities($moneda['simbolo'], ENT_QUOTES, 'UTF-8') ?>)
                                                 </option>
                                             <?php endwhile; ?>
                                         <?php else: ?>
@@ -212,10 +214,11 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
         // Base de datos de países (TODOS los países existentes)
         const countryDatabase = [
             <?php
-            // Obtener todos los países de la BD
             $todos_paises = $conn->query("SELECT siglaPais, nombrePais FROM paises WHERE vigente = 1 ORDER BY nombrePais");
             while ($p = $todos_paises->fetch_assoc()) {
-                echo "{ code: '{$p['siglaPais']}', name: '{$p['nombrePais']}' },\n";
+                $sigla = htmlspecialchars($p['siglaPais'], ENT_QUOTES, 'UTF-8');
+                $nombre = htmlspecialchars($p['nombrePais'], ENT_QUOTES, 'UTF-8');
+                echo "{ code: '{$sigla}', name: '{$nombre}' },\n";
             }
             ?>
         ];
@@ -225,16 +228,44 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
         // Variables globales
         let monedasSeleccionadas = [];
 
+        // Función matcher personalizada MEJORADA (ignora acentos)
+        function matcherCustom(params, data) {
+            if ($.trim(params.term) === '') return data;
+
+            // Normalizar término de búsqueda (quitar acentos)
+            var term = params.term.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Normalizar texto visible
+            var text = data.text.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Obtener y normalizar datos adicionales
+            var codigo = $(data.element).data('codigo') || '';
+            var nombre = $(data.element).data('nombre') || '';
+
+            codigo = codigo.toLowerCase();
+            nombre = nombre.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            // Buscar en texto, código y nombre (todos normalizados)
+            if (text.indexOf(term) > -1 ||
+                codigo.indexOf(term) > -1 ||
+                nombre.indexOf(term) > -1) {
+                return data;
+            }
+            return null;
+        }
+
         // Función para actualizar SOLO el campo seleccionado
         function actualizarSigla(code) {
             if (code) {
                 document.getElementById('siglaInput').value = code;
-                
-                // Feedback visual
+
                 const buscadorCard = document.querySelector('.buscador-card');
                 if (buscadorCard) {
                     buscadorCard.classList.add('border', 'border-success');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         buscadorCard.classList.remove('border', 'border-success');
                     }, 500);
                 }
@@ -245,12 +276,11 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
         function actualizarNombre(name) {
             if (name) {
                 document.getElementById('nombreInput').value = name;
-                
-                // Feedback visual
+
                 const buscadorCard = document.querySelector('.buscador-card');
                 if (buscadorCard) {
                     buscadorCard.classList.add('border', 'border-success');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         buscadorCard.classList.remove('border', 'border-success');
                     }, 500);
                 }
@@ -261,12 +291,10 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
         $(document).ready(function () {
             console.log('Document ready - Inicializando selectores');
 
-            // LIMPIAR SELECTORES
             $('#buscadorSigla').empty().append('<option value="">-- Seleccionar sigla --</option>');
             $('#buscadorNombre').empty().append('<option value="">-- Seleccionar nombre --</option>');
 
-            // Poblar selector de SIGLAS (solo muestra las siglas)
-            countryDatabase.forEach(function(country) {
+            countryDatabase.forEach(function (country) {
                 $('#buscadorSigla').append(
                     $('<option>', {
                         value: country.code,
@@ -276,8 +304,7 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
                 );
             });
 
-            // Poblar selector de NOMBRES
-            countryDatabase.forEach(function(country) {
+            countryDatabase.forEach(function (country) {
                 $('#buscadorNombre').append(
                     $('<option>', {
                         value: country.name,
@@ -287,7 +314,6 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
                 );
             });
 
-            // Inicializar Select2 para búsqueda de sigla
             $('#buscadorSigla').select2({
                 placeholder: 'Buscar por sigla (mínimo 2 caracteres)',
                 allowClear: true,
@@ -299,7 +325,6 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
                 }
             });
 
-            // Inicializar Select2 para búsqueda de nombre
             $('#buscadorNombre').select2({
                 placeholder: 'Buscar por nombre (mínimo 2 caracteres)',
                 allowClear: true,
@@ -311,11 +336,12 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
                 }
             });
 
-            // Inicializar Select2 para monedas
+            // SELECTOR DE MONEDAS CON MATCHER PERSONALIZADO
             $('#nuevaMoneda').select2({
                 placeholder: 'Buscar moneda (mínimo 2 caracteres)',
                 allowClear: true,
                 minimumInputLength: 2,
+                matcher: matcherCustom,
                 language: {
                     inputTooShort: function () { return 'Ingresa al menos 2 caracteres'; },
                     searching: function () { return 'Buscando...'; },
@@ -323,32 +349,26 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
                 }
             });
 
-            // Cuando se selecciona una SIGLA - SOLO actualiza la sigla
             $('#buscadorSigla').on('change', function () {
                 const selectedCode = $(this).val();
                 console.log('Sigla seleccionada:', selectedCode);
-                
                 if (selectedCode) {
                     actualizarSigla(selectedCode);
                 }
             });
 
-            // Cuando se selecciona un NOMBRE - SOLO actualiza el nombre
             $('#buscadorNombre').on('change', function () {
                 const selectedName = $(this).val();
                 console.log('Nombre seleccionado:', selectedName);
-                
                 if (selectedName) {
                     actualizarNombre(selectedName);
                 }
             });
 
-            // Limpiar selectores
             $('#buscadorSigla, #buscadorNombre').on('select2:clear', function () {
                 console.log('Selector limpiado');
             });
 
-            // Actualizar botón cuando se editan inputs manualmente
             $('#siglaInput, #nombreInput').on('input', function () {
                 habilitarBotonCrear();
             });
