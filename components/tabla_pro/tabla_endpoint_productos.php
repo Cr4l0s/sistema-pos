@@ -11,6 +11,7 @@ $orden = $_GET['orden'] ?? 'nombre_producto';
 $direccion = $_GET['direccion'] ?? 'ASC';
 $buscar = $_GET['buscar'] ?? '';
 $sin_acciones = isset($_GET['sin_acciones']) ? true : false;
+$categoria = isset($_GET['categoria']) ? intval($_GET['categoria']) : 0; // NUEVO: filtro por categoría
 
 $offset = ($pagina - 1) * $filas;
 
@@ -27,9 +28,16 @@ $orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombre_producto'
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
 
+// Construir WHERE con filtro de categoría
 $where = "WHERE p.activo = 1";
+
 if (!empty($buscar)) {
     $where .= " AND (p.nombre_producto LIKE '%$buscar_escapado%' OR p.codigo_barras LIKE '%$buscar_escapado%')";
+}
+
+// NUEVO: Filtrar por categoría
+if ($categoria > 0) {
+    $where .= " AND p.id_categoria = $categoria";
 }
 
 if ($orden_validado == 'categoria') {
@@ -87,7 +95,15 @@ if ($result && $result->num_rows > 0) {
 }
 
 // ===== PAGINACIÓN =====
+// Actualizar COUNT para incluir filtro de categoría
 $sql_total = "SELECT COUNT(*) as total FROM productos p WHERE p.activo = 1";
+if ($categoria > 0) {
+    $sql_total .= " AND p.id_categoria = $categoria";
+}
+if (!empty($buscar)) {
+    $sql_total .= " AND (p.nombre_producto LIKE '%$buscar_escapado%' OR p.codigo_barras LIKE '%$buscar_escapado%')";
+}
+
 $total_result = $conn->query($sql_total);
 $total = 0;
 if ($total_result && $total_result->num_rows > 0) {
@@ -99,7 +115,8 @@ $totalPaginas = $filas > 0 ? ceil($total / $filas) : 1;
 $paginacion = "";
 if ($totalPaginas > 1) {
     for ($i = 1; $i <= $totalPaginas; $i++) {
-        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn' data-page='$i'>$i</button>";
+        $active = ($i == $pagina) ? 'active' : '';
+        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn $active' data-page='$i'>$i</button>";
     }
 }
 

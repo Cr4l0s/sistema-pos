@@ -4,6 +4,9 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 require_once 'config.php';
+
+// Obtener categoría seleccionada (para el filtro)
+$categoria_seleccionada = isset($_GET['categoria']) ? intval($_GET['categoria']) : 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,6 +106,20 @@ require_once 'config.php';
                 <h4 class="mb-0">Listado de Productos</h4>
                 <div class="header-controls">
                     <input type="text" id="buscarTabla" class="form-control" placeholder="Buscar...">
+                    
+                    <!-- NUEVO: Filtro por categoría -->
+                    <select id="filtroCategoria" class="form-select">
+                        <option value="">Todas las categorías</option>
+                        <?php
+                        $cat_sql = "SELECT id_categoria, nombre_categoria FROM categorias WHERE activo = 1 ORDER BY nombre_categoria";
+                        $cat_result = $conn->query($cat_sql);
+                        while ($cat = $cat_result->fetch_assoc()) {
+                            $selected = ($categoria_seleccionada == $cat['id_categoria']) ? 'selected' : '';
+                            echo '<option value="' . $cat['id_categoria'] . '" ' . $selected . '>' . htmlspecialchars($cat['nombre_categoria']) . '</option>';
+                        }
+                        ?>
+                    </select>
+                    
                     <select id="filasTabla" class="form-select">
                         <option value="10">10</option>
                         <option value="25">25</option>

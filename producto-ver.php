@@ -30,7 +30,7 @@ if (!$producto) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -45,9 +45,15 @@ if (!$producto) {
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver Producto</h4>
-                <a href="menu.php?page=productos.php" class="btn btn-danger">
-                    <span class="bi bi-arrow-left"></span> Volver
-                </a>
+                <div>
+                    <a href="menu.php?page=producto-editar.php&id=<?= $producto['id_producto'] ?>"
+                        class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <a href="menu.php?page=productos.php" class="btn btn-danger">
+                        <span class="bi bi-arrow-left"></span> Volver
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -96,13 +102,67 @@ if (!$producto) {
                         <p class="form-control"><?= $producto['stock_minimo'] ?></p>
                     </div>
                 </div>
+
+                <!-- ===== FECHA DE CREACIÓN CON DETECCIÓN DE ENTORNO ===== -->
                 <div class="mb-3">
                     <label><b>Fecha de Creación</b></label>
-                    <p class="form-control"><?= date('d-m-Y H:i:s', strtotime($producto['fecha_creacion'])) ?></p>
+                    <?php
+                    $fecha_bd = $producto['fecha_creacion'];
+
+                    if ($fecha_bd && $fecha_bd != '0000-00-00 00:00:00') {
+                        // Detectar si estamos en localhost o en el servidor
+                        $es_localhost = ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1');
+                        
+                        if ($es_localhost) {
+                            // En LOCALHOST: la BD guarda hora Chile directamente
+                            $fecha = new DateTime($fecha_bd);
+                        } else {
+                            // En SERVIDOR: la BD guarda hora Chicago, hay que convertir a Chile
+                            $fecha = new DateTime($fecha_bd, new DateTimeZone('America/Chicago'));
+                            $fecha->setTimezone(new DateTimeZone('America/Santiago'));
+                        }
+
+                        // Formatear la fecha
+                        $fecha_formateada = $fecha->format('d-m-Y, H:i:s');
+
+                        // Calcular hace cuánto tiempo fue
+                        $ahora = new DateTime();
+                        $diferencia = $ahora->getTimestamp() - $fecha->getTimestamp();
+
+                        if ($diferencia < 0) $diferencia = 0;
+
+                        $hace_texto = '';
+                        if ($diferencia < 60) {
+                            $hace_texto = 'hace unos segundos';
+                        } elseif ($diferencia < 3600) {
+                            $minutos = floor($diferencia / 60);
+                            $hace_texto = "hace $minutos minuto" . ($minutos != 1 ? 's' : '');
+                        } elseif ($diferencia < 86400) {
+                            $horas = floor($diferencia / 3600);
+                            $hace_texto = "hace $horas hora" . ($horas != 1 ? 's' : '');
+                        } else {
+                            $dias = floor($diferencia / 86400);
+                            $hace_texto = "hace $dias día" . ($dias != 1 ? 's' : '');
+                        }
+                    } else {
+                        $fecha_formateada = 'No disponible';
+                        $hace_texto = '';
+                    }
+                    ?>
+                    <p class="form-control" style="font-weight: bold; font-size: 1.1em;">
+                        <?= $fecha_formateada ?>
+                    </p>
+                    <small class="text-muted">
+                        Hora Chile (UTC-3)
+                        <?php if (!empty($hace_texto) && $fecha_formateada != 'No disponible'): ?>
+                            - <?= $hace_texto ?>
+                        <?php endif; ?>
+                    </small>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -330,8 +330,22 @@ $menu = [
                         }
                     }
 
-                    // Agregar archivos extra si es necesario
-                    $archivos_extra = ['pais-crear.php'];
+                    // ===== ARCHIVOS EXTRA (CORREGIDO) =====
+                    $archivos_extra = [
+                        'pais-crear.php',
+                        'pais-editar.php',
+                        'pais-ver.php',
+                        'producto-crear.php',
+                        'producto-editar.php',
+                        'producto-ver.php',
+                        'usuario-crear.php',
+                        'usuario-editar.php',
+                        'usuario-ver.php',
+                        'categoria-crear.php',
+                        'categoria-editar.php',
+                        'categoria-ver.php'
+                    ];
+
                     foreach ($archivos_extra as $archivo) {
                         if (!in_array($archivo, $allowedPages)) {
                             $allowedPages[] = $archivo;

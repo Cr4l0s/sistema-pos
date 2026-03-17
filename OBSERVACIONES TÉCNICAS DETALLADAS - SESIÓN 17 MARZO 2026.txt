@@ -1,0 +1,232 @@
+OBSERVACIONES TÉCNICAS DETALLADAS - SESIÓN 17 MARZO 2026
+================================================================================
+
+FECHA: 17-03-2026
+PROYECTO: practica_sventas_desa
+DESARROLLADOR: Carlos Olivares
+ENTORNOS: Localhost (XAMPP) y Servidor temporal (temporal.practica.uno)
+
+--------------------------------------------------------------------------------
+1. OBJETIVOS DE LA SESIÓN
+--------------------------------------------------------------------------------
+
+• Implementar sistema centralizado de validaciones con expresiones regulares
+• Corregir problemas de zona horaria entre localhost y servidor
+• Arreglar exportaciones a Excel, PDF e impresión
+• Implementar filtro de categorías en listado de productos
+• Unificar comportamiento en ambos entornos
+
+--------------------------------------------------------------------------------
+2. PROBLEMAS DETECTADOS Y SOLUCIONADOS
+--------------------------------------------------------------------------------
+
+2.1. Validaciones inexistentes o dispersas
+     • Problema: No había un sistema central de validaciones
+     • Solución: Creación de archivos validaciones.php y validaciones.js
+     • Beneficio: Todas las validaciones en un solo lugar, fáciles de mantener
+
+2.2. Zona horaria inconsistente entre entornos
+     • Localhost: America/Santiago (UTC-3)
+     • Servidor: America/Chicago (UTC-5)
+     • Solución: Detección automática de entorno en producto-ver.php
+     • Código: if ($es_localhost) { ... } else { convertir Chicago → Chile }
+
+2.3. Exportación a Excel con formato incorrecto
+     • Problema: Los números se convertían a decimales (1.200 → 1.2)
+     • Solución: Generación de archivo XLS con HTML en lugar de CSV
+     • Archivo: exportar_excel.php con estilos CSS incluidos
+
+2.4. Filtro de categorías no funcionaba
+     • Problema: El evento change del select no se disparaba
+     • Solución: Reemplazo del select por uno nuevo con event listeners
+     • Archivo: components/tabla_pro/tabla_pro.js
+
+2.5. Página en blanco al crear productos en localhost
+     • Problema: Estructura de tabla productos inconsistente
+     • Solución: Corrección de tipos de datos y columna fecha_creacion
+     • SQL: ALTER TABLE productos MODIFY COLUMN fecha_creacion DATETIME
+
+2.6. Columna 'Tienda' no aparecía en Excel
+     • Problema: Los iconos ✅ se eliminaban antes de la conversión
+     • Solución: exportar_excel.php ahora convierte ✅ → "Sí" y ❌ → "No"
+
+2.7. URLs no se validaban en categorías
+     • Problema: No había validación para URLs de imágenes
+     • Solución: Agregadas funciones validarURLImagen() y sanitizarURL()
+     • Archivos: validaciones.php, validaciones.js, categoria-*.php
+
+--------------------------------------------------------------------------------
+3. ARCHIVOS MODIFICADOS/CREADOS
+--------------------------------------------------------------------------------
+
+3.1. Archivos de validaciones (NUEVOS)
+     • validaciones.php - Funciones PHP de validación
+     • validaciones.js - Funciones JavaScript de validación
+     • test_validaciones.php - Pruebas de validaciones
+     • test_hora.php - Pruebas de zona horaria
+
+3.2. Archivos de productos (MODIFICADOS)
+     • producto-ver.php - Corrección de fecha y estructura HTML
+     • producto-acciones.php - Validaciones PHP
+     • producto-crear.php - Validaciones JS en formulario
+     • producto-editar.php - Validaciones JS en formulario
+
+3.3. Archivos de categorías (MODIFICADOS)
+     • categoria-acciones.php - Validaciones de URL imagen
+     • categoria-crear.php - Campo url_imagen + validación JS
+     • categoria-editar.php - Campo url_imagen + validación JS
+
+3.4. Archivos de usuarios (MODIFICADOS)
+     • acciones-usuario.php - Validaciones de email y nombre
+     • usuario-crear.php - Validaciones JS
+     • usuario-editar.php - Validaciones JS
+
+3.5. Archivos de países (MODIFICADOS)
+     • acciones-pais.php - Validaciones de sigla y nombre
+
+3.6. Archivos de sistema (MODIFICADOS)
+     • menu.php - Agregadas páginas permitidas
+     • exportar_excel.php - Conversión de iconos a texto
+     • components/tabla_pro/tabla_pro.js - Filtro categorías
+     • components/tabla_pro/tabla_endpoint_productos.php - Endpoint con filtro
+
+--------------------------------------------------------------------------------
+4. FUNCIONES DE VALIDACIÓN IMPLEMENTADAS
+--------------------------------------------------------------------------------
+
+4.1. En PHP (validaciones.php)
+     • limpiarInput() - Elimina caracteres peligrosos
+     • validarCodigoBarras() - 13 dígitos numéricos
+     • validarPrecio() - Números con hasta 2 decimales
+     • validarNombreProducto() - Letras, números y espacios
+     • validarStock() - Números enteros positivos
+     • validarEmail() - Formato email válido
+     • validarNombreUsuario() - Letras y espacios
+     • validarSiglaPais() - 2 letras mayúsculas
+     • validarNombrePais() - Letras y espacios
+     • validarID() - Números enteros positivos
+     • validarURL() - URLs genéricas (http, https, ftp)
+     • validarURLImagen() - URLs de imágenes (jpg, png, gif, etc.)
+     • validarURLVideo() - URLs de videos (mp4, webm, avi, etc.)
+     • validarURLYouTube() - URLs de YouTube
+     • validarURLSegura() - Solo HTTPS
+     • extraerDominio() - Extrae dominio de URL
+     • sanitizarURL() - Limpia URLs peligrosas
+
+4.2. En JavaScript (validaciones.js)
+     • Mismas funciones que en PHP, para validación en cliente
+     • Feedback visual con clases is-valid/is-invalid
+     • Validación en tiempo real mientras el usuario escribe
+
+--------------------------------------------------------------------------------
+5. CORRECCIÓN DE ZONA HORARIA
+--------------------------------------------------------------------------------
+
+5.1. Diagnóstico:
+     • Localhost: America/Santiago (UTC-3)
+     • Servidor: America/Chicago (UTC-5)
+     • MySQL en servidor guardaba fechas en hora Chicago
+
+5.2. Soluciones aplicadas:
+     • SQL: SET GLOBAL time_zone = '-03:00'
+     • SQL: SET time_zone = '-03:00'
+     • PHP: Detección automática de entorno en producto-ver.php
+     • PHP: Conversión condicional (Chicago → Chile solo en servidor)
+
+5.3. Código implementado:
+```php
+$es_localhost = ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1');
+if ($es_localhost) {
+    $fecha = new DateTime($fecha_bd);
+} else {
+    $fecha = new DateTime($fecha_bd, new DateTimeZone('America/Chicago'));
+    $fecha->setTimezone(new DateTimeZone('America/Santiago'));
+}
+EXPORTACIONES CORREGIDAS
+
+6.1. Excel (exportar_excel.php):
+• Genera archivo .xls con formato HTML
+• Convierte iconos ✅ → "Sí", ❌ → "No"
+• Mantiene formato de precios ($1.200)
+
+6.2. PDF (tabla_pro.js):
+• Usa jsPDF y autotable
+• Excluye columna de acciones
+• Título dinámico según página
+
+6.3. Impresión (tabla_pro.js):
+• Abre ventana emergente
+• Imprime automáticamente al cargar
+• Se cierra después de imprimir o cancelar
+
+FILTRO DE CATEGORÍAS EN PRODUCTOS
+
+7.1. Implementación:
+• Select de categorías en productos.php
+• Endpoint modificado para recibir parámetro 'categoria'
+• JavaScript actualizado para incluir filtro en peticiones
+
+7.2. Código clave (tabla_pro.js):
+
+javascript
+const filtroCategoria = document.querySelector("#filtroCategoria");
+if (filtroCategoria) {
+    filtroCategoria.addEventListener("change", function (e) {
+        categoria = parseInt(e.target.value) || 0;
+        pagina = 1;
+        cargarTabla();
+    });
+}
+PRUEBAS REALIZADAS
+
+8.1. Validaciones (test_validaciones.php):
+• 42 pruebas ejecutadas
+• 100% de aciertos
+• URLs válidas e inválidas correctamente identificadas
+
+8.2. Zona horaria (test_hora.php):
+• Verificada configuración de MySQL
+• Confirmada hora correcta en ambos entornos
+
+8.3. Creación de productos:
+• Localhost: ✅ Funciona
+• Servidor: ✅ Funciona
+
+8.4. Exportaciones:
+• Excel: ✅ Formato correcto, columna Tienda visible
+• PDF: ✅ Genera archivo correctamente
+• Impresión: ✅ Ventana se abre y cierra automáticamente
+
+8.5. Filtro de categorías:
+• Por mouse: ✅ Funciona
+• Con búsqueda: ✅ Compatible
+• Paginación: ✅ Se actualiza correctamente
+
+LECCIONES APRENDIDAS
+
+• La zona horaria debe ser consistente en BD, PHP y servidor
+• Las validaciones centralizadas facilitan el mantenimiento
+• La detección de entorno (localhost vs servidor) es crucial
+• Los eventos change en select pueden no dispararse; a veces hay que reemplazar el elemento
+• Excel interpreta los números de forma diferente; usar HTML para mantener formato
+• Siempre respaldar datos antes de modificar estructura de tablas
+
+ARCHIVOS PENDIENTES DE REVISIÓN (OPCIONAL)
+
+• agregar_ciudad.php
+• agregar_comuna.php
+• agregar_region.php
+• eliminar_.php (varios archivos)
+• get_.php (endpoints AJAX)
+• login.php
+• perfil.php
+
+CONCLUSIÓN
+
+El sistema ahora funciona correctamente en ambos entornos con:
+✓ Validaciones centralizadas y probadas
+✓ Fechas correctas en localhost y servidor
+✓ Exportaciones funcionando (Excel, PDF, impresión)
+✓ Filtro de categorías operativo
+✓ Código más mantenible y organizado
+

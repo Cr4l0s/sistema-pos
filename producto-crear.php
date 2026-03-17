@@ -2,7 +2,7 @@
 require 'db.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,7 @@ require 'db.php';
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -25,20 +26,22 @@ require 'db.php';
                         </h4>
                     </div>
                     <div class="card-body">
-                        <form action="producto-acciones.php" method="POST">
+                        <form action="producto-acciones.php" method="POST" onsubmit="return validarFormularioProducto()">
                             <!-- Fila 1: Nombre y Código -->
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label>Nombre del Producto</label>
-                                    <input type="text" class="form-control" name="nombre_producto" required>
+                                    <label>Nombre del Producto <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="nombre_producto" id="nombre_producto" required>
+                                    <small class="text-muted">Solo letras, números y espacios</small>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Código de Barras</label>
-                                    <input type="text" class="form-control" name="codigo_barras">
+                                    <input type="text" class="form-control" name="codigo_barras" id="codigo_barras" maxlength="13">
+                                    <small class="text-muted">13 dígitos numéricos</small>
                                 </div>
                             </div>
 
-                            <!-- Fila 2: Descripción (sola) -->
+                            <!-- Fila 2: Descripción -->
                             <div class="mb-3">
                                 <label>Descripción</label>
                                 <textarea class="form-control" name="descripcion" rows="3"></textarea>
@@ -60,15 +63,15 @@ require 'db.php';
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Precio de Costo</label>
-                                    <input type="number" step="0.01" class="form-control" name="precio_compras" value="0.00" required>
+                                    <input type="number" step="0.01" class="form-control" name="precio_compras" id="precio_compras" value="0.00">
                                 </div>
                             </div>
 
                             <!-- Fila 4: Precio de Venta y Mostrar en Tienda -->
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label>Precio de Venta</label>
-                                    <input type="number" step="0.01" class="form-control" name="precio_venta" required>
+                                    <label>Precio de Venta <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" name="precio_venta" id="precio_venta" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Mostrar en Tienda Virtual</label>
@@ -83,11 +86,11 @@ require 'db.php';
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label>Stock Actual</label>
-                                    <input type="number" class="form-control" name="stock_actual" value="0">
+                                    <input type="number" class="form-control" name="stock_actual" id="stock_actual" value="0" min="0">
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Stock Mínimo</label>
-                                    <input type="number" class="form-control" name="stock_minimo" value="0">
+                                    <input type="number" class="form-control" name="stock_minimo" id="stock_minimo" value="0" min="0">
                                 </div>
                             </div>
 
@@ -102,6 +105,13 @@ require 'db.php';
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="validaciones.js"></script>
+    <script>
+        // Permitir solo números en el campo código de barras
+        document.getElementById('codigo_barras').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
 </body>
 
 </html>

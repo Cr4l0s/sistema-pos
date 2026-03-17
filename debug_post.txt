@@ -180,3 +180,39 @@ Array
     [nombrePais] => CHILE
 )
 
+2026-03-17 06:34:26 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-17 06:35:22 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => AF
+    [nombrePais] => CHAD
+    [monedas] => Array
+        (
+            [0] => 22
+        )
+
+)
+
+2026-03-17 06:35:47 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 209
+    [siglaPais] => AF
+    [nombrePais] => CHAD
+)
+
+2026-03-17 20:40:35 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
