@@ -62,7 +62,7 @@ if (isset($_POST['editar_pais'])) {
     $update->bind_param("ssi", $siglaPais, $nombrePais, $idPais);
 
     if ($update->execute()) {
-        $_SESSION['mensaje'] = 'País actualizado correctamente';
+        $_SESSION['mensaje'] = "País '$nombrePais' actualizado correctamente";
         $_SESSION['tipo_mensaje'] = 'success';
     } else {
         $_SESSION['mensaje'] = 'Error al actualizar: ' . $update->error;
@@ -147,7 +147,7 @@ if (isset($_POST['create_pais'])) {
         }
 
         $conn->commit();
-        $_SESSION['mensaje'] = 'País creado exitosamente.';
+        $_SESSION['mensaje'] = "País '$nombrePais' creado exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
         header("Location: menu.php?page=pais-ver.php&id=$idPais");
         exit;
@@ -162,7 +162,7 @@ if (isset($_POST['create_pais'])) {
 }
 
 // ============================================
-// ELIMINAR PAÍS
+// ELIMINAR PAÍS (CORREGIDO - Con nombre del país)
 // ============================================
 if (isset($_POST['borrar_pais'])) {
     $idPais = intval($_POST['borrar_pais']);
@@ -175,15 +175,26 @@ if (isset($_POST['borrar_pais'])) {
         exit;
     }
 
+    // 🔴 NUEVO: Obtener nombre del país antes de eliminarlo
+    $sql_nombre = "SELECT nombrePais FROM paises WHERE idPais = ? AND vigente = 1";
+    $stmt_nombre = $conn->prepare($sql_nombre);
+    $stmt_nombre->bind_param("i", $idPais);
+    $stmt_nombre->execute();
+    $result_nombre = $stmt_nombre->get_result();
+    $pais = $result_nombre->fetch_assoc();
+    $nombrePais = $pais ? $pais['nombrePais'] : 'desconocido';
+    $stmt_nombre->close();
+
+    // Eliminar país (borrado lógico)
     $sql = "UPDATE paises SET vigente = 0 WHERE idPais = ? AND vigente = 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idPais);
 
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'País eliminado exitosamente.';
+        $_SESSION['mensaje'] = "País '$nombrePais' eliminado exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
     } else {
-        $_SESSION['mensaje'] = 'Error al eliminar país: ' . $stmt->error;
+        $_SESSION['mensaje'] = "Error al eliminar país '$nombrePais': " . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
     }
     $stmt->close();

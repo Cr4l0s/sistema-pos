@@ -1,0 +1,61 @@
+QA a desarrollo POS / 17-03-2026
+--------------------------------
+
+Los casos considerados erróneos o por mejorar se indican con un (*) al comienzo de la línea.
+
+MANTENEDORES
+
+1. PAISES
+
+Se listan todos los países en grupos de a 10 o según lo seleccionado en combo con opciones predefinidas de 10, 25, 50 o 100.
+(*) En la fila inferior se ven todas las páginas disponibles.  Ya no hay Anterior ni Siguiente.
+(*) Al seleccionar una página, no es posible revisar cuál es la página seleccionada.
+(*) Al ordenar por columnas, en la columna Moneda y en la columna Símbolo aparece un error: Error al cargar datos
+En las otras columnas funciona bien.
+
+(*) La opción de Exportar a Excel lo hace en formato .xls, el cual es un formato antiguo de Excel.  En la actualidad se utiliza con más frecuencia el formato .xlsx, correspondiente al formato Excel 365.
+
+(*) La exportación a Excel solo lista los países de la ventana activa. No es posible exportar todos los paises almacenados.
+
+(*) La exportación a PDF también exporta solo los paìses de la ventana activa. No es posible exportar todos los paises almacenados.
+
+(*) La opción de Imprimir muestra una prevista formateada de la ventana activa.  La impresión sale correcta, copia fiel de la prevista. No es posible imprimir todos los paises almacenados.
+
+La acción de Ver muestra la sigla del paìs en color azul al lado del texto Ver País.
+(*) Se muestran 3 columnas: Sigla, que contiene la palabra "Nombre".  La segunda columna tiene como título la sigla de la moneda.
+La tercera columna muestra las monedas del Paìs con el código, nombre y símbolo de la moneda.  Además indica si es la moneda principal.
+
+(*) Agregar Paìs: No permite ingresar una nueva moneda libremente, obliga a utilizar el buscador de monedas registradas.
+Si no se selecciona una moneda del listado, no permite grabar el nuevo paìs.
+
+(*) Al editar e intentar agregar una nueva moneda, no lo permite.  Se debe seleccionar una moneda de la lista.
+
+Al eliminar un país, lo hace correctamente mediante confirmación por mensaje Javascript mostrando un mensaje "País eliminado correctamente".
+(*) Sería útil mostrar en el mensaje cual es el país que se acaba de eliminar.
+
+(*) Al ingresar un par de caracteres en la zona de Buscar, se filtran los países que cumplen con la condición, pero en la parte inferior de la ventana se siguen mostrando toda la cantidad de páginas disponibles.
+Probé buscando el texto "or" y selector en 25; se mostraron 14 países.  Al volver al selector en 10 y hacer clic en la segunda página se muestran los 4 paìses restantes.  Al hacer clic en la tercera, cuarta y cualquier otra página, no hace nada.  Lo más adecuado sería limitar la cantidad de páginas al caso de la búsqueda.
+
+2. REGIONES
+
+Se selecciona un país de la lista y se presiona botón Gestionar Regiones.
+
+En la parte superior se muestra el nombre del país seleccionado y a continuación el listado de Regiones asociadas al país.
+
+(*) Al seleccionar la opción Ver en una región cualquiera, se muestra los datos del nombre y el código de la región. Para el nombre del país, aparece el texto "Paìs no encontrado".
+
+La Edición funciona correctamente.
+
+La opción de Agregar Región funciona correctamente.
+
+La opción de Eliminar funciona correctamente, mediante mensaje Javascript mostrando el mensaje "Región eliminada correctamente". El mensaje no muestra datgos de la región eliminada.
+
+3. CIUDADES
+
+Se solicita selecionar un país de la lista.  En el primer lugar de la lista aparece un paìs por defecto. Selecciono el paìs.
+
+(*) Al hacer clic en la combobox para seleccionar Región, no muestra nada.  No es posible gestionar Ciudades.
+
+
+
+

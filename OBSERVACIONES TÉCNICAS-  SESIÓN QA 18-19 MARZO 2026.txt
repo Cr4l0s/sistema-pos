@@ -1,0 +1,182 @@
+================================================================================
+INFORME TÉCNICO - CORRECCIONES POST-QA
+Fecha: 19-03-2026
+Proyecto: POS - Módulo de Mantenedores (Tabla Pro)
+================================================================================
+
+1. OBJETIVO
+--------------------------------------------------------------------------------
+Resolver los problemas identificados en el QA del 17-03-2026, enfocándose en:
+- Corrección de paginación y ordenamiento en mantenedores
+- Exportaciones completas (todos los registros, sin filtros)
+- Mejora en mensajes de confirmación y éxito
+- Corrección de vistas con datos incorrectos
+
+
+2. ARCHIVOS MODIFICADOS
+--------------------------------------------------------------------------------
+
+2.1. JavaScript Principal
+-------------------------
+📁 components/tabla_pro/tabla_pro.js
+
+Cambios realizados:
+- Separación de URLs: construirUrlVista() vs construirUrlExportacion()
+- Exportaciones ahora usan filas=-1 para obtener TODOS los registros
+- Exportaciones ignoran filtros de búsqueda y categoría (buscar='', categoria=0)
+- PDF: Conversión de íconos ✅/❌ a texto "Sí"/"No"
+- Excel: Cambio de formato .xls → .xlsx (MIME: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet)
+- Paginación: Mejora en detección de página activa
+
+
+2.2. Endpoints PHP
+------------------
+
+📁 components/tabla_pro/tabla_endpoint_paises.php
+------------------------------------------------
+✅ Paginación con botones Anterior/Siguiente y página activa visible
+✅ Ordenamiento por Moneda y Símbolo corregido
+✅ Conteo para paginación optimizado (COUNT simple sin JOINs cuando no hay búsqueda)
+✅ Paginación se actualiza correctamente al buscar
+✅ Soporte para filas=-1 (todos los registros)
+
+📁 components/tabla_pro/tabla_endpoint_regiones.php
+---------------------------------------------------
+✅ Corregido error "País no encontrado" en vista de región
+✅ Soporte para filas=-1
+
+📁 components/tabla_pro/tabla_endpoint_ciudades.php
+---------------------------------------------------
+✅ Corregido combobox de regiones vacío al gestionar ciudades
+✅ Soporte para filas=-1
+
+📁 components/tabla_pro/tabla_endpoint_usuarios.php
+---------------------------------------------------
+✅ Ordenamiento por apellidos corregido
+✅ Soporte para filas=-1
+
+📁 components/tabla_pro/tabla_endpoint_productos.php
+---------------------------------------------------
+✅ Estructura alineada con la vista (orden de columnas)
+✅ Columna Tienda con íconos ✅/❌
+✅ Stock bajo en rojo (stock_actual <= stock_minimo)
+✅ Soporte para filas=-1
+
+
+2.3. Vistas y Acciones
+----------------------
+
+📁 eliminar_pais.php
+--------------------
+✅ Consulta previa para obtener nombre del país
+✅ Mensajes de éxito/error incluyen nombre del país
+✅ Logs para depuración
+
+📁 acciones-pais.php
+--------------------
+✅ Mensajes de creación/edición/eliminación incluyen nombre del país
+
+📁 ver_region.php
+-----------------
+✅ Corregida consulta para mostrar nombre del país correctamente
+
+📁 ciudades.php
+---------------
+✅ Corregida carga de combobox de regiones
+
+
+3. DETALLE TÉCNICO DE SOLUCIONES
+--------------------------------------------------------------------------------
+
+3.1. Problema: Exportaciones solo página actual
+------------------------------------------------
+Solución: Crear dos funciones de URL en tabla_pro.js
+
+function construirUrlVista() {
+    // Usa pagina, filas actuales, respeta filtros
+}
+
+function construirUrlExportacion() {
+    // Usa filas=-1, pagina=1, buscar='', categoria=0
+    // sin_acciones=1 para ocultar botones
+}
+
+3.2. Problema: Error al ordenar por Moneda/Símbolo
+---------------------------------------------------
+Solución: Corregir switch de ordenamiento y JOINs
+
+switch ($orden_validado) {
+    case 'codMoneda': $campo_orden = 'm.codMoneda'; break;
+    case 'simbolo_moneda': $campo_orden = 'm.simbolo'; break;
+    // ...
+}
+
+3.3. Problema: Paginación no se actualiza al buscar
+----------------------------------------------------
+Solución: Separar consultas de conteo
+
+// Sin búsqueda: COUNT simple
+$sql_total = "SELECT COUNT(*) as total FROM paises p WHERE p.vigente = 1";
+
+// Con búsqueda: COUNT con JOINs
+$sql_total = "SELECT COUNT(DISTINCT p.idPais) as total ...";
+
+3.4. Problema: PDF muestra '—' en columna Tienda
+-------------------------------------------------
+Solución: Convertir íconos a texto en el procesamiento
+
+if (valor.includes('✅')) {
+    valor = 'Sí';
+} else if (valor.includes('❌')) {
+    valor = 'No';
+}
+
+3.5. Problema: Mensaje eliminar no muestra nombre
+--------------------------------------------------
+Solución: Obtener nombre antes de eliminar
+
+$sql_nombre = "SELECT nombrePais FROM paises WHERE idPais = ?";
+// ... luego usar en mensaje
+$_SESSION['mensaje'] = "País '$nombrePais' eliminado correctamente.";
+
+
+4. PENDIENTES PARA PRÓXIMO SPRINT (Puntos 7,8,9 del QA)
+--------------------------------------------------------------------------------
+
+4.1. Ver País muestra columnas incorrectas
+- Archivo: pais-ver.php
+- Descripción: Muestra columnas desordenadas y títulos incorrectos
+
+4.2. Agregar/Editar país no permite moneda libre
+- Archivos: pais-crear.php, pais-editar.php
+- Descripción: Obliga a usar buscador, no permite ingreso manual de monedas
+
+
+5. VALIDACIONES REALIZADAS
+--------------------------------------------------------------------------------
+
+✅ Paginación funcional en todos los mantenedores
+✅ Ordenamiento por todas las columnas
+✅ Búsqueda con actualización de páginas
+✅ Exportaciones (Excel, PDF, Impresión) con todos los registros
+✅ PDF con valores correctos en columna Tienda (Sí/No)
+✅ Mensajes de eliminación con nombre del país
+✅ Vistas de región con país correcto
+✅ Combobox de regiones en ciudades funcional
+
+
+6. COMANDO DE COMMIT
+--------------------------------------------------------------------------------
+
+git add .
+git commit -m "FIX(global): Correcciones post-QA 17-03-2026
+
+- PAISES: Paginación, ordenamiento, exportaciones completas, mensajes
+- REGIONES: Corregido 'País no encontrado' en vista
+- CIUDADES: Corregido combobox de regiones
+- Exportaciones: Excel .xlsx, PDF con Sí/No, todos los registros
+- Mensajes: Incluyen nombre del país en confirmación y éxito"
+
+================================================================================
+FIN DEL INFORME
+================================================================================

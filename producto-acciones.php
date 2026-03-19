@@ -7,6 +7,12 @@ if (session_status() == PHP_SESSION_NONE) {
 require 'db.php';
 require 'validaciones.php'; // Incluir validaciones
 
+// Al principio del archivo, después de los requires
+date_default_timezone_set('America/Santiago');
+
+// Luego, si insertas fecha manualmente, usa:
+$fecha_actual = date('Y-m-d H:i:s');
+
 // ============================================
 // CREAR PRODUCTO
 // ============================================
