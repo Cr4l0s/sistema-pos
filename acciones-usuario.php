@@ -18,9 +18,7 @@ if (isset($_POST['create_usuario'])) {
     $fonocelular2 = limpiarInput(trim($_POST['fonocelular2']));
     $vigente = 1;
 
-    // ===== VALIDACIONES =====
-    
-    // Validar nombres (solo letras y espacios)
+    // Validaciones...
     if (!validarNombreUsuario($nombres)) {
         $_SESSION['mensaje'] = 'El nombre contiene caracteres no válidos';
         $_SESSION['tipo_mensaje'] = 'danger';
@@ -28,7 +26,6 @@ if (isset($_POST['create_usuario'])) {
         exit;
     }
     
-    // Validar email
     if (!validarEmail($email)) {
         $_SESSION['mensaje'] = 'El email no es válido';
         $_SESSION['tipo_mensaje'] = 'danger';
@@ -36,7 +33,6 @@ if (isset($_POST['create_usuario'])) {
         exit;
     }
     
-    // Validar contraseña
     if (strlen($password) < 6) {
         $_SESSION['mensaje'] = 'La contraseña debe tener al menos 6 caracteres';
         $_SESSION['tipo_mensaje'] = 'danger';
@@ -59,7 +55,6 @@ if (isset($_POST['create_usuario'])) {
     }
     $check_stmt->close();
 
-    // Hash de contraseña
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO usuarios (nombres, ApPaterno, ApMaterno, NombreUsuario, fonofijo, fonocelular1, fonocelular2, email, password, vigente) 
@@ -69,16 +64,37 @@ if (isset($_POST['create_usuario'])) {
     $stmt->bind_param("sssssssssi", $nombres, $apPaterno, $apMaterno, $username, $fonofijo, $fonocelular1, $fonocelular2, $email, $password_hash, $vigente);
 
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Usuario creado exitosamente.';
+        $id_usuario = $stmt->insert_id;
+        $_SESSION['mensaje'] = "Usuario '$username' creado exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
+        $stmt->close();
+        
+        // 🔴 REDIRIGIR CON POST
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirigiendo...</title>
+        </head>
+        <body>
+            <form id="redirectForm" action="menu.php" method="POST">
+                <input type="hidden" name="page" value="usuario-ver.php">
+                <input type="hidden" name="idUsuario" value="<?= $id_usuario ?>">
+            </form>
+            <script>
+                document.getElementById('redirectForm').submit();
+            </script>
+        </body>
+        </html>
+        <?php
+        exit;
     } else {
         $_SESSION['mensaje'] = 'Error al crear usuario: ' . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
+        $stmt->close();
+        header('Location: menu.php?page=usuario-crear.php');
+        exit;
     }
-    $stmt->close();
-    
-    header('Location: menu.php?page=inicio-usuarios.php');
-    exit;
 }
 
 // ============================================
@@ -87,13 +103,22 @@ if (isset($_POST['create_usuario'])) {
 if (isset($_POST['update_usuario'])) {
     $usuario_id = intval($_POST['usuario_id']);
     
-    // Validar ID
     if (!validarID($usuario_id)) {
         $_SESSION['mensaje'] = 'ID de usuario no válido';
         $_SESSION['tipo_mensaje'] = 'danger';
         header('Location: menu.php?page=inicio-usuarios.php');
         exit;
     }
+    
+    // 🔴 NUEVO: Obtener nombre actual antes de actualizar
+    $sql_nombre = "SELECT NombreUsuario FROM usuarios WHERE idUsuario = ? AND vigente = 1";
+    $stmt_nombre = $conn->prepare($sql_nombre);
+    $stmt_nombre->bind_param("i", $usuario_id);
+    $stmt_nombre->execute();
+    $result_nombre = $stmt_nombre->get_result();
+    $usuario_actual = $result_nombre->fetch_assoc();
+    $nombre_original = $usuario_actual ? $usuario_actual['NombreUsuario'] : 'desconocido';
+    $stmt_nombre->close();
     
     $nombres = limpiarInput(trim($_POST['nombres']));
     $apPaterno = limpiarInput(trim($_POST['apPaterno']));
@@ -106,8 +131,7 @@ if (isset($_POST['update_usuario'])) {
     $password = $_POST['password'] ?? '';
     $fecha_update = date('Y-m-d H:i:s');
 
-    // ===== VALIDACIONES =====
-    
+    // Validaciones...
     if (!validarNombreUsuario($nombres)) {
         $_SESSION['mensaje'] = 'El nombre contiene caracteres no válidos';
         $_SESSION['tipo_mensaje'] = 'danger';
@@ -148,16 +172,36 @@ if (isset($_POST['update_usuario'])) {
     }
 
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Usuario actualizado exitosamente.';
+        $_SESSION['mensaje'] = "Usuario '$username' actualizado correctamente.";
         $_SESSION['tipo_mensaje'] = 'success';
+        $stmt->close();
+        
+        // 🔴 REDIRIGIR CON POST
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirigiendo...</title>
+        </head>
+        <body>
+            <form id="redirectForm" action="menu.php" method="POST">
+                <input type="hidden" name="page" value="usuario-ver.php">
+                <input type="hidden" name="idUsuario" value="<?= $usuario_id ?>">
+            </form>
+            <script>
+                document.getElementById('redirectForm').submit();
+            </script>
+        </body>
+        </html>
+        <?php
+        exit;
     } else {
-        $_SESSION['mensaje'] = 'Error al actualizar usuario: ' . $stmt->error;
+        $_SESSION['mensaje'] = "Error al actualizar usuario '$nombre_original': " . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
+        $stmt->close();
+        header("Location: menu.php?page=usuario-editar.php?id=$usuario_id");
+        exit;
     }
-    $stmt->close();
-    
-    header('Location: menu.php?page=inicio-usuarios.php');
-    exit;
 }
 
 // ============================================
@@ -166,7 +210,6 @@ if (isset($_POST['update_usuario'])) {
 if (isset($_POST['borrar_usuario'])) {
     $usuario_id = intval($_POST['borrar_usuario']);
     
-    // Validar ID
     if (!validarID($usuario_id)) {
         $_SESSION['mensaje'] = 'ID de usuario no válido';
         $_SESSION['tipo_mensaje'] = 'danger';
@@ -174,15 +217,25 @@ if (isset($_POST['borrar_usuario'])) {
         exit;
     }
     
+    // 🔴 NUEVO: Obtener nombre antes de eliminar
+    $sql_nombre = "SELECT NombreUsuario FROM usuarios WHERE idUsuario = ? AND vigente = 1";
+    $stmt_nombre = $conn->prepare($sql_nombre);
+    $stmt_nombre->bind_param("i", $usuario_id);
+    $stmt_nombre->execute();
+    $result_nombre = $stmt_nombre->get_result();
+    $usuario = $result_nombre->fetch_assoc();
+    $nombre_usuario = $usuario ? $usuario['NombreUsuario'] : 'desconocido';
+    $stmt_nombre->close();
+    
     $sql = "UPDATE usuarios SET vigente = 0 WHERE idUsuario = ? AND vigente = 1";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $usuario_id);
     
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Usuario eliminado exitosamente.';
+        $_SESSION['mensaje'] = "Usuario '$nombre_usuario' eliminado exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
     } else {
-        $_SESSION['mensaje'] = 'Error al eliminar usuario: ' . $stmt->error;
+        $_SESSION['mensaje'] = "Error al eliminar usuario '$nombre_usuario': " . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
     }
     $stmt->close();

@@ -1,0 +1,2381 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 20-03-2026 a las 22:50:29
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.0.30
+SET FOREIGN_KEY_CHECKS = 0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `practica_sventas_desa`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categorias`
+--
+
+DROP TABLE IF EXISTS `categorias`;
+CREATE TABLE `categorias` (
+  `id_categoria` int(11) NOT NULL,
+  `nombre_categoria` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `id_categoria_padre` int(11) DEFAULT NULL,
+  `activo` tinyint(4) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`id_categoria`, `nombre_categoria`, `descripcion`, `id_categoria_padre`, `activo`) VALUES
+(1, 'Electrónica', 'Productos electrónicos y gadgets', NULL, 1),
+(2, 'Ropa', 'Prendas de vestir', NULL, 1),
+(3, 'Alimentos', 'Productos alimenticios', NULL, 1),
+(4, 'Prueba', 'Probando', NULL, 0),
+(5, 'Prueba', 'Probando', NULL, 0),
+(6, 'Prueba', 'probando', NULL, 0),
+(7, 'Prueba', 'Probando', NULL, 0),
+(8, 'Prueba', '', NULL, 0),
+(9, 'Prueba', '', NULL, 0),
+(10, 'Bebidas', 'Bebidas gaseosas, aguas y jugos', NULL, 1),
+(11, 'Lácteos', 'Leche, quesos, yogurt y derivados', NULL, 1),
+(12, 'Carnes/Embutidos', 'Carnes frescas y procesadas', NULL, 1),
+(13, 'Hogar', 'Artículos para el hogar', NULL, 1),
+(14, 'Computadores', 'Computadores de escritorio y portátiles', 1, 1),
+(15, 'Tablets', 'Tablets y accesorios', 1, 1),
+(16, 'Celulares', 'Teléfonos móviles y smartphones', 1, 1),
+(17, 'Televisores', 'TV LED, OLED y Smart TV', 1, 1),
+(18, 'Audio', 'Equipos de sonido, parlantes y audífonos', 1, 1),
+(19, 'Cámaras', 'Cámaras fotográficas y de video', 1, 1),
+(20, 'Videojuegos', 'Consolas y videojuegos', 1, 1),
+(21, 'Accesorios Electrónicos', 'Cables, cargadores, adaptadores', 1, 1),
+(22, 'Componentes PC', 'Procesadores, RAM, discos duros', 1, 1),
+(23, 'Impresoras', 'Impresoras y multifuncionales', 1, 1),
+(24, 'Smart Home', 'Dispositivos para hogar inteligente', 1, 1),
+(25, 'Wearables', 'Relojes inteligentes y pulseras', 1, 1),
+(26, 'Proyectores', 'Proyectores y accesorios', 1, 1),
+(27, 'GPS', 'Navegadores GPS', 1, 1),
+(28, 'Radios', 'Radios portátiles y de auto', 1, 1),
+(29, 'Portátiles', 'Notebooks y laptops', 2, 1),
+(30, 'Desktop', 'Computadores de escritorio', 2, 1),
+(31, 'Todo en Uno', 'All-in-One', 2, 1),
+(32, 'Workstations', 'Estaciones de trabajo', 2, 1),
+(33, 'Servidores', 'Servidores empresariales', 2, 1),
+(34, 'Mini PC', 'Computadores compactos', 2, 1),
+(35, 'Tablets Convertibles', '2 en 1 laptop/tablet', 2, 1),
+(36, 'Chromebooks', 'Portátiles con Chrome OS', 2, 1),
+(37, 'iPhone', 'Teléfonos Apple', 4, 1),
+(38, 'Samsung', 'Teléfonos Samsung Galaxy', 4, 1),
+(39, 'Xiaomi', 'Teléfonos Xiaomi', 4, 1),
+(40, 'Motorola', 'Teléfonos Motorola', 4, 1),
+(41, 'Huawei', 'Teléfonos Huawei', 4, 1),
+(42, 'LG', 'Teléfonos LG', 4, 1),
+(43, 'Sony', 'Teléfonos Sony Xperia', 4, 1),
+(44, 'Google Pixel', 'Teléfonos Google', 4, 1),
+(45, 'OnePlus', 'Teléfonos OnePlus', 4, 1),
+(46, 'Accesorios Móviles', 'Fundas, protectores, cargadores', 4, 1),
+(47, 'Audífonos', 'Audífonos de todo tipo', 6, 1),
+(48, 'Parlantes', 'Parlantes portátiles y de escritorio', 6, 1),
+(49, 'Soundbars', 'Barras de sonido', 6, 1),
+(50, 'Equipos de Música', 'Minicomponentes y equipos', 6, 1),
+(51, 'Microfonos', 'Micrófonos profesionales', 6, 1),
+(52, 'Home Theater', 'Sistemas de cine en casa', 6, 1),
+(53, 'Amplificadores', 'Amplificadores de sonido', 6, 1),
+(54, 'Mixers', 'Mesas de mezclas', 6, 1),
+(55, 'Hombre', 'Ropa de hombre', 2, 1),
+(56, 'Mujer', 'Ropa de mujer', 2, 1),
+(57, 'Niños', 'Ropa infantil', 2, 1),
+(58, 'Bebés', 'Ropa para bebés', 2, 1),
+(59, 'Deportes', 'Ropa deportiva', 2, 1),
+(60, 'Accesorios Vestir', 'Cinturones, corbatas, pañuelos', 2, 1),
+(61, 'Calzado', 'Zapatos y zapatillas', 2, 1),
+(62, 'Ropa Interior', 'Ropa interior y pijamas', 2, 1),
+(63, 'Trajes', 'Trajes formales', 2, 1),
+(64, 'Abrigos', 'Chaquetas y abrigos', 2, 1),
+(65, 'Poleras', 'Poleras hombre', 45, 1),
+(66, 'Camisas', 'Camisas hombre', 45, 1),
+(67, 'Pantalones', 'Pantalones hombre', 45, 1),
+(68, 'Jeans', 'Jeans hombre', 45, 1),
+(69, 'Chaquetas', 'Chaquetas hombre', 45, 1),
+(70, 'Suéteres', 'Suéteres hombre', 45, 1),
+(71, 'Trajes', 'Trajes hombre', 45, 1),
+(72, 'Ropa Deportiva', 'Ropa deportiva hombre', 45, 1),
+(73, 'Ropa Interior', 'Ropa interior hombre', 45, 1),
+(74, 'Vestidos', 'Vestidos mujer', 46, 1),
+(75, 'Blusas', 'Blusas mujer', 46, 1),
+(76, 'Faldas', 'Faldas mujer', 46, 1),
+(77, 'Pantalones', 'Pantalones mujer', 46, 1),
+(78, 'Jeans', 'Jeans mujer', 46, 1),
+(79, 'Chaquetas', 'Chaquetas mujer', 46, 1),
+(80, 'Ropa Deportiva', 'Ropa deportiva mujer', 46, 1),
+(81, 'Ropa Interior', 'Ropa interior mujer', 46, 1),
+(82, 'Zapatillas', 'Zapatillas deportivas', 51, 1),
+(83, 'Zapatos', 'Zapatos formales', 51, 1),
+(84, 'Botas', 'Botas de todo tipo', 51, 1),
+(85, 'Sandalias', 'Sandalias y chalas', 51, 1),
+(86, 'Ojotas', 'Ojotas de goma', 51, 1),
+(87, 'Zapatos Seguridad', 'Calzado de seguridad', 51, 1),
+(88, 'Frutas', 'Frutas frescas', 3, 1),
+(89, 'Verduras', 'Verduras y hortalizas', 3, 1),
+(90, 'Carnes', 'Carnes rojas y blancas', 3, 1),
+(91, 'Pescados', 'Pescados y mariscos', 3, 1),
+(92, 'Lácteos', 'Lácteos y derivados', 3, 1),
+(93, 'Panadería', 'Pan y productos de panadería', 3, 1),
+(94, 'Bebidas', 'Bebidas y jugos', 3, 1),
+(95, 'Congelados', 'Alimentos congelados', 3, 1),
+(96, 'Enlatados', 'Alimentos en conserva', 3, 1),
+(97, 'Despensa', 'Productos de despensa', 3, 1),
+(98, 'Golosinas', 'Dulces y snacks', 3, 1),
+(99, 'Vinos', 'Vinos y licores', 3, 1),
+(100, 'Vacuno', 'Carne de vacuno', 78, 1),
+(101, 'Cerdo', 'Carne de cerdo', 78, 1),
+(102, 'Pollo', 'Carne de pollo', 78, 1),
+(103, 'Pavo', 'Carne de pavo', 78, 1),
+(104, 'Cordero', 'Carne de cordero', 78, 1),
+(105, 'Embutidos', 'Salchichas, chorizos, longanizas', 78, 1),
+(106, 'Hamburguesas', 'Hamburguesas de carne', 78, 1),
+(107, 'Gaseosas', 'Bebidas carbonatadas', 82, 1),
+(108, 'Aguas', 'Agua mineral y con gas', 82, 1),
+(109, 'Jugos', 'Jugos naturales y néctares', 82, 1),
+(110, 'Bebidas Energéticas', 'Bebidas para deportistas', 82, 1),
+(111, 'Bebidas Isotónicas', 'Bebidas rehidratantes', 82, 1),
+(112, 'Muebles', 'Muebles para el hogar', 13, 1),
+(113, 'Decoración', 'Artículos de decoración', 13, 1),
+(114, 'Cocina', 'Utensilios de cocina', 13, 1),
+(115, 'Baño', 'Accesorios de baño', 13, 1),
+(116, 'Dormitorio', 'Artículos para dormitorio', 13, 1),
+(117, 'Living', 'Artículos para living', 13, 1),
+(118, 'Jardín', 'Artículos de jardinería', 13, 1),
+(119, 'Herramientas', 'Herramientas manuales', 13, 1),
+(120, 'Iluminación', 'Lámparas e iluminación', 13, 1),
+(121, 'Organización', 'Organizadores y almacenamiento', 13, 1),
+(122, 'Sillas', 'Sillas de todo tipo', 93, 1),
+(123, 'Mesas', 'Mesas de comedor y centro', 93, 1),
+(124, 'Sofás', 'Sofás y sillones', 93, 1),
+(125, 'Camas', 'Camas y bases', 93, 1),
+(126, 'Armarios', 'Armarios y roperos', 93, 1),
+(127, 'Estanterías', 'Estantes y bibliotecas', 93, 1),
+(128, 'Escritorios', 'Escritorios de trabajo', 93, 1),
+(129, 'Cómodas', 'Cómodas y tocadores', 93, 1),
+(130, 'Ollas', 'Ollas y sartenes', 95, 1),
+(131, 'Cubiertos', 'Cuchillos y cubiertos', 95, 1),
+(132, 'Vajilla', 'Platos y tazas', 95, 1),
+(133, 'Electrodomésticos', 'Pequeños electrodomésticos', 95, 1),
+(134, 'Utensilios', 'Utensilios de cocina', 95, 1),
+(135, 'Cristalería', 'Vasos y copas', 95, 1),
+(136, 'Repostería', 'Artículos para repostería', 95, 1),
+(137, 'Organizadores Cocina', 'Organizadores para cocina', 95, 1),
+(138, 'Refrigeradores', 'Refrigeradores y frigobares', 108, 1),
+(139, 'Lavadoras', 'Lavadoras y secadoras', 108, 1),
+(140, 'Microondas', 'Hornos microondas', 108, 1),
+(141, 'Cocinas', 'Cocinas y hornos', 108, 1),
+(142, 'Lavaplatos', 'Lavavajillas', 108, 1),
+(143, 'Pequeños Electro', 'Tostadoras, hervidores, etc.', 108, 1),
+(144, 'Aspiradoras', 'Aspiradoras y enceradoras', 108, 1),
+(145, 'Climatización', 'Calefactores y ventiladores', 108, 1),
+(146, 'Fútbol', 'Artículos de fútbol', NULL, 1),
+(147, 'Tenis', 'Artículos de tenis', NULL, 1),
+(148, 'Básquetbol', 'Artículos de básquetbol', NULL, 1),
+(149, 'Gimnasio', 'Artículos para gimnasio', NULL, 1),
+(150, 'Running', 'Artículos para correr', NULL, 1),
+(151, 'Ciclismo', 'Artículos de ciclismo', NULL, 1),
+(152, 'Natación', 'Artículos de natación', NULL, 1),
+(153, 'Camping', 'Artículos para camping', NULL, 1),
+(154, 'Pesca', 'Artículos de pesca', NULL, 1),
+(155, 'Caza', 'Artículos de caza', NULL, 1),
+(156, 'Ficción', 'Libros de ficción', NULL, 1),
+(157, 'No Ficción', 'Libros de no ficción', NULL, 1),
+(158, 'Ciencia', 'Libros científicos', NULL, 1),
+(159, 'Historia', 'Libros de historia', NULL, 1),
+(160, 'Biografías', 'Biografías y memorias', NULL, 1),
+(161, 'Infantiles', 'Libros para niños', NULL, 1),
+(162, 'Juveniles', 'Libros para jóvenes', NULL, 1),
+(163, 'Técnicos', 'Libros técnicos y profesionales', NULL, 1),
+(164, 'Idiomas', 'Libros para aprender idiomas', NULL, 1),
+(165, 'Arte', 'Libros de arte', NULL, 1),
+(166, 'Prueba 3', 'prueba', NULL, 1),
+(167, 'Prueba 4', 'prueba 4', NULL, 1),
+(168, 'Prueba 4', NULL, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ciudades`
+--
+
+DROP TABLE IF EXISTS `ciudades`;
+CREATE TABLE `ciudades` (
+  `idCiudad` int(11) NOT NULL,
+  `idRegion` int(11) NOT NULL,
+  `nombreCiudad` varchar(100) NOT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ciudades`
+--
+
+INSERT INTO `ciudades` (`idCiudad`, `idRegion`, `nombreCiudad`, `vigente`) VALUES
+(1, 1, 'Arica', 1),
+(2, 1, 'Camarones', 1),
+(3, 1, 'Putre', 1),
+(4, 1, 'General Lagos', 1),
+(5, 2, 'Iquique', 1),
+(6, 2, 'Alto Hospicio', 1),
+(7, 2, 'Pozo Almonte', 1),
+(8, 2, 'Camiña', 1),
+(9, 2, 'Colchane', 1),
+(10, 2, 'Huara', 1),
+(11, 2, 'Pica', 1),
+(12, 3, 'Antofagasta', 1),
+(13, 3, 'Mejillones', 1),
+(14, 3, 'Sierra Gorda', 1),
+(15, 3, 'Taltal', 1),
+(16, 3, 'Calama', 1),
+(17, 3, 'Ollagüe', 1),
+(18, 3, 'San Pedro de Atacama', 1),
+(19, 3, 'Tocopilla', 1),
+(20, 3, 'María Elena', 1),
+(21, 4, 'Copiapó', 1),
+(22, 4, 'Caldera', 1),
+(23, 4, 'Tierra Amarilla', 1),
+(24, 4, 'Chañaral', 1),
+(25, 4, 'Diego de Almagro', 1),
+(26, 4, 'Vallenar', 1),
+(27, 4, 'Alto del Carmen', 1),
+(28, 4, 'Freirina', 1),
+(29, 4, 'Huasco', 1),
+(30, 5, 'La Serena', 1),
+(31, 5, 'Coquimbo', 1),
+(32, 5, 'Andacollo', 1),
+(33, 5, 'La Higuera', 1),
+(34, 5, 'Paiguano', 1),
+(35, 5, 'Vicuña', 1),
+(36, 5, 'Illapel', 1),
+(37, 5, 'Canela', 1),
+(38, 5, 'Los Vilos', 1),
+(39, 5, 'Salamanca', 1),
+(40, 5, 'Ovalle', 1),
+(41, 5, 'Combarbalá', 1),
+(42, 5, 'Monte Patria', 1),
+(43, 5, 'Punitaqui', 1),
+(44, 5, 'Río Hurtado', 1),
+(45, 6, 'Valparaíso', 1),
+(46, 6, 'Casablanca', 1),
+(47, 6, 'Concón', 1),
+(48, 6, 'Juan Fernández', 1),
+(49, 6, 'Puchuncaví', 1),
+(50, 6, 'Quintero', 1),
+(51, 6, 'Viña del Mar', 1),
+(52, 6, 'Isla de Pascua', 1),
+(53, 6, 'Los Andes', 1),
+(54, 6, 'Calle Larga', 1),
+(55, 6, 'Rinconada', 1),
+(56, 6, 'San Esteban', 1),
+(57, 6, 'La Ligua', 1),
+(58, 6, 'Cabildo', 1),
+(59, 6, 'Papudo', 1),
+(60, 6, 'Petorca', 1),
+(61, 6, 'Zapallar', 1),
+(62, 6, 'Quillota', 1),
+(63, 6, 'La Cruz', 1),
+(64, 6, 'La Calera', 1),
+(65, 6, 'Nogales', 1),
+(66, 6, 'Hijuelas', 1),
+(67, 6, 'San Antonio', 1),
+(68, 6, 'Algarrobo', 1),
+(69, 6, 'Cartagena', 1),
+(70, 6, 'El Quisco', 1),
+(71, 6, 'El Tabo', 1),
+(72, 6, 'Santo Domingo', 1),
+(73, 6, 'San Felipe', 1),
+(74, 6, 'Catemu', 1),
+(75, 6, 'Llaillay', 1),
+(76, 6, 'Panquehue', 1),
+(77, 6, 'Putaendo', 1),
+(78, 6, 'Santa María', 1),
+(79, 6, 'Quilpué', 1),
+(80, 6, 'Limache', 1),
+(81, 6, 'Olmué', 1),
+(82, 6, 'Villa Alemana', 1),
+(135, 8, 'Rancagua', 1),
+(136, 8, 'Codegua', 1),
+(137, 8, 'Coinco', 1),
+(138, 8, 'Coltauco', 1),
+(139, 8, 'Doñihue', 1),
+(140, 8, 'Graneros', 1),
+(141, 8, 'Las Cabras', 1),
+(142, 8, 'Machalí', 1),
+(143, 8, 'Malloa', 1),
+(144, 8, 'Mostazal', 1),
+(145, 8, 'Olivar', 1),
+(146, 8, 'Peumo', 1),
+(147, 8, 'Pichidegua', 1),
+(148, 8, 'Quinta de Tilcoco', 1),
+(149, 8, 'Rengo', 1),
+(150, 8, 'Requínoa', 1),
+(151, 8, 'San Vicente', 1),
+(152, 8, 'Pichilemu', 1),
+(153, 8, 'La Estrella', 1),
+(154, 8, 'Litueche', 1),
+(155, 8, 'Marchihue', 1),
+(156, 8, 'Navidad', 1),
+(157, 8, 'Paredones', 1),
+(158, 8, 'San Fernando', 1),
+(159, 8, 'Chépica', 1),
+(160, 8, 'Chimbarongo', 1),
+(161, 8, 'Lolol', 1),
+(162, 8, 'Nancagua', 1),
+(163, 8, 'Palmilla', 1),
+(164, 8, 'Peralillo', 1),
+(165, 8, 'Placilla', 1),
+(166, 8, 'Pumanque', 1),
+(167, 8, 'Santa Cruz', 1),
+(168, 9, 'Talca', 1),
+(169, 9, 'Constitución', 1),
+(170, 9, 'Curepto', 1),
+(171, 9, 'Empedrado', 1),
+(172, 9, 'Maule', 1),
+(173, 9, 'Pelarco', 1),
+(174, 9, 'Pencahue', 1),
+(175, 9, 'Río Claro', 1),
+(176, 9, 'San Clemente', 1),
+(177, 9, 'San Rafael', 1),
+(178, 9, 'Cauquenes', 1),
+(179, 9, 'Chanco', 1),
+(180, 9, 'Pelluhue', 1),
+(181, 9, 'Curicó', 1),
+(182, 9, 'Hualañé', 1),
+(183, 9, 'Licantén', 1),
+(184, 9, 'Molina', 1),
+(185, 9, 'Rauco', 1),
+(186, 9, 'Romeral', 1),
+(187, 9, 'Sagrada Familia', 1),
+(188, 9, 'Teno', 1),
+(189, 9, 'Vichuquén', 1),
+(190, 9, 'Linares', 1),
+(191, 9, 'Colbún', 1),
+(192, 9, 'Longaví', 1),
+(193, 9, 'Parral', 1),
+(194, 9, 'Retiro', 1),
+(195, 9, 'San Javier', 1),
+(196, 9, 'Villa Alegre', 1),
+(197, 9, 'Yerbas Buenas', 1),
+(198, 10, 'Chillán', 1),
+(199, 10, 'Bulnes', 1),
+(200, 10, 'Chillán Viejo', 1),
+(201, 10, 'El Carmen', 1),
+(202, 10, 'Pemuco', 1),
+(203, 10, 'Pinto', 1),
+(204, 10, 'Quillón', 1),
+(205, 10, 'San Ignacio', 1),
+(206, 10, 'Yungay', 1),
+(207, 10, 'Cobquecura', 1),
+(208, 10, 'Coelemu', 1),
+(209, 10, 'Ninhue', 1),
+(210, 10, 'Portezuelo', 1),
+(211, 10, 'Quirihue', 1),
+(212, 10, 'Ránquil', 1),
+(213, 10, 'Treguaco', 1),
+(214, 10, 'San Carlos', 1),
+(215, 10, 'Coihueco', 1),
+(216, 10, 'Ñiquén', 1),
+(217, 10, 'San Fabián', 1),
+(218, 10, 'San Nicolás', 1),
+(219, 11, 'Concepción', 1),
+(220, 11, 'Coronel', 1),
+(221, 11, 'Chiguayante', 1),
+(222, 11, 'Florida', 1),
+(223, 11, 'Hualqui', 1),
+(224, 11, 'Lota', 1),
+(225, 11, 'Penco', 1),
+(226, 11, 'San Pedro de la Paz', 1),
+(227, 11, 'Santa Juana', 1),
+(228, 11, 'Talcahuano', 1),
+(229, 11, 'Tomé', 1),
+(230, 11, 'Hualpén', 1),
+(231, 11, 'Lebu', 1),
+(232, 11, 'Arauco', 1),
+(233, 11, 'Cañete', 1),
+(234, 11, 'Contulmo', 1),
+(235, 11, 'Curanilahue', 1),
+(236, 11, 'Los Álamos', 1),
+(237, 11, 'Tirúa', 1),
+(238, 11, 'Los Ángeles', 1),
+(239, 11, 'Antuco', 1),
+(240, 11, 'Cabrero', 1),
+(241, 11, 'Laja', 1),
+(242, 11, 'Mulchén', 1),
+(243, 11, 'Nacimiento', 1),
+(244, 11, 'Negrete', 1),
+(245, 11, 'Quilaco', 1),
+(246, 11, 'Quilleco', 1),
+(247, 11, 'San Rosendo', 1),
+(248, 11, 'Santa Bárbara', 1),
+(249, 11, 'Tucapel', 1),
+(250, 11, 'Yumbel', 1),
+(251, 11, 'Alto Biobío', 1),
+(252, 12, 'Temuco', 1),
+(253, 12, 'Carahue', 1),
+(254, 12, 'Cunco', 1),
+(255, 12, 'Curarrehue', 1),
+(256, 12, 'Freire', 1),
+(257, 12, 'Galvarino', 1),
+(258, 12, 'Gorbea', 1),
+(259, 12, 'Lautaro', 1),
+(260, 12, 'Loncoche', 1),
+(261, 12, 'Melipeuco', 1),
+(262, 12, 'Nueva Imperial', 1),
+(263, 12, 'Padre Las Casas', 1),
+(264, 12, 'Perquenco', 1),
+(265, 12, 'Pitrufquén', 1),
+(266, 12, 'Pucón', 1),
+(267, 12, 'Saavedra', 1),
+(268, 12, 'Teodoro Schmidt', 1),
+(269, 12, 'Toltén', 1),
+(270, 12, 'Vilcún', 1),
+(271, 12, 'Villarrica', 1),
+(272, 12, 'Cholchol', 1),
+(273, 12, 'Angol', 1),
+(274, 12, 'Collipulli', 1),
+(275, 12, 'Curacautín', 1),
+(276, 12, 'Ercilla', 1),
+(277, 12, 'Lonquimay', 1),
+(278, 12, 'Los Sauces', 1),
+(279, 12, 'Lumaco', 1),
+(280, 12, 'Purén', 1),
+(281, 12, 'Renaico', 1),
+(282, 12, 'Traiguén', 1),
+(283, 12, 'Victoria', 1),
+(284, 13, 'Valdivia', 1),
+(285, 13, 'Corral', 1),
+(286, 13, 'Lanco', 1),
+(287, 13, 'Los Lagos', 1),
+(288, 13, 'Máfil', 1),
+(289, 13, 'Mariquina', 1),
+(290, 13, 'Paillaco', 1),
+(291, 13, 'Panguipulli', 1),
+(292, 13, 'La Unión', 1),
+(293, 13, 'Futrono', 1),
+(294, 13, 'Lago Ranco', 1),
+(295, 13, 'Río Bueno', 1),
+(296, 14, 'Puerto Montt', 1),
+(297, 14, 'Calbuco', 1),
+(298, 14, 'Cochamó', 1),
+(299, 14, 'Fresia', 1),
+(300, 14, 'Frutillar', 1),
+(301, 14, 'Los Muermos', 1),
+(302, 14, 'Llanquihue', 1),
+(303, 14, 'Maullín', 1),
+(304, 14, 'Puerto Varas', 1),
+(305, 14, 'Castro', 1),
+(306, 14, 'Ancud', 1),
+(307, 14, 'Chonchi', 1),
+(308, 14, 'Curaco de Vélez', 1),
+(309, 14, 'Dalcahue', 1),
+(310, 14, 'Puqueldón', 1),
+(311, 14, 'Queilén', 1),
+(312, 14, 'Quellón', 1),
+(313, 14, 'Quemchi', 1),
+(314, 14, 'Quinchao', 1),
+(315, 14, 'Osorno', 1),
+(316, 14, 'Puerto Octay', 1),
+(317, 14, 'Purranque', 1),
+(318, 14, 'Puyehue', 1),
+(319, 14, 'Río Negro', 1),
+(320, 14, 'San Juan de la Costa', 1),
+(321, 14, 'San Pablo', 1),
+(322, 14, 'Chaitén', 1),
+(323, 14, 'Futaleufú', 1),
+(324, 14, 'Hualaihué', 1),
+(325, 14, 'Palena', 1),
+(326, 15, 'Coyhaique', 1),
+(327, 15, 'Lago Verde', 1),
+(328, 15, 'Aysén', 1),
+(329, 15, 'Cisnes', 1),
+(330, 15, 'Guaitecas', 1),
+(331, 15, 'Chile Chico', 1),
+(332, 15, 'Río Ibáñez', 1),
+(333, 15, 'Cochrane', 1),
+(334, 15, 'O\'Higgins', 1),
+(335, 15, 'Tortel', 1),
+(336, 16, 'Punta Arenas', 1),
+(337, 16, 'Laguna Blanca', 1),
+(338, 16, 'Río Verde', 1),
+(339, 16, 'San Gregorio', 1),
+(340, 16, 'Cabo de Hornos', 1),
+(341, 16, 'Antártica', 1),
+(342, 16, 'Porvenir', 1),
+(343, 16, 'Primavera', 1),
+(344, 16, 'Timaukel', 1),
+(345, 16, 'Natales', 1),
+(346, 16, 'Torres del Paine', 1),
+(347, 7, 'Santiago', 1),
+(348, 7, 'Puente Alto', 1),
+(349, 7, 'Colina', 1),
+(350, 7, 'San Bernardo', 1),
+(351, 7, 'Melipilla', 1),
+(352, 7, 'Talagante', 1),
+(353, 7, 'Chuchunco de la Farándula', 1),
+(354, 7, 'La Pintana del Norte', 1),
+(355, 7, 'El Bosque Encantado', 1),
+(356, 7, 'La Granja de los Pájaros', 1),
+(357, 7, 'Cerro Navia de la Nieve', 1),
+(358, 7, 'Lo Prado del Sol Naciente', 1),
+(359, 7, 'Lo Espejo de los Vientos', 1),
+(360, 7, 'Pedro Aguirre Cerda del Valle', 1),
+(361, 7, 'San Ramón de la Quebrada', 1),
+(362, 7, 'La Reina de las Flores', 1),
+(363, 7, 'La Cisterna de los Suspiros', 1),
+(364, 7, 'El Monte de las Cruces', 1),
+(365, 7, 'Padre Hurtado de la Luna', 1),
+(366, 7, 'Isla de Maipo de los Cóndores', 1),
+(367, 7, 'Talagante de los Reyes', 1),
+(368, 7, 'Peñaflor de los Vientos', 1),
+(369, 7, 'Curacaví de las Brujas', 1),
+(370, 7, 'María Pinto de las Estrellas', 1),
+(371, 7, 'Alhué del Fin del Mundo', 1),
+(372, 7, 'San Pedro de los Lagos Misteriosos', 1),
+(373, 7, 'Puente asalto', 1),
+(374, 7, 'Pirke', 1),
+(375, 7, 'Pirque', 1),
+(376, 7, 'titirinquen', 1),
+(377, 7, 'titirinken', 1),
+(378, 7, 'San José de Maipo', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comunas`
+--
+
+DROP TABLE IF EXISTS `comunas`;
+CREATE TABLE `comunas` (
+  `idComuna` int(11) NOT NULL,
+  `idCiudad` int(11) NOT NULL,
+  `nombreComuna` varchar(100) NOT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `comunas`
+--
+
+INSERT INTO `comunas` (`idComuna`, `idCiudad`, `nombreComuna`, `vigente`) VALUES
+(1, 1, 'Arica', 1),
+(2, 2, 'Camarones', 1),
+(3, 3, 'Putre', 1),
+(4, 4, 'General Lagos', 1),
+(8, 5, 'Iquique', 1),
+(9, 6, 'Alto Hospicio', 1),
+(10, 7, 'Pozo Almonte', 1),
+(11, 8, 'Camiña', 1),
+(12, 9, 'Colchane', 1),
+(13, 10, 'Huara', 1),
+(14, 11, 'Pica', 1),
+(15, 12, 'Antofagasta', 1),
+(16, 13, 'Mejillones', 1),
+(17, 14, 'Sierra Gorda', 1),
+(18, 15, 'Taltal', 1),
+(19, 16, 'Calama', 1),
+(20, 17, 'Ollagüe', 1),
+(21, 18, 'San Pedro de Atacama', 1),
+(22, 19, 'Tocopilla', 1),
+(23, 20, 'María Elena', 1),
+(30, 21, 'Copiapó', 1),
+(31, 22, 'Caldera', 1),
+(32, 23, 'Tierra Amarilla', 1),
+(33, 24, 'Chañaral', 1),
+(34, 25, 'Diego de Almagro', 1),
+(35, 26, 'Vallenar', 1),
+(36, 27, 'Alto del Carmen', 1),
+(37, 28, 'Freirina', 1),
+(38, 29, 'Huasco', 1),
+(45, 30, 'La Serena', 1),
+(46, 31, 'Coquimbo', 1),
+(47, 32, 'Andacollo', 1),
+(48, 33, 'La Higuera', 1),
+(49, 34, 'Paiguano', 1),
+(50, 35, 'Vicuña', 1),
+(51, 36, 'Illapel', 1),
+(52, 37, 'Canela', 1),
+(53, 38, 'Los Vilos', 1),
+(54, 39, 'Salamanca', 1),
+(55, 40, 'Ovalle', 1),
+(56, 41, 'Combarbalá', 1),
+(57, 42, 'Monte Patria', 1),
+(58, 43, 'Punitaqui', 1),
+(59, 44, 'Río Hurtado', 1),
+(60, 45, 'Valparaíso', 1),
+(61, 46, 'Casablanca', 1),
+(62, 47, 'Concón', 1),
+(63, 48, 'Juan Fernández', 1),
+(64, 49, 'Puchuncaví', 1),
+(65, 50, 'Quintero', 1),
+(66, 51, 'Viña del Mar', 1),
+(67, 52, 'Isla de Pascua', 1),
+(68, 53, 'Los Andes', 1),
+(69, 54, 'Calle Larga', 1),
+(70, 55, 'Rinconada', 1),
+(71, 56, 'San Esteban', 1),
+(72, 57, 'La Ligua', 1),
+(73, 58, 'Cabildo', 1),
+(74, 59, 'Papudo', 1),
+(75, 60, 'Petorca', 1),
+(76, 61, 'Zapallar', 1),
+(77, 62, 'Quillota', 1),
+(78, 63, 'La Cruz', 1),
+(79, 64, 'La Calera', 1),
+(80, 65, 'Nogales', 1),
+(81, 66, 'Hijuelas', 1),
+(82, 67, 'San Antonio', 1),
+(83, 68, 'Algarrobo', 1),
+(84, 69, 'Cartagena', 1),
+(85, 70, 'El Quisco', 1),
+(86, 71, 'El Tabo', 1),
+(87, 72, 'Santo Domingo', 1),
+(88, 73, 'San Felipe', 1),
+(89, 74, 'Catemu', 1),
+(90, 75, 'Llaillay', 1),
+(91, 76, 'Panquehue', 1),
+(92, 77, 'Putaendo', 1),
+(93, 78, 'Santa María', 1),
+(94, 79, 'Quilpué', 1),
+(95, 80, 'Limache', 1),
+(96, 81, 'Olmué', 1),
+(97, 82, 'Villa Alemana', 1),
+(186, 135, 'Rancagua', 1),
+(187, 136, 'Codegua', 1),
+(188, 137, 'Coinco', 1),
+(189, 138, 'Coltauco', 1),
+(190, 139, 'Doñihue', 1),
+(191, 140, 'Graneros', 1),
+(192, 141, 'Las Cabras', 1),
+(193, 142, 'Machalí', 1),
+(194, 143, 'Malloa', 1),
+(195, 144, 'Mostazal', 1),
+(196, 145, 'Olivar', 1),
+(197, 146, 'Peumo', 1),
+(198, 147, 'Pichidegua', 1),
+(199, 148, 'Quinta de Tilcoco', 1),
+(200, 149, 'Rengo', 1),
+(201, 150, 'Requínoa', 1),
+(202, 151, 'San Vicente', 1),
+(203, 152, 'Pichilemu', 1),
+(204, 153, 'La Estrella', 1),
+(205, 154, 'Litueche', 1),
+(206, 155, 'Marchihue', 1),
+(207, 156, 'Navidad', 1),
+(208, 157, 'Paredones', 1),
+(209, 158, 'San Fernando', 1),
+(210, 159, 'Chépica', 1),
+(211, 160, 'Chimbarongo', 1),
+(212, 161, 'Lolol', 1),
+(213, 162, 'Nancagua', 1),
+(214, 163, 'Palmilla', 1),
+(215, 164, 'Peralillo', 1),
+(216, 165, 'Placilla', 1),
+(217, 166, 'Pumanque', 1),
+(218, 167, 'Santa Cruz', 1),
+(249, 168, 'Talca', 1),
+(250, 169, 'Constitución', 1),
+(251, 170, 'Curepto', 1),
+(252, 171, 'Empedrado', 1),
+(253, 172, 'Maule', 1),
+(254, 173, 'Pelarco', 1),
+(255, 174, 'Pencahue', 1),
+(256, 175, 'Río Claro', 1),
+(257, 176, 'San Clemente', 1),
+(258, 177, 'San Rafael', 1),
+(259, 178, 'Cauquenes', 1),
+(260, 179, 'Chanco', 1),
+(261, 180, 'Pelluhue', 1),
+(262, 181, 'Curicó', 1),
+(263, 182, 'Hualañé', 1),
+(264, 183, 'Licantén', 1),
+(265, 184, 'Molina', 1),
+(266, 185, 'Rauco', 1),
+(267, 186, 'Romeral', 1),
+(268, 187, 'Sagrada Familia', 1),
+(269, 188, 'Teno', 1),
+(270, 189, 'Vichuquén', 1),
+(271, 190, 'Linares', 1),
+(272, 191, 'Colbún', 1),
+(273, 192, 'Longaví', 1),
+(274, 193, 'Parral', 1),
+(275, 194, 'Retiro', 1),
+(276, 195, 'San Javier', 1),
+(277, 196, 'Villa Alegre', 1),
+(278, 197, 'Yerbas Buenas', 1),
+(280, 198, 'Chillán', 1),
+(281, 199, 'Bulnes', 1),
+(282, 200, 'Chillán Viejo', 1),
+(283, 201, 'El Carmen', 1),
+(284, 202, 'Pemuco', 1),
+(285, 203, 'Pinto', 1),
+(286, 204, 'Quillón', 1),
+(287, 205, 'San Ignacio', 1),
+(288, 206, 'Yungay', 1),
+(289, 207, 'Cobquecura', 1),
+(290, 208, 'Coelemu', 1),
+(291, 209, 'Ninhue', 1),
+(292, 210, 'Portezuelo', 1),
+(293, 211, 'Quirihue', 1),
+(294, 212, 'Ránquil', 1),
+(295, 213, 'Treguaco', 1),
+(296, 214, 'San Carlos', 1),
+(297, 215, 'Coihueco', 1),
+(298, 216, 'Ñiquén', 1),
+(299, 217, 'San Fabián', 1),
+(300, 218, 'San Nicolás', 1),
+(311, 219, 'Concepción', 1),
+(312, 220, 'Coronel', 1),
+(313, 221, 'Chiguayante', 1),
+(314, 222, 'Florida', 1),
+(315, 223, 'Hualqui', 1),
+(316, 224, 'Lota', 1),
+(317, 225, 'Penco', 1),
+(318, 226, 'San Pedro de la Paz', 1),
+(319, 227, 'Santa Juana', 1),
+(320, 228, 'Talcahuano', 1),
+(321, 229, 'Tomé', 1),
+(322, 230, 'Hualpén', 1),
+(323, 231, 'Lebu', 1),
+(324, 232, 'Arauco', 1),
+(325, 233, 'Cañete', 1),
+(326, 234, 'Contulmo', 1),
+(327, 235, 'Curanilahue', 1),
+(328, 236, 'Los Álamos', 1),
+(329, 237, 'Tirúa', 1),
+(330, 238, 'Los Ángeles', 1),
+(331, 239, 'Antuco', 1),
+(332, 240, 'Cabrero', 1),
+(333, 241, 'Laja', 1),
+(334, 242, 'Mulchén', 1),
+(335, 243, 'Nacimiento', 1),
+(336, 244, 'Negrete', 1),
+(337, 245, 'Quilaco', 1),
+(338, 246, 'Quilleco', 1),
+(339, 247, 'San Rosendo', 1),
+(340, 248, 'Santa Bárbara', 1),
+(341, 249, 'Tucapel', 1),
+(342, 250, 'Yumbel', 1),
+(343, 251, 'Alto Biobío', 1),
+(374, 252, 'Temuco', 1),
+(375, 253, 'Carahue', 1),
+(376, 254, 'Cunco', 1),
+(377, 255, 'Curarrehue', 1),
+(378, 256, 'Freire', 1),
+(379, 257, 'Galvarino', 1),
+(380, 258, 'Gorbea', 1),
+(381, 259, 'Lautaro', 1),
+(382, 260, 'Loncoche', 1),
+(383, 261, 'Melipeuco', 1),
+(384, 262, 'Nueva Imperial', 1),
+(385, 263, 'Padre Las Casas', 1),
+(386, 264, 'Perquenco', 1),
+(387, 265, 'Pitrufquén', 1),
+(388, 266, 'Pucón', 1),
+(389, 267, 'Saavedra', 1),
+(390, 268, 'Teodoro Schmidt', 1),
+(391, 269, 'Toltén', 1),
+(392, 270, 'Vilcún', 1),
+(393, 271, 'Villarrica', 1),
+(394, 272, 'Cholchol', 1),
+(395, 273, 'Angol', 1),
+(396, 274, 'Collipulli', 1),
+(397, 275, 'Curacautín', 1),
+(398, 276, 'Ercilla', 1),
+(399, 277, 'Lonquimay', 1),
+(400, 278, 'Los Sauces', 1),
+(401, 279, 'Lumaco', 1),
+(402, 280, 'Purén', 1),
+(403, 281, 'Renaico', 1),
+(404, 282, 'Traiguén', 1),
+(405, 283, 'Victoria', 1),
+(437, 284, 'Valdivia', 1),
+(438, 285, 'Corral', 1),
+(439, 286, 'Lanco', 1),
+(440, 287, 'Los Lagos', 1),
+(441, 288, 'Máfil', 1),
+(442, 289, 'Mariquina', 1),
+(443, 290, 'Paillaco', 1),
+(444, 291, 'Panguipulli', 1),
+(445, 292, 'La Unión', 1),
+(446, 293, 'Futrono', 1),
+(447, 294, 'Lago Ranco', 1),
+(448, 295, 'Río Bueno', 1),
+(452, 296, 'Puerto Montt', 1),
+(453, 297, 'Calbuco', 1),
+(454, 298, 'Cochamó', 1),
+(455, 299, 'Fresia', 1),
+(456, 300, 'Frutillar', 1),
+(457, 301, 'Los Muermos', 1),
+(458, 302, 'Llanquihue', 1),
+(459, 303, 'Maullín', 1),
+(460, 304, 'Puerto Varas', 1),
+(461, 305, 'Castro', 1),
+(462, 306, 'Ancud', 1),
+(463, 307, 'Chonchi', 1),
+(464, 308, 'Curaco de Vélez', 1),
+(465, 309, 'Dalcahue', 1),
+(466, 310, 'Puqueldón', 1),
+(467, 311, 'Queilén', 1),
+(468, 312, 'Quellón', 1),
+(469, 313, 'Quemchi', 1),
+(470, 314, 'Quinchao', 1),
+(471, 315, 'Osorno', 1),
+(472, 316, 'Puerto Octay', 1),
+(473, 317, 'Purranque', 1),
+(474, 318, 'Puyehue', 1),
+(475, 319, 'Río Negro', 1),
+(476, 320, 'San Juan de la Costa', 1),
+(477, 321, 'San Pablo', 1),
+(478, 322, 'Chaitén', 1),
+(479, 323, 'Futaleufú', 1),
+(480, 324, 'Hualaihué', 1),
+(481, 325, 'Palena', 1),
+(483, 326, 'Coyhaique', 1),
+(484, 327, 'Lago Verde', 1),
+(485, 328, 'Aysén', 1),
+(486, 329, 'Cisnes', 1),
+(487, 330, 'Guaitecas', 1),
+(488, 331, 'Chile Chico', 1),
+(489, 332, 'Río Ibáñez', 1),
+(490, 333, 'Cochrane', 1),
+(491, 334, 'O\'Higgins', 1),
+(492, 335, 'Tortel', 1),
+(498, 336, 'Punta Arenas', 1),
+(499, 337, 'Laguna Blanca', 1),
+(500, 338, 'Río Verde', 1),
+(501, 339, 'San Gregorio', 1),
+(502, 340, 'Cabo de Hornos', 1),
+(503, 341, 'Antártica', 1),
+(504, 342, 'Porvenir', 1),
+(505, 343, 'Primavera', 1),
+(506, 344, 'Timaukel', 1),
+(507, 345, 'Natales', 1),
+(508, 346, 'Torres del Paine', 1),
+(513, 347, 'Santiago', 0),
+(514, 347, 'Las Condes', 0),
+(515, 347, 'Maipú', 0),
+(516, 347, 'Pudahuel', 1),
+(517, 347, 'Quilicura', 0),
+(518, 348, 'Puente Alto', 1),
+(519, 348, 'San José de Maipo', 1),
+(520, 348, 'Pirque', 1),
+(521, 349, 'Colina', 1),
+(522, 349, 'Lampa', 1),
+(523, 349, 'Tiltil', 1),
+(524, 350, 'San Bernardo', 1),
+(525, 350, 'Buin', 1),
+(526, 350, 'Paine', 1),
+(527, 350, 'Calera de Tango', 1),
+(528, 351, 'Melipilla', 1),
+(529, 351, 'Curacaví', 1),
+(530, 351, 'Alhué', 1),
+(531, 351, 'María Pinto', 1),
+(532, 351, 'San Pedro', 1),
+(533, 352, 'Talagante', 1),
+(534, 352, 'Peñaflor', 1),
+(535, 352, 'Isla de Maipo', 1),
+(536, 352, 'El Monte', 1),
+(537, 352, 'Padre Hurtado', 1),
+(538, 347, 'Santiago', 1),
+(539, 347, 'Cerrillos', 1),
+(540, 347, 'Cerro Navia', 1),
+(541, 347, 'Conchalí', 1),
+(542, 347, 'El Bosque', 1),
+(543, 347, 'Estación Central', 1),
+(544, 347, 'Huechuraba', 1),
+(545, 347, 'Independencia', 1),
+(546, 347, 'La Cisterna', 1),
+(547, 347, 'La Florida', 1),
+(548, 347, 'La Granja', 1),
+(549, 347, 'La Pintana', 1),
+(550, 347, 'La Reina', 1),
+(551, 347, 'Las Condes', 1),
+(552, 347, 'Lo Barnechea', 1),
+(553, 347, 'Lo Espejo', 1),
+(554, 347, 'Lo Prado', 1),
+(555, 347, 'Macul', 1),
+(556, 347, 'Maipú', 1),
+(557, 347, 'Ñuñoa', 1),
+(558, 347, 'Pedro Aguirre Cerda', 1),
+(559, 347, 'Peñalolén', 1),
+(560, 347, 'Providencia', 1),
+(561, 347, 'Pudahuel', 0),
+(562, 347, 'Quilicura', 1),
+(563, 347, 'Quinta Normal', 1),
+(564, 347, 'Recoleta', 1),
+(565, 347, 'Renca', 1),
+(566, 347, 'San Joaquín', 1),
+(567, 347, 'San Miguel', 1),
+(568, 347, 'San Ramón', 1),
+(569, 347, 'Vitacura', 1),
+(570, 347, 'Tangamandapio', 1),
+(571, 347, 'las mercedes', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empresas`
+--
+
+DROP TABLE IF EXISTS `empresas`;
+CREATE TABLE `empresas` (
+  `idEmpresa` int(11) NOT NULL,
+  `rut` varchar(20) NOT NULL,
+  `nombreEmpresa` varchar(200) NOT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `idComuna` int(11) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1,
+  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `empresas`
+--
+
+INSERT INTO `empresas` (`idEmpresa`, `rut`, `nombreEmpresa`, `direccion`, `idComuna`, `telefono`, `email`, `vigente`, `fecha_registro`) VALUES
+(1, '76.123.456-7', 'Empresa de Prueba', 'Av. Siempre Viva 123', NULL, '+56912345678', 'test@empresa.cl', 1, '2026-02-19 16:06:33');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `monedas`
+--
+
+DROP TABLE IF EXISTS `monedas`;
+CREATE TABLE `monedas` (
+  `idMoneda` int(11) NOT NULL,
+  `codMoneda` varchar(3) NOT NULL,
+  `nombreMoneda` varchar(100) NOT NULL,
+  `simbolo` varchar(10) NOT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `monedas`
+--
+
+INSERT INTO `monedas` (`idMoneda`, `codMoneda`, `nombreMoneda`, `simbolo`, `vigente`) VALUES
+(16, 'CLP', 'Peso chileno', '$', 1),
+(17, 'ARS', 'Peso argentino', '$', 1),
+(18, 'PEN', 'Sol peruano', '$', 1),
+(19, 'BRL', 'Real brasileño', '$', 1),
+(20, 'COP', 'Peso colombiano', '$', 1),
+(21, 'CRC', 'Colón costarricense', '$', 1),
+(22, 'USD', 'Dólar estadounidense', '$', 1),
+(23, 'GTQ', 'Quetzal guatemalteco', '$', 1),
+(24, 'HNL', 'Lempira hondureña', '$', 1),
+(25, 'MXN', 'Peso mexicano', '$', 1),
+(26, 'BOB', 'Boliviano', 'Bs.', 1),
+(27, 'CAD', 'Dólar canadiense', 'C$', 1),
+(28, 'CUP', 'Moneda CUP', '$', 1),
+(29, 'DOP', 'Moneda DOP', 'RD$', 1),
+(30, 'NIO', 'Córdoba nicaragüense', 'C$', 1),
+(31, 'PAB', 'Balboa panameño', 'B/.', 1),
+(32, 'PYG', 'Guaraní paraguayo', '₲', 1),
+(33, 'UYU', 'Peso uruguayo', '$', 1),
+(34, 'VES', 'Bolívar soberano', 'Bs.', 1),
+(35, 'ALL', 'Moneda ALL', 'L', 1),
+(36, 'EUR', 'Euro', '€', 1),
+(37, 'BYN', 'Moneda BYN', 'Br', 1),
+(38, 'BAM', 'Moneda BAM', 'KM', 1),
+(39, 'BGN', 'Moneda BGN', 'лв', 1),
+(40, 'DKK', 'Moneda DKK', 'kr', 1),
+(41, 'HUF', 'Moneda HUF', 'Ft', 1),
+(42, 'ISK', 'Moneda ISK', 'kr', 1),
+(43, 'CHF', 'Franco suizo', 'Fr', 1),
+(44, 'MKD', 'Moneda MKD', 'ден', 1),
+(45, 'MDL', 'Moneda MDL', 'L', 1),
+(46, 'NOK', 'Moneda NOK', 'kr', 1),
+(47, 'PLN', 'Moneda PLN', 'zł', 1),
+(48, 'GBP', 'Libra esterlina', '£', 1),
+(49, 'CZK', 'Moneda CZK', 'Kč', 1),
+(50, 'RON', 'Moneda RON', 'lei', 1),
+(51, 'RUB', 'Moneda RUB', '₽', 1),
+(52, 'RSD', 'Moneda RSD', 'дин', 1),
+(53, 'SEK', 'Moneda SEK', 'kr', 1),
+(54, 'UAH', 'Moneda UAH', '₴', 1),
+(55, 'AUD', 'Dólar australiano', 'A$', 1),
+(56, 'SAR', 'Moneda SAR', '﷼', 1),
+(57, 'AMD', 'Moneda AMD', '֏', 1),
+(58, 'AZN', 'Moneda AZN', '₼', 1),
+(59, 'BHD', 'Moneda BHD', '.د.ب', 1),
+(60, 'BDT', 'Moneda BDT', '৳', 1),
+(61, 'BND', 'Moneda BND', '$', 1),
+(62, 'BTN', 'Moneda BTN', 'Nu.', 1),
+(63, 'KHR', 'Moneda KHR', '៛', 1),
+(64, 'CNY', 'Yuan chino', '¥', 1),
+(65, 'KRW', 'Moneda KRW', '₩', 1),
+(66, 'AED', 'Moneda AED', 'د.إ', 1),
+(67, 'PHP', 'Moneda PHP', '₱', 1),
+(68, 'GEL', 'Moneda GEL', '₾', 1),
+(69, 'INR', 'Moneda INR', '₹', 1),
+(70, 'IDR', 'Moneda IDR', 'Rp', 1),
+(71, 'IQD', 'Moneda IQD', 'د.ع', 1),
+(72, 'IRR', 'Moneda IRR', '﷼', 1),
+(73, 'ILS', 'Moneda ILS', '₪', 1),
+(74, 'JPY', 'Yen japonés', '¥', 1),
+(75, 'JOD', 'Moneda JOD', 'د.ا', 1),
+(76, 'KZT', 'Moneda KZT', '₸', 1),
+(77, 'KWD', 'Moneda KWD', 'د.ك', 1),
+(78, 'LAK', 'Moneda LAK', '₭', 1),
+(79, 'LBP', 'Moneda LBP', 'ل.ل', 1),
+(80, 'MYR', 'Moneda MYR', 'RM', 1),
+(81, 'MVR', 'Moneda MVR', 'Rf', 1),
+(82, 'MNT', 'Moneda MNT', '₮', 1),
+(83, 'MMK', 'Moneda MMK', 'K', 1),
+(84, 'NPR', 'Moneda NPR', 'रू', 1),
+(85, 'OMR', 'Moneda OMR', 'ر.ع.', 1),
+(86, 'PKR', 'Moneda PKR', '₨', 1),
+(87, 'QAR', 'Moneda QAR', 'ر.ق', 1),
+(88, 'SGD', 'Moneda SGD', '$', 1),
+(89, 'LKR', 'Moneda LKR', '₨', 1),
+(90, 'THB', 'Moneda THB', '฿', 1),
+(91, 'TWD', 'Moneda TWD', 'NT$', 1),
+(92, 'TJS', 'Moneda TJS', 'ЅМ', 1),
+(93, 'TRY', 'Moneda TRY', '₺', 1),
+(94, 'TMT', 'Moneda TMT', 'm', 1),
+(95, 'UZS', 'Moneda UZS', 'soʻm', 1),
+(96, 'VND', 'Moneda VND', '₫', 1),
+(97, 'YER', 'Moneda YER', '﷼', 1),
+(98, 'DZD', 'Moneda DZD', 'د.ج', 1),
+(99, 'AOA', 'Moneda AOA', 'Kz', 1),
+(100, 'XOF', 'Moneda XOF', 'CFA', 1),
+(101, 'BWP', 'Moneda BWP', 'P', 1),
+(102, 'BIF', 'Moneda BIF', 'FBu', 1),
+(103, 'CVE', 'Moneda CVE', '$', 1),
+(104, 'XAF', 'Moneda XAF', 'FCFA', 1),
+(105, 'KMF', 'Moneda KMF', 'CF', 1),
+(106, 'EGP', 'Moneda EGP', '£', 1),
+(107, 'ETB', 'Moneda ETB', 'Br', 1),
+(108, 'GMD', 'Moneda GMD', 'D', 1),
+(109, 'GHS', 'Moneda GHS', '₵', 1),
+(110, 'GNF', 'Moneda GNF', 'FG', 1),
+(111, 'KES', 'Moneda KES', 'KSh', 1),
+(112, 'LSL', 'Moneda LSL', 'L', 1),
+(113, 'LRD', 'Moneda LRD', '$', 1),
+(114, 'LYD', 'Moneda LYD', 'ل.د', 1),
+(115, 'MGA', 'Moneda MGA', 'Ar', 1),
+(116, 'MWK', 'Moneda MWK', 'MK', 1),
+(117, 'MAD', 'Moneda MAD', 'د.م.', 1),
+(118, 'MUR', 'Moneda MUR', '₨', 1),
+(119, 'MRU', 'Moneda MRU', 'UM', 1),
+(120, 'MZN', 'Moneda MZN', 'MT', 1),
+(121, 'NAD', 'Moneda NAD', '$', 1),
+(122, 'NGN', 'Moneda NGN', '₦', 1),
+(123, 'CDF', 'Moneda CDF', 'FC', 1),
+(124, 'RWF', 'Moneda RWF', 'RF', 1),
+(125, 'SCR', 'Moneda SCR', '₨', 1),
+(126, 'SLL', 'Moneda SLL', 'Le', 1),
+(127, 'SOS', 'Moneda SOS', 'Sh', 1),
+(128, 'ZAR', 'Moneda ZAR', 'R', 1),
+(129, 'SDG', 'Moneda SDG', 'ج.س.', 1),
+(130, 'SSP', 'Moneda SSP', '£', 1),
+(131, 'TZS', 'Moneda TZS', 'TSh', 1),
+(132, 'TND', 'Moneda TND', 'د.ت', 1),
+(133, 'UGX', 'Moneda UGX', 'USh', 1),
+(134, 'DJF', 'Moneda DJF', 'Fdj', 1),
+(135, 'ZMW', 'Moneda ZMW', 'ZK', 1),
+(136, 'ZWL', 'Moneda ZWL', '$', 1),
+(137, 'FJD', 'Moneda FJD', '$', 1),
+(138, 'NZD', 'Moneda NZD', '$', 1),
+(139, 'PGK', 'Moneda PGK', 'K', 1),
+(140, 'WST', 'Moneda WST', 'T', 1),
+(141, 'SBD', 'Moneda SBD', '$', 1),
+(142, 'TOP', 'Moneda TOP', 'T$', 1),
+(143, 'VUV', 'Moneda VUV', 'VT', 1),
+(271, 'CLF', 'Unidad de Fomento', 'UF', 1),
+(272, 'UYI', 'Unidad Indexada', 'UI', 1),
+(273, 'VED', 'Bolívar digital', 'Bs.D', 1),
+(274, 'PTR', 'Petro', 'Ⓟ', 1),
+(275, 'CUC', 'Peso convertible cubano', 'CUC', 1),
+(276, 'GGP', 'Libra de Guernsey', '£', 1),
+(277, 'JEP', 'Libra de Jersey', '£', 1),
+(278, 'IMP', 'Libra de Man', '£', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `paises`
+--
+
+DROP TABLE IF EXISTS `paises`;
+CREATE TABLE `paises` (
+  `idPais` int(11) NOT NULL,
+  `nombrePais` varchar(100) NOT NULL,
+  `siglaPais` varchar(10) DEFAULT NULL,
+  `codMoneda` varchar(10) DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1,
+  `simbolo_moneda` varchar(10) NOT NULL DEFAULT '$' COMMENT 'Símbolo de la moneda de curso legal ($, US$, €, etc.)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `paises`
+--
+
+INSERT INTO `paises` (`idPais`, `nombrePais`, `siglaPais`, `codMoneda`, `vigente`, `simbolo_moneda`) VALUES
+(1, 'Chile', 'CL', 'CLP', 1, '$'),
+(2, 'Argentina', 'AR', 'ARS', 0, '$'),
+(3, 'Perú', 'PE', 'PEN', 0, '$'),
+(4, 'Argentina', 'AR', 'ARS', 0, '$'),
+(5, 'Argentina', 'AR', 'ARS', 0, '$'),
+(6, 'Argentina', 'AR', 'ARS', 0, '$'),
+(7, 'ARGENTINA', 'AR', 'ARS', 1, '$'),
+(8, 'BRASIL', 'BR', 'BRL', 0, '$'),
+(9, 'CHILE', 'CL', 'CLP', 0, '$'),
+(10, 'COLOMBIA', 'CO', 'COP', 1, '$'),
+(11, 'COSTA RICA', 'CR', 'CRC', 1, '$'),
+(12, 'EL SALVADOR', 'SV', 'USD', 1, '$'),
+(13, 'GUATEMALA', 'GT', 'GTQ', 1, '$'),
+(14, 'HONDURAS', 'HN', 'HNL', 1, '$'),
+(15, 'MEXICO', 'MX', 'MXN', 1, '$'),
+(16, 'PERU', 'PE', 'PEN', 1, '$'),
+(17, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(18, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(19, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(20, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(21, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(22, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(23, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(24, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(25, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(26, 'Argentina', 'Ar', 'ARS', 0, '$'),
+(27, 'ARGENTINA', 'AR', 'ARS', 0, '$'),
+(28, 'BOLIVIA', 'BO', 'BOB', 1, 'Bs.'),
+(29, 'BRASIL', 'BR', 'BRL', 1, 'R$'),
+(30, 'CANADÁ', 'CA', 'CAD', 1, 'C$'),
+(31, 'CHILE', 'CL', 'CLP', 0, '$'),
+(32, 'COLOMBIA', 'CO', 'COP', 1, '$'),
+(33, 'COSTA RICA', 'CR', 'CRC', 1, '₡'),
+(34, 'CUBA', 'CU', 'CUP', 1, '$'),
+(35, 'REPÚBLICA DOMINICANA', 'DO', 'DOP', 1, 'RD$'),
+(36, 'ECUADOR', 'EC', 'USD', 1, '$'),
+(37, 'EL SALVADOR', 'SV', 'USD', 1, '$'),
+(38, 'GUATEMALA', 'GT', 'GTQ', 1, 'Q'),
+(39, 'HONDURAS', 'HN', 'HNL', 1, 'L'),
+(40, 'MÉXICO', 'MX', 'MXN', 1, '$'),
+(41, 'NICARAGUA', 'NI', 'NIO', 1, 'C$'),
+(42, 'PANAMÁ', 'PA', 'PAB', 1, 'B/.'),
+(43, 'PARAGUAY', 'PY', 'PYG', 1, '₲'),
+(44, 'PERÚ', 'PE', 'PEN', 1, 'S/'),
+(45, 'PUERTO RICO', 'PR', 'USD', 1, '$'),
+(46, 'URUGUAY', 'UY', 'UYU', 1, '$'),
+(47, 'VENEZUELA', 'VE', 'VES', 1, 'Bs.'),
+(48, 'ESTADOS UNIDOS', 'US', 'USD', 1, 'US$'),
+(49, 'ALBANIA', 'AL', 'ALL', 1, 'L'),
+(50, 'ALEMANIA', 'DE', 'EUR', 1, '€'),
+(51, 'ANDORRA', 'AD', 'EUR', 1, '€'),
+(52, 'AUSTRIA', 'AT', 'EUR', 1, '€'),
+(53, 'BÉLGICA', 'BE', 'EUR', 1, '€'),
+(54, 'BIELORRUSIA', 'BY', 'BYN', 1, 'Br'),
+(55, 'BOSNIA Y HERZEGOVINA', 'BA', 'BAM', 1, 'KM'),
+(56, 'BULGARIA', 'BG', 'BGN', 1, 'лв'),
+(57, 'CROACIA', 'HR', 'EUR', 1, '€'),
+(58, 'DINAMARCA', 'DK', 'DKK', 1, 'kr'),
+(59, 'ESLOVAQUIA', 'SK', 'EUR', 1, '€'),
+(60, 'ESLOVENIA', 'SI', 'EUR', 1, '€'),
+(61, 'ESPAÑA', 'ES', 'EUR', 1, '€'),
+(62, 'ESTONIA', 'EE', 'EUR', 1, '€'),
+(63, 'FINLANDIA', 'FI', 'EUR', 1, '€'),
+(64, 'FRANCIA', 'FR', 'EUR', 1, '€'),
+(65, 'GRECIA', 'GR', 'EUR', 1, '€'),
+(66, 'HUNGRÍA', 'HU', 'HUF', 1, 'Ft'),
+(67, 'IRLANDA', 'IE', 'EUR', 1, '€'),
+(68, 'ISLANDIA', 'IS', 'ISK', 1, 'kr'),
+(69, 'ITALIA', 'IT', 'EUR', 1, '€'),
+(70, 'KOSOVO', 'XK', 'EUR', 1, '€'),
+(71, 'LETONIA', 'LV', 'EUR', 1, '€'),
+(72, 'LIECHTENSTEIN', 'LI', 'CHF', 1, 'Fr'),
+(73, 'LITUANIA', 'LT', 'EUR', 1, '€'),
+(74, 'LUXEMBURGO', 'LU', 'EUR', 1, '€'),
+(75, 'MACEDONIA DEL NORTE', 'MK', 'MKD', 1, 'ден'),
+(76, 'MALTA', 'MT', 'EUR', 1, '€'),
+(77, 'MOLDOVA', 'MD', 'MDL', 1, 'L'),
+(78, 'MÓNACO', 'MC', 'EUR', 1, '€'),
+(79, 'MONTENEGRO', 'ME', 'EUR', 1, '€'),
+(80, 'NORUEGA', 'NO', 'NOK', 1, 'kr'),
+(81, 'PAÍSES BAJOS', 'NL', 'EUR', 1, '€'),
+(82, 'POLONIA', 'PL', 'PLN', 1, 'zł'),
+(83, 'PORTUGAL', 'PT', 'EUR', 1, '€'),
+(84, 'REINO UNIDO', 'GB', 'GBP', 1, '£'),
+(85, 'REPÚBLICA CHECA', 'CZ', 'CZK', 1, 'Kč'),
+(86, 'RUMANIA', 'RO', 'RON', 1, 'lei'),
+(87, 'RUSIA', 'RU', 'RUB', 1, '₽'),
+(88, 'SAN MARINO', 'SM', 'EUR', 1, '€'),
+(89, 'SERBIA', 'RS', 'RSD', 1, 'дин'),
+(90, 'SUECIA', 'SE', 'SEK', 1, 'kr'),
+(91, 'SUIZA', 'CH', 'CHF', 1, 'Fr'),
+(92, 'UCRANIA', 'UA', 'UAH', 1, '₴'),
+(93, 'VATICANO', 'VA', 'EUR', 1, '€'),
+(94, 'CHAD', 'CF', 'AUD', 1, 'A$'),
+(95, 'ARABIA SAUDITA', 'SA', 'SAR', 1, '﷼'),
+(96, 'ARMENIA', 'AM', 'AMD', 1, '֏'),
+(97, 'AZERBAIYÁN', 'AZ', 'AZN', 1, '₼'),
+(98, 'BAHRÉIN', 'BH', 'BHD', 1, '.د.ب'),
+(99, 'BANGLADESH', 'BD', 'BDT', 1, '৳'),
+(100, 'BRUNÉI', 'BN', 'BND', 1, '$'),
+(101, 'BUTÁN', 'BT', 'BTN', 1, 'Nu.'),
+(102, 'CAMBOYA', 'KH', 'KHR', 1, '៛'),
+(103, 'CHINA', 'CN', 'CNY', 1, '¥'),
+(104, 'COREA DEL SUR', 'KR', 'KRW', 1, '₩'),
+(105, 'EMIRATOS ÁRABES UNIDOS', 'AE', 'AED', 1, 'د.إ'),
+(106, 'FILIPINAS', 'PH', 'PHP', 1, '₱'),
+(107, 'GEORGIA', 'GE', 'GEL', 1, '₾'),
+(108, 'INDIA', 'IN', 'INR', 1, '₹'),
+(109, 'INDONESIA', 'ID', 'IDR', 1, 'Rp'),
+(110, 'IRAK', 'IQ', 'IQD', 1, 'د.ع'),
+(111, 'IRÁN', 'IR', 'IRR', 1, '﷼'),
+(112, 'ISRAEL', 'IL', 'ILS', 1, '₪'),
+(113, 'JAPÓN', 'JP', 'JPY', 1, '¥'),
+(114, 'JORDANIA', 'JO', 'JOD', 1, 'د.ا'),
+(115, 'KAZAJISTÁN', 'KZ', 'KZT', 1, '₸'),
+(116, 'KUWAIT', 'KW', 'KWD', 1, 'د.ك'),
+(117, 'LAOS', 'LA', 'LAK', 1, '₭'),
+(118, 'LÍBANO', 'LB', 'LBP', 1, 'ل.ل'),
+(119, 'MALASIA', 'MY', 'MYR', 1, 'RM'),
+(120, 'MALDIVAS', 'MV', 'MVR', 1, 'Rf'),
+(121, 'MONGOLIA', 'MN', 'MNT', 1, '₮'),
+(122, 'MYANMAR', 'MM', 'MMK', 1, 'K'),
+(123, 'NEPAL', 'NP', 'NPR', 1, 'रू'),
+(124, 'OMÁN', 'OM', 'OMR', 1, 'ر.ع.'),
+(125, 'PAKISTÁN', 'PK', 'PKR', 1, '₨'),
+(126, 'QATAR', 'QA', 'QAR', 1, 'ر.ق'),
+(127, 'SINGAPUR', 'SG', 'SGD', 1, '$'),
+(128, 'SRI LANKA', 'LK', 'LKR', 1, '₨'),
+(129, 'TAILANDIA', 'TH', 'THB', 1, '฿'),
+(130, 'TAIWÁN', 'TW', 'TWD', 1, 'NT$'),
+(131, 'TAYIKISTÁN', 'TJ', 'TJS', 1, 'ЅМ'),
+(132, 'TURQUÍA', 'TR', 'TRY', 1, '₺'),
+(133, 'TURKMENISTÁN', 'TM', 'TMT', 1, 'm'),
+(134, 'UZBEKISTÁN', 'UZ', 'UZS', 1, 'soʻm'),
+(135, 'VIETNAM', 'VN', 'VND', 1, '₫'),
+(136, 'YEMEN', 'YE', 'YER', 1, '﷼'),
+(137, 'ARGELIA', 'DZ', 'DZD', 1, 'د.ج'),
+(138, 'ANGOLA', 'AO', 'AOA', 1, 'Kz'),
+(139, 'BENÍN', 'BJ', 'XOF', 1, 'CFA'),
+(140, 'BOTSUANA', 'BW', 'BWP', 1, 'P'),
+(141, 'BURKINA FASO', 'BF', 'XOF', 1, 'CFA'),
+(142, 'BURUNDI', 'BI', 'BIF', 1, 'FBu'),
+(143, 'CABO VERDE', 'CV', 'CVE', 1, '$'),
+(144, 'CAMERÚN', 'CM', 'XAF', 1, 'FCFA'),
+(145, 'CHAD', 'TD', 'XAF', 1, 'FCFA'),
+(146, 'COMORAS', 'KM', 'KMF', 1, 'CF'),
+(147, 'COSTA DE MARFIL', 'CI', 'XOF', 1, 'CFA'),
+(148, 'EGIPTO', 'EG', 'EGP', 1, '£'),
+(149, 'ETIOPÍA', 'ET', 'ETB', 1, 'Br'),
+(150, 'GABÓN', 'GA', 'XAF', 1, 'FCFA'),
+(151, 'GAMBIA', 'GM', 'GMD', 1, 'D'),
+(152, 'GHANA', 'GH', 'GHS', 1, '₵'),
+(153, 'GUINEA', 'GN', 'GNF', 1, 'FG'),
+(154, 'GUINEA-BISÁU', 'GW', 'XOF', 1, 'CFA'),
+(155, 'KENIA', 'KE', 'KES', 1, 'KSh'),
+(156, 'LESOTHO', 'LS', 'LSL', 1, 'L'),
+(157, 'LIBERIA', 'LR', 'LRD', 1, '$'),
+(158, 'LIBIA', 'LY', 'LYD', 1, 'ل.د'),
+(159, 'MADAGASCAR', 'MG', 'MGA', 1, 'Ar'),
+(160, 'MALAWI', 'MW', 'MWK', 1, 'MK'),
+(161, 'MALÍ', 'ML', 'XOF', 1, 'CFA'),
+(162, 'MARRUECOS', 'MA', 'MAD', 1, 'د.م.'),
+(163, 'MAURICIO', 'MU', 'MUR', 1, '₨'),
+(164, 'MAURITANIA', 'MR', 'MRU', 1, 'UM'),
+(165, 'MOZAMBIQUE', 'MZ', 'MZN', 1, 'MT'),
+(166, 'NAMIBIA', 'NA', 'NAD', 1, '$'),
+(167, 'NÍGER', 'NE', 'XOF', 1, 'CFA'),
+(168, 'NIGERIA', 'NG', 'NGN', 1, '₦'),
+(169, 'KENIA', 'KE', 'KES', 1, 'KSh'),
+(170, 'REPÚBLICA CENTROAFRICANA', 'CF', 'XAF', 1, 'FCFA'),
+(171, 'REPÚBLICA DEMOCRÁTICA DEL CONGO', 'CD', 'CDF', 1, 'FC'),
+(172, 'RUANDA', 'RW', 'RWF', 1, 'RF'),
+(173, 'SENEGAL', 'SN', 'XOF', 1, 'CFA'),
+(174, 'SEYCHELLES', 'SC', 'SCR', 1, '₨'),
+(175, 'SIERRA LEONA', 'SL', 'SLL', 1, 'Le'),
+(176, 'SOMALIA', 'SO', 'SOS', 1, 'Sh'),
+(177, 'SUDÁFRICA', 'ZA', 'ZAR', 1, 'R'),
+(178, 'SUDÁN', 'SD', 'SDG', 1, 'ج.س.'),
+(179, 'SUDÁN DEL SUR', 'SS', 'SSP', 1, '£'),
+(180, 'TANZANIA', 'TZ', 'TZS', 1, 'TSh'),
+(181, 'TOGO', 'TG', 'XOF', 1, 'CFA'),
+(182, 'TÚNEZ', 'TN', 'TND', 1, 'د.ت'),
+(183, 'UGANDA', 'UG', 'UGX', 1, 'USh'),
+(184, 'YIBUTI', 'DJ', 'DJF', 1, 'Fdj'),
+(185, 'ZAMBIA', 'ZM', 'ZMW', 1, 'ZK'),
+(186, 'ZIMBABUE', 'ZW', 'ZWL', 1, '$'),
+(187, 'AUSTRALIA', 'AU', 'AUD', 1, '$'),
+(188, 'FIYI', 'FJ', 'FJD', 1, '$'),
+(189, 'KIRIBATI', 'KI', 'AUD', 1, '$'),
+(190, 'ISLAS MARSHALL', 'MH', 'USD', 1, '$'),
+(191, 'MICRONESIA', 'FM', 'USD', 1, '$'),
+(192, 'NAURU', 'NR', 'AUD', 1, '$'),
+(193, 'NUEVA ZELANDA', 'NZ', 'NZD', 1, '$'),
+(194, 'PALAU', 'PW', 'USD', 1, '$'),
+(195, 'PAPÚA NUEVA GUINEA', 'PG', 'PGK', 1, 'K'),
+(196, 'SAMOA', 'WS', 'WST', 1, 'T'),
+(197, 'ISLAS SALOMÓN', 'SB', 'SBD', 1, '$'),
+(198, 'TONGA', 'TO', 'TOP', 1, 'T$'),
+(199, 'TUVALU', 'TV', 'AUD', 1, '$'),
+(200, 'VANUATU', 'VU', 'VUV', 1, 'VT'),
+(201, 'Afganistán', 'AF', 'USD', 1, '$'),
+(202, 'Chile', 'CL', 'PEN', 1, 'S/'),
+(203, 'CHAD', 'CN', NULL, 1, '$'),
+(204, 'CHAD', 'JP', NULL, 1, '$'),
+(205, 'CHAD', 'AU', NULL, 1, '$'),
+(206, 'KAZAJISTÁN', 'JP', NULL, 1, '$'),
+(207, 'CHINA', 'CL', NULL, 0, '$'),
+(208, 'CHILE', 'AF', NULL, 0, '$'),
+(209, 'CHAD', 'AF', NULL, 1, '$'),
+(210, 'SRI LANKA', 'CL', NULL, 1, '$'),
+(211, 'CHAD', 'LK', NULL, 1, '$'),
+(212, 'CHAD', 'IS', NULL, 1, '$'),
+(213, 'CHINA', 'LK', NULL, 1, '$');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `paises_monedas`
+--
+
+DROP TABLE IF EXISTS `paises_monedas`;
+CREATE TABLE `paises_monedas` (
+  `idPais` int(11) NOT NULL,
+  `idMoneda` int(11) NOT NULL,
+  `es_principal` tinyint(1) DEFAULT 0,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `paises_monedas`
+--
+
+INSERT INTO `paises_monedas` (`idPais`, `idMoneda`, `es_principal`, `fecha_creacion`) VALUES
+(1, 16, 1, '2026-03-16 16:51:58'),
+(1, 271, 0, '2026-03-16 17:04:08'),
+(2, 17, 1, '2026-03-16 16:51:58'),
+(3, 18, 1, '2026-03-16 16:51:58'),
+(4, 17, 1, '2026-03-16 16:51:58'),
+(5, 17, 1, '2026-03-16 16:51:58'),
+(6, 17, 1, '2026-03-16 16:51:58'),
+(7, 17, 1, '2026-03-16 16:51:58'),
+(8, 19, 1, '2026-03-16 16:51:58'),
+(9, 16, 1, '2026-03-16 16:51:58'),
+(9, 271, 0, '2026-03-16 17:08:41'),
+(10, 20, 1, '2026-03-16 16:51:58'),
+(11, 21, 1, '2026-03-16 16:51:58'),
+(12, 22, 1, '2026-03-16 16:51:58'),
+(13, 22, 0, '2026-03-16 17:08:41'),
+(13, 23, 1, '2026-03-16 16:51:58'),
+(14, 22, 0, '2026-03-16 17:08:41'),
+(14, 24, 1, '2026-03-16 16:51:58'),
+(15, 25, 1, '2026-03-16 16:51:58'),
+(16, 18, 1, '2026-03-16 16:51:58'),
+(17, 17, 1, '2026-03-16 16:51:58'),
+(18, 17, 1, '2026-03-16 16:51:58'),
+(19, 17, 1, '2026-03-16 16:51:58'),
+(20, 17, 1, '2026-03-16 16:51:58'),
+(21, 17, 1, '2026-03-16 16:51:58'),
+(22, 17, 1, '2026-03-16 16:51:58'),
+(23, 17, 1, '2026-03-16 16:51:58'),
+(24, 17, 1, '2026-03-16 16:51:58'),
+(25, 17, 1, '2026-03-16 16:51:58'),
+(26, 17, 1, '2026-03-16 16:51:58'),
+(27, 17, 1, '2026-03-16 16:51:58'),
+(28, 26, 1, '2026-03-16 16:51:58'),
+(29, 19, 1, '2026-03-16 16:51:58'),
+(30, 27, 1, '2026-03-16 16:51:58'),
+(31, 16, 1, '2026-03-16 16:51:58'),
+(31, 271, 0, '2026-03-16 17:08:41'),
+(32, 20, 1, '2026-03-16 16:51:58'),
+(33, 21, 1, '2026-03-16 16:51:58'),
+(34, 22, 0, '2026-03-16 17:08:41'),
+(34, 28, 1, '2026-03-16 16:51:58'),
+(34, 275, 0, '2026-03-16 17:08:41'),
+(35, 29, 1, '2026-03-16 16:51:58'),
+(36, 22, 1, '2026-03-16 16:51:58'),
+(37, 22, 1, '2026-03-16 16:51:58'),
+(38, 22, 0, '2026-03-16 17:08:41'),
+(38, 23, 1, '2026-03-16 16:51:58'),
+(39, 22, 0, '2026-03-16 17:08:41'),
+(39, 24, 1, '2026-03-16 16:51:58'),
+(40, 25, 1, '2026-03-16 16:51:58'),
+(41, 22, 0, '2026-03-16 17:08:41'),
+(41, 30, 1, '2026-03-16 16:51:58'),
+(42, 22, 0, '2026-03-16 17:08:41'),
+(42, 31, 1, '2026-03-16 16:51:58'),
+(43, 32, 1, '2026-03-16 16:51:58'),
+(44, 18, 1, '2026-03-16 16:51:58'),
+(45, 22, 1, '2026-03-16 16:51:58'),
+(46, 33, 1, '2026-03-16 16:51:58'),
+(46, 272, 0, '2026-03-16 17:08:41'),
+(47, 34, 1, '2026-03-16 16:51:58'),
+(47, 273, 0, '2026-03-16 17:08:41'),
+(47, 274, 0, '2026-03-16 17:08:41'),
+(48, 22, 1, '2026-03-16 16:51:58'),
+(49, 35, 1, '2026-03-16 16:51:58'),
+(50, 36, 1, '2026-03-16 16:51:58'),
+(51, 36, 1, '2026-03-16 16:51:58'),
+(52, 36, 1, '2026-03-16 16:51:58'),
+(53, 36, 1, '2026-03-16 16:51:58'),
+(54, 37, 1, '2026-03-16 16:51:58'),
+(55, 38, 1, '2026-03-16 16:51:58'),
+(56, 39, 1, '2026-03-16 16:51:58'),
+(57, 36, 1, '2026-03-16 16:51:58'),
+(58, 40, 1, '2026-03-16 16:51:58'),
+(59, 36, 1, '2026-03-16 16:51:58'),
+(60, 36, 1, '2026-03-16 16:51:58'),
+(61, 36, 1, '2026-03-16 16:51:58'),
+(62, 36, 1, '2026-03-16 16:51:58'),
+(63, 36, 1, '2026-03-16 16:51:58'),
+(64, 36, 1, '2026-03-16 16:51:58'),
+(65, 36, 1, '2026-03-16 16:51:58'),
+(66, 41, 1, '2026-03-16 16:51:58'),
+(67, 36, 1, '2026-03-16 16:51:58'),
+(68, 42, 1, '2026-03-16 16:51:58'),
+(69, 36, 1, '2026-03-16 16:51:58'),
+(70, 36, 1, '2026-03-16 16:51:58'),
+(71, 36, 1, '2026-03-16 16:51:58'),
+(72, 43, 1, '2026-03-16 16:51:58'),
+(73, 36, 1, '2026-03-16 16:51:58'),
+(74, 36, 1, '2026-03-16 16:51:58'),
+(75, 44, 1, '2026-03-16 16:51:58'),
+(76, 36, 1, '2026-03-16 16:51:58'),
+(77, 45, 1, '2026-03-16 16:51:58'),
+(78, 36, 1, '2026-03-16 16:51:58'),
+(79, 36, 1, '2026-03-16 16:51:58'),
+(80, 46, 1, '2026-03-16 16:51:58'),
+(81, 36, 1, '2026-03-16 16:51:58'),
+(82, 47, 1, '2026-03-16 16:51:58'),
+(83, 36, 1, '2026-03-16 16:51:58'),
+(84, 48, 1, '2026-03-16 16:51:58'),
+(85, 49, 1, '2026-03-16 16:51:58'),
+(86, 50, 1, '2026-03-16 16:51:58'),
+(87, 51, 1, '2026-03-16 16:51:58'),
+(88, 36, 1, '2026-03-16 16:51:58'),
+(89, 52, 1, '2026-03-16 16:51:58'),
+(90, 53, 1, '2026-03-16 16:51:58'),
+(91, 43, 1, '2026-03-16 16:51:58'),
+(92, 54, 1, '2026-03-16 16:51:58'),
+(93, 36, 1, '2026-03-16 16:51:58'),
+(94, 27, 0, '2026-03-16 17:36:59'),
+(94, 55, 0, '2026-03-16 16:51:58'),
+(94, 271, 1, '2026-03-16 17:29:17'),
+(95, 56, 1, '2026-03-16 16:51:58'),
+(96, 57, 1, '2026-03-16 16:51:58'),
+(97, 58, 1, '2026-03-16 16:51:58'),
+(98, 59, 1, '2026-03-16 16:51:58'),
+(99, 60, 1, '2026-03-16 16:51:58'),
+(100, 61, 1, '2026-03-16 16:51:58'),
+(101, 62, 1, '2026-03-16 16:51:58'),
+(102, 63, 1, '2026-03-16 16:51:58'),
+(103, 64, 1, '2026-03-16 16:51:58'),
+(104, 65, 1, '2026-03-16 16:51:58'),
+(105, 66, 1, '2026-03-16 16:51:58'),
+(106, 67, 1, '2026-03-16 16:51:58'),
+(107, 68, 1, '2026-03-16 16:51:58'),
+(108, 69, 1, '2026-03-16 16:51:58'),
+(109, 70, 1, '2026-03-16 16:51:58'),
+(110, 71, 1, '2026-03-16 16:51:58'),
+(111, 72, 1, '2026-03-16 16:51:58'),
+(112, 73, 1, '2026-03-16 16:51:58'),
+(113, 74, 1, '2026-03-16 16:51:58'),
+(114, 75, 1, '2026-03-16 16:51:58'),
+(115, 76, 1, '2026-03-16 16:51:58'),
+(116, 77, 1, '2026-03-16 16:51:58'),
+(117, 78, 1, '2026-03-16 16:51:58'),
+(118, 79, 1, '2026-03-16 16:51:58'),
+(119, 80, 1, '2026-03-16 16:51:58'),
+(120, 81, 1, '2026-03-16 16:51:58'),
+(121, 82, 1, '2026-03-16 16:51:58'),
+(122, 83, 1, '2026-03-16 16:51:58'),
+(123, 84, 1, '2026-03-16 16:51:58'),
+(124, 85, 1, '2026-03-16 16:51:58'),
+(125, 86, 1, '2026-03-16 16:51:58'),
+(126, 87, 1, '2026-03-16 16:51:58'),
+(127, 88, 1, '2026-03-16 16:51:58'),
+(128, 89, 1, '2026-03-16 16:51:58'),
+(129, 90, 1, '2026-03-16 16:51:58'),
+(130, 91, 1, '2026-03-16 16:51:58'),
+(131, 92, 1, '2026-03-16 16:51:58'),
+(132, 93, 1, '2026-03-16 16:51:58'),
+(133, 94, 1, '2026-03-16 16:51:58'),
+(134, 95, 1, '2026-03-16 16:51:58'),
+(135, 96, 1, '2026-03-16 16:51:58'),
+(136, 97, 1, '2026-03-16 16:51:58'),
+(137, 98, 1, '2026-03-16 16:51:58'),
+(138, 99, 1, '2026-03-16 16:51:58'),
+(139, 100, 1, '2026-03-16 16:51:58'),
+(140, 101, 1, '2026-03-16 16:51:58'),
+(141, 100, 1, '2026-03-16 16:51:58'),
+(142, 102, 1, '2026-03-16 16:51:58'),
+(143, 103, 1, '2026-03-16 16:51:58'),
+(144, 104, 1, '2026-03-16 16:51:58'),
+(145, 104, 1, '2026-03-16 16:51:58'),
+(146, 105, 1, '2026-03-16 16:51:58'),
+(147, 100, 1, '2026-03-16 16:51:58'),
+(148, 106, 1, '2026-03-16 16:51:58'),
+(149, 107, 1, '2026-03-16 16:51:58'),
+(150, 104, 1, '2026-03-16 16:51:58'),
+(151, 108, 1, '2026-03-16 16:51:58'),
+(152, 109, 1, '2026-03-16 16:51:58'),
+(153, 110, 1, '2026-03-16 16:51:58'),
+(154, 100, 1, '2026-03-16 16:51:58'),
+(155, 111, 1, '2026-03-16 16:51:58'),
+(156, 112, 1, '2026-03-16 16:51:58'),
+(157, 113, 1, '2026-03-16 16:51:58'),
+(158, 114, 1, '2026-03-16 16:51:58'),
+(159, 115, 1, '2026-03-16 16:51:58'),
+(160, 116, 1, '2026-03-16 16:51:58'),
+(161, 100, 1, '2026-03-16 16:51:58'),
+(162, 117, 1, '2026-03-16 16:51:58'),
+(163, 118, 1, '2026-03-16 16:51:58'),
+(164, 119, 1, '2026-03-16 16:51:58'),
+(165, 120, 1, '2026-03-16 16:51:58'),
+(166, 121, 1, '2026-03-16 16:51:58'),
+(167, 100, 1, '2026-03-16 16:51:58'),
+(168, 122, 1, '2026-03-16 16:51:58'),
+(169, 111, 1, '2026-03-16 16:51:58'),
+(170, 104, 1, '2026-03-16 16:51:58'),
+(171, 123, 1, '2026-03-16 16:51:58'),
+(172, 124, 1, '2026-03-16 16:51:58'),
+(173, 100, 1, '2026-03-16 16:51:58'),
+(174, 125, 1, '2026-03-16 16:51:58'),
+(175, 126, 1, '2026-03-16 16:51:58'),
+(176, 127, 1, '2026-03-16 16:51:58'),
+(177, 128, 1, '2026-03-16 16:51:58'),
+(178, 129, 1, '2026-03-16 16:51:58'),
+(179, 130, 1, '2026-03-16 16:51:58'),
+(180, 131, 1, '2026-03-16 16:51:58'),
+(181, 100, 1, '2026-03-16 16:51:58'),
+(182, 132, 1, '2026-03-16 16:51:58'),
+(183, 133, 1, '2026-03-16 16:51:58'),
+(184, 134, 1, '2026-03-16 16:51:58'),
+(185, 135, 1, '2026-03-16 16:51:58'),
+(186, 136, 1, '2026-03-16 16:51:58'),
+(187, 55, 1, '2026-03-16 16:51:58'),
+(188, 137, 1, '2026-03-16 16:51:58'),
+(189, 55, 1, '2026-03-16 16:51:58'),
+(190, 22, 1, '2026-03-16 16:51:58'),
+(191, 22, 1, '2026-03-16 16:51:58'),
+(192, 55, 1, '2026-03-16 16:51:58'),
+(193, 138, 1, '2026-03-16 16:51:58'),
+(194, 22, 1, '2026-03-16 16:51:58'),
+(195, 139, 1, '2026-03-16 16:51:58'),
+(196, 140, 1, '2026-03-16 16:51:58'),
+(197, 141, 1, '2026-03-16 16:51:58'),
+(198, 142, 1, '2026-03-16 16:51:58'),
+(199, 55, 1, '2026-03-16 16:51:58'),
+(200, 143, 1, '2026-03-16 16:51:58'),
+(201, 271, 1, '2026-03-17 01:58:58'),
+(202, 18, 1, '2026-03-16 16:51:58'),
+(202, 271, 0, '2026-03-16 17:08:41'),
+(203, 48, 0, '2026-03-16 21:02:23'),
+(203, 271, 1, '2026-03-16 21:02:23'),
+(204, 55, 1, '2026-03-16 21:18:46'),
+(205, 55, 1, '2026-03-16 21:24:21'),
+(206, 55, 1, '2026-03-16 21:50:55'),
+(206, 271, 0, '2026-03-16 21:50:55'),
+(207, 271, 1, '2026-03-17 02:00:28'),
+(208, 17, 1, '2026-03-17 02:05:58'),
+(208, 275, 0, '2026-03-17 02:06:21'),
+(209, 22, 1, '2026-03-17 05:35:22'),
+(209, 271, 0, '2026-03-17 05:35:41'),
+(210, 271, 1, '2026-03-20 17:27:24'),
+(211, 55, 1, '2026-03-20 18:03:49'),
+(212, 55, 1, '2026-03-20 18:32:41'),
+(213, 271, 1, '2026-03-20 19:19:28');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+DROP TABLE IF EXISTS `productos`;
+CREATE TABLE `productos` (
+  `id_producto` int(11) NOT NULL,
+  `codigo_barras` varchar(50) DEFAULT NULL,
+  `nombre_producto` varchar(200) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
+  `precio_venta` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `stock_actual` int(11) DEFAULT 0,
+  `stock_minimo` int(11) DEFAULT 0,
+  `activo` tinyint(4) NOT NULL DEFAULT 1,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  `mostrar_en_tienda` tinyint(1) NOT NULL DEFAULT 1,
+  `precio_compras` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id_producto`, `codigo_barras`, `nombre_producto`, `descripcion`, `id_categoria`, `precio_venta`, `stock_actual`, `stock_minimo`, `activo`, `fecha_creacion`, `mostrar_en_tienda`, `precio_compras`) VALUES
+(1, NULL, 'Smartphone', NULL, 1, 299990.00, 10, 0, 0, '2026-02-16 15:24:30', 1, 0.00),
+(2, NULL, 'Camisa', NULL, 2, 19990.00, 50, 0, 0, '2026-02-16 15:24:30', 1, 0.00),
+(3, NULL, 'Arroz 1kg', NULL, 3, 1200.00, 10, 0, 0, '2026-02-16 15:24:30', 1, 0.00),
+(4, NULL, 'Arroz 1kg', NULL, 3, 1500.00, 100, 10, 0, '2026-02-28 15:37:06', 1, 0.00),
+(5, NULL, 'Prueba', 'Probando', 3, 0.09, 4, 1, 0, '2026-03-10 11:54:43', 1, 0.00),
+(6, NULL, 'Prueba', 'probando', 1, 0.03, 5, 7, 0, '2026-03-10 13:01:15', 1, 0.00),
+(7, NULL, 'Prueba', 'probando', 3, 0.05, 6, 9, 0, '2026-03-10 15:59:34', 1, 0.00),
+(8, NULL, 'Prueba', NULL, 3, 0.15, 6, 5, 0, '2026-03-10 17:16:00', 1, 0.00),
+(9, NULL, 'Prueba', NULL, NULL, 0.02, 0, 0, 0, '2026-03-11 16:59:44', 1, 0.00),
+(10, NULL, 'Prueba', NULL, 3, 0.04, 0, 0, 0, '2026-03-11 19:05:02', 1, 0.00),
+(11, NULL, 'Prueba', NULL, 1, 0.04, 0, 0, 0, '2026-03-11 19:16:57', 1, 0.00),
+(12, '7801234567890', 'Arroz 1kg', 'Arroz grado 1, bolsa de 1kg', 3, 1200.00, 150, 20, 1, '2026-03-11 23:15:23', 1, 800.00),
+(13, '7801234567891', 'Fideos Tallarines 500gr', 'Fideos de sémola, paquete 500gr', 3, 650.00, 200, 30, 1, '2026-03-11 23:15:23', 1, 450.00),
+(14, '7801234567892', 'Aceite Vegetal 1.5L', 'Aceite de maravilla, botella 1.5L', 3, 1800.00, 80, 10, 1, '2026-03-11 23:15:23', 1, 1200.00),
+(15, '7801234567893', 'Azúcar 1kg', 'Azúcar refinada, bolsa 1kg', 3, 1100.00, 120, 15, 1, '2026-03-11 23:15:23', 1, 700.00),
+(16, '7801234567894', 'Leche Entera 1L', 'Leche larga vida, caja 1L', 11, 950.00, 180, 25, 1, '2026-03-11 23:15:23', 1, 650.00),
+(17, '7801234567895', 'Coca Cola 591cc', 'Bebida cola, botella 591cc', 2, 850.00, 300, 40, 1, '2026-03-11 23:15:23', 1, 550.00),
+(18, '7801234567896', 'Coca Cola Zero 591cc', 'Bebida cola zero, botella 591cc', 10, 850.00, 250, 35, 1, '2026-03-11 23:15:23', 1, 550.00),
+(19, '7801234567897', 'Fanta 591cc', 'Bebida sabor naranja, botella 591cc', 2, 850.00, 200, 30, 1, '2026-03-11 23:15:23', 1, 550.00),
+(20, '7801234567898', 'Sprite 591cc', 'Bebida sabor limón, botella 591cc', 2, 850.00, 220, 30, 1, '2026-03-11 23:15:23', 1, 550.00),
+(21, '7801234567899', 'Cachantún con Gas 1.5L', 'Agua mineral con gas, botella 1.5L', 10, 600.00, 180, 25, 1, '2026-03-11 23:15:23', 1, 400.00),
+(22, '7801234567900', 'Cachantún sin Gas 1.5L', 'Agua mineral sin gas, botella 1.5L', 10, 600.00, 190, 25, 1, '2026-03-11 23:15:23', 1, 400.00),
+(23, '7801234567901', 'Vital con Gas 1.5L', 'Agua mineral con gas, botella 1.5L', 10, 550.00, 170, 20, 1, '2026-03-11 23:15:23', 1, 380.00),
+(24, '7801234567902', 'Vital sin Gas 1.5L', 'Agua mineral sin gas, botella 1.5L', 10, 550.00, 200, 30, 1, '2026-03-11 23:15:23', 1, 380.00),
+(25, '7801234567903', 'Smartphone Xiaomi Redmi 9', 'Teléfono 4GB/64GB, pantalla 6.5\"', 4, 199990.00, 25, 5, 1, '2026-03-11 23:15:23', 1, 150000.00),
+(26, '7801234567904', 'Audífonos Bluetooth', 'Audífonos inalámbricos, estuche carga', 1, 19990.00, 60, 10, 1, '2026-03-11 23:15:23', 1, 12000.00),
+(27, '7801234567905', 'Cargador Rápido USB-C', 'Cargador 20W, compatible PD', 1, 8900.00, 85, 15, 1, '2026-03-11 23:15:23', 1, 5000.00),
+(28, '7801234567906', 'Pendrive 32GB', 'Memoria USB 3.0, color negro', 4, 7900.00, 100, 20, 1, '2026-03-11 23:15:23', 1, 4500.00),
+(29, '7801234567907', 'Polera Hombre M', 'Polera de algodón, talla M, color negro', 2, 9900.00, 75, 15, 1, '2026-03-11 23:15:23', 1, 5000.00),
+(30, '7801234567908', 'Jeans Mujer 36', 'Pantalón de mezclilla, talle 36', 5, 16990.00, 45, 8, 1, '2026-03-11 23:15:23', 1, 10000.00),
+(31, '7801234567909', 'Zapatillas Deportivas 42', 'Zapatillas running, talla 42', 5, 39990.00, 30, 5, 1, '2026-03-11 23:15:23', 1, 25000.00),
+(32, '7801234567910', 'Powerade Rojo 850ml', 'Bebida isotónica sabor frutos rojos, botella 850ml', 2, 1200.00, 150, 25, 1, '2026-03-11 23:17:08', 1, 700.00),
+(33, '7801234567911', 'Powerade Azul 850ml', 'Bebida isotónica sabor mountain blast, botella 850ml', 2, 1200.00, 145, 25, 1, '2026-03-11 23:17:08', 1, 700.00),
+(34, '7801234567912', 'Gatorade Naranja 1L', 'Bebida isotónica sabor naranja, botella 1L', 2, 1300.00, 130, 20, 1, '2026-03-11 23:17:08', 1, 750.00),
+(35, '7801234567913', 'Cachantún con Gas Display 12u', 'Pack 12 botellas de 1.5L con gas', 10, 6000.00, 40, 8, 1, '2026-03-11 23:17:08', 1, 4200.00),
+(36, '7801234567914', 'Cachantún sin Gas Display 12u', 'Pack 12 botellas de 1.5L sin gas', 10, 6000.00, 38, 8, 1, '2026-03-11 23:17:08', 1, 4200.00),
+(37, '7801234567915', 'Vital con Gas Display 12u', 'Pack 12 botellas de 1.5L con gas', 10, 5800.00, 42, 8, 1, '2026-03-11 23:17:08', 1, 4000.00),
+(38, '7801234567916', 'Vital sin Gas Display 12u', 'Pack 12 botellas de 1.5L sin gas', 1, 5800.00, 45, 8, 1, '2026-03-11 23:17:08', 1, 4000.00),
+(39, '7801234567917', 'Mouse Inalámbrico', 'Mouse óptico, 2.4GHz, color negro', 1, 5900.00, 90, 15, 1, '2026-03-11 23:17:08', 1, 3500.00),
+(40, '7801234567918', 'Teclado USB', 'Teclado multimedia, conexión USB', 1, 8900.00, 60, 10, 1, '2026-03-11 23:17:08', 1, 5000.00),
+(41, '7801234567919', 'Gorra Deportiva', 'Gorra ajustable, color azul', 5, 4500.00, 110, 20, 1, '2026-03-11 23:17:08', 1, 2500.00),
+(42, '1234567891011', 'validación URL', 'Prueba validación URL', 1, 3.00, 50, 10, 1, '2026-03-17 16:35:48', 1, 2.00),
+(43, '1234567891012', 'validación URL 2', 'segundo intento', 1, 3.00, 50, 10, 1, '2026-03-17 16:38:53', 1, 2.00),
+(45, '1234567891013', 'zona horaria', 'Prueba zona horaria', 1, 4.00, 32, 12, 0, '2026-03-17 19:06:11', 1, 3.00),
+(50, NULL, 'Producto de Prueba SQL', NULL, NULL, 5000.00, 0, 0, 1, '2026-03-17 19:58:16', 1, 0.00),
+(51, '1234567891014', 'zona horaria', NULL, 1, 3.00, 23, 12, 0, '2026-03-17 20:05:38', 1, 2.00),
+(53, NULL, 'Producto prueba post-config', NULL, NULL, 5000.00, 0, 0, 1, '2026-03-17 20:15:54', 1, 0.00),
+(55, '1234567891015', 'zona horaria', NULL, 1, 3.00, 0, 0, 1, '2026-03-17 20:18:31', 1, 2.00),
+(56, NULL, 'zona horaria 3', NULL, 1, 3.00, 0, 0, 0, '2026-03-17 23:03:35', 1, 2.00),
+(72, '7801234567920', 'Arroz Grado 1 1kg', 'Arroz de grano largo', 3, 1200.00, 150, 20, 1, '2026-03-18 19:05:35', 1, 800.00),
+(73, '7801234567921', 'Arroz Grado 2 1kg', 'Arroz estándar', 3, 900.00, 200, 30, 1, '2026-03-18 19:05:35', 1, 600.00),
+(74, '7801234567922', 'Azúcar Blanca 1kg', 'Azúcar refinada', 3, 1100.00, 120, 15, 1, '2026-03-18 19:05:35', 1, 700.00),
+(75, '7801234567923', 'Azúcar Morena 1kg', 'Azúcar sin refinar', 3, 1150.00, 80, 10, 1, '2026-03-18 19:05:35', 1, 750.00),
+(76, '7801234567924', 'Harina sin Polvos 1kg', 'Harina de trigo', 3, 850.00, 180, 25, 1, '2026-03-18 19:05:35', 1, 500.00),
+(77, '7801234567925', 'Harina con Polvos 1kg', 'Harina preparada', 3, 900.00, 140, 20, 1, '2026-03-18 19:05:35', 1, 550.00),
+(78, '7801234567926', 'Aceite Vegetal 1.5L', 'Aceite de maravilla', 3, 1800.00, 80, 10, 1, '2026-03-18 19:05:35', 1, 1200.00),
+(79, '7801234567927', 'Aceite de Oliva 500ml', 'Aceite de oliva extra virgen', 3, 3800.00, 40, 5, 1, '2026-03-18 19:05:35', 1, 2500.00),
+(80, '7801234567928', 'Sal de Mar 1kg', 'Sal fina', 3, 600.00, 200, 30, 1, '2026-03-18 19:05:35', 1, 300.00),
+(81, '7801234567929', 'Sal de Mar Gruesa 1kg', 'Sal para parrilla', 3, 650.00, 150, 20, 1, '2026-03-18 19:05:35', 1, 350.00),
+(82, '7801234567930', 'Fideos Spaghetti 400gr', 'Pasta de trigo', 3, 750.00, 300, 40, 1, '2026-03-18 19:05:35', 1, 400.00),
+(83, '7801234567931', 'Fideos Tallarines 400gr', 'Pasta de trigo', 3, 750.00, 280, 35, 1, '2026-03-18 19:05:35', 1, 400.00),
+(84, '7801234567932', 'Lentejas 500gr', 'Legumbres', 3, 950.00, 160, 20, 1, '2026-03-18 19:05:35', 1, 600.00),
+(85, '7801234567933', 'Porotos 500gr', 'Legumbres', 3, 1000.00, 140, 20, 1, '2026-03-18 19:05:35', 1, 650.00),
+(86, '7801234567934', 'Garbanzos 500gr', 'Legumbres', 3, 1050.00, 120, 15, 1, '2026-03-18 19:05:35', 1, 700.00),
+(87, '7801234567935', 'Coca Cola Original 1.5L', 'Bebida cola', 10, 950.00, 200, 30, 1, '2026-03-18 19:05:35', 1, 550.00),
+(88, '7801234567936', 'Coca Cola Zero 1.5L', 'Bebida cola zero', 10, 950.00, 180, 25, 1, '2026-03-18 19:05:35', 1, 550.00),
+(89, '7801234567937', 'Coca Cola Original 591cc', 'Bebida cola personal', 10, 700.00, 300, 40, 1, '2026-03-18 19:05:35', 1, 400.00),
+(90, '7801234567938', 'Coca Cola Zero 591cc', 'Bebida cola zero personal', 10, 700.00, 280, 35, 1, '2026-03-18 19:05:35', 1, 400.00),
+(91, '7801234567939', 'Coca Cola Original 2.5L', 'Bebida cola familiar', 10, 1250.00, 140, 20, 1, '2026-03-18 19:05:35', 1, 750.00),
+(92, '7801234567940', 'Coca Cola Zero 2.5L', 'Bebida cola zero familiar', 10, 1250.00, 130, 18, 1, '2026-03-18 19:05:35', 1, 750.00),
+(93, '7801234567941', 'Coca Cola Original 3L', 'Bebida cola mega', 10, 1500.00, 100, 15, 1, '2026-03-18 19:05:35', 1, 900.00),
+(94, '7801234567942', 'Coca Cola Zero 3L', 'Bebida cola zero mega', 10, 1500.00, 90, 12, 1, '2026-03-18 19:05:35', 1, 900.00),
+(95, '7801234567943', 'Sprite Original 1.5L', 'Bebida de limón', 10, 950.00, 170, 25, 1, '2026-03-18 19:05:35', 1, 550.00),
+(96, '7801234567944', 'Sprite Zero 1.5L', 'Bebida de limón zero', 10, 950.00, 150, 20, 1, '2026-03-18 19:05:35', 1, 550.00),
+(97, '7801234567945', 'Fanta Naranja 1.5L', 'Bebida de naranja', 10, 950.00, 140, 20, 1, '2026-03-18 19:05:35', 1, 550.00),
+(98, '7801234567946', 'Fanta Zero 1.5L', 'Bebida de naranja zero', 10, 950.00, 120, 18, 1, '2026-03-18 19:05:35', 1, 550.00),
+(99, '7801234567947', 'Pepsi Original 1.5L', 'Bebida cola', 10, 850.00, 160, 22, 1, '2026-03-18 19:05:35', 1, 500.00),
+(100, '7801234567948', 'Pepsi Zero 1.5L', 'Bebida cola zero', 10, 850.00, 140, 20, 1, '2026-03-18 19:05:35', 1, 500.00),
+(101, '7801234567949', '7Up Original 1.5L', 'Bebida de limón', 10, 850.00, 130, 18, 1, '2026-03-18 19:05:35', 1, 500.00),
+(102, '7801234567950', '7Up Zero 1.5L', 'Bebida de limón zero', 10, 850.00, 120, 16, 1, '2026-03-18 19:05:35', 1, 500.00),
+(103, '7801234567951', 'Agua Mineral con Gas 1.5L', 'Agua mineral con gas', 10, 600.00, 250, 30, 1, '2026-03-18 19:05:35', 1, 300.00),
+(104, '7801234567952', 'Agua Mineral sin Gas 1.5L', 'Agua mineral sin gas', 10, 500.00, 300, 40, 1, '2026-03-18 19:05:35', 1, 250.00),
+(105, '7801234567953', 'Agua Mineral con Gas 500ml', 'Agua mineral con gas personal', 10, 400.00, 350, 45, 1, '2026-03-18 19:05:35', 1, 200.00),
+(106, '7801234567954', 'Agua Mineral sin Gas 500ml', 'Agua mineral sin gas personal', 10, 350.00, 380, 50, 1, '2026-03-18 19:05:35', 1, 180.00),
+(107, '7801234567955', 'Leche Entera 1L', 'Leche fresca entera', 11, 1000.00, 200, 25, 1, '2026-03-18 19:05:35', 1, 600.00),
+(108, '7801234567956', 'Leche Semi Descremada 1L', 'Leche semi descremada', 11, 1000.00, 180, 22, 1, '2026-03-18 19:05:35', 1, 600.00),
+(109, '7801234567957', 'Leche Descremada 1L', 'Leche descremada', 11, 1000.00, 160, 20, 1, '2026-03-18 19:05:35', 1, 600.00),
+(110, '7801234567958', 'Leche Sin Lactosa 1L', 'Leche sin lactosa', 11, 1200.00, 100, 12, 1, '2026-03-18 19:05:35', 1, 700.00),
+(111, '7801234567959', 'Yogurt Natural Batido 1kg', 'Yogurt natural', 11, 1400.00, 80, 10, 1, '2026-03-18 19:05:35', 1, 800.00),
+(112, '7801234567960', 'Yogurt Frutilla Batido 1kg', 'Yogurt sabor frutilla', 11, 1450.00, 90, 12, 1, '2026-03-18 19:05:35', 1, 850.00),
+(113, '7801234567961', 'Yogurt Vainilla Batido 1kg', 'Yogurt sabor vainilla', 11, 1450.00, 85, 11, 1, '2026-03-18 19:05:35', 1, 850.00),
+(114, '7801234567962', 'Queso Mantecoso 500gr', 'Queso fresco', 11, 2800.00, 50, 8, 1, '2026-03-18 19:05:35', 1, 1800.00),
+(115, '7801234567963', 'Queso Gauda 500gr', 'Queso gauda', 11, 3000.00, 45, 7, 1, '2026-03-18 19:05:35', 1, 1900.00),
+(116, '7801234567964', 'Queso Chanco 500gr', 'Queso chanco', 11, 2600.00, 55, 9, 1, '2026-03-18 19:05:35', 1, 1700.00),
+(117, '7801234567965', 'Mantequilla 250gr', 'Mantequilla con sal', 11, 1200.00, 120, 15, 1, '2026-03-18 19:05:35', 1, 700.00),
+(118, '7801234567966', 'Mantequilla sin Sal 250gr', 'Mantequilla sin sal', 11, 1200.00, 100, 12, 1, '2026-03-18 19:05:35', 1, 700.00),
+(119, '7801234567967', 'Crema de Leche 200ml', 'Crema para cocinar', 11, 900.00, 130, 18, 1, '2026-03-18 19:05:35', 1, 500.00),
+(120, '7801234567968', 'Leche Condensada 395gr', 'Leche condensada', 11, 1400.00, 90, 12, 1, '2026-03-18 19:05:35', 1, 800.00),
+(121, '7801234567969', 'Leche en Polvo Entera 400gr', 'Leche en polvo', 11, 2400.00, 60, 8, 1, '2026-03-18 19:05:35', 1, 1500.00),
+(122, '7801234567970', 'Pollo Entero', 'Pollo fresco', 12, 3800.00, 40, 5, 1, '2026-03-18 19:05:35', 1, 2500.00),
+(123, '7801234567971', 'Pollo Trutro', 'Trutro de pollo', 12, 2400.00, 50, 6, 1, '2026-03-18 19:05:35', 1, 1500.00),
+(124, '7801234567972', 'Pollo Pechuga', 'Pechuga de pollo', 12, 4500.00, 35, 4, 1, '2026-03-18 19:05:35', 1, 3000.00),
+(125, '7801234567973', 'Posta Negra 1kg', 'Carne de vacuno', 12, 7500.00, 20, 3, 1, '2026-03-18 19:05:35', 1, 5000.00),
+(126, '7801234567974', 'Lomo Liso 1kg', 'Carne de vacuno', 12, 9000.00, 15, 2, 1, '2026-03-18 19:05:35', 1, 6000.00),
+(127, '7801234567975', 'Asado de Tira 1kg', 'Carne de vacuno', 12, 6800.00, 18, 3, 1, '2026-03-18 19:05:35', 1, 4500.00),
+(128, '7801234567976', 'Hamburguesa de Pollo 4u', 'Hamburguesas de pollo', 12, 2500.00, 60, 8, 1, '2026-03-18 19:05:35', 1, 1500.00),
+(129, '7801234567977', 'Hamburguesa de Vacuno 4u', 'Hamburguesas de vacuno', 12, 2900.00, 55, 7, 1, '2026-03-18 19:05:35', 1, 1800.00),
+(130, '7801234567978', 'Vienesas 10u', 'Salchichas tipo vienesa', 12, 2000.00, 80, 10, 1, '2026-03-18 19:05:35', 1, 1200.00),
+(131, '7801234567979', 'Chorizo 500gr', 'Chorizo para parrilla', 12, 3200.00, 45, 6, 1, '2026-03-18 19:05:35', 1, 2000.00),
+(132, '7801234567980', 'Tocino 250gr', 'Tocino ahumado', 12, 2500.00, 50, 7, 1, '2026-03-18 19:05:35', 1, 1500.00),
+(133, '7801234567981', 'Jamón de Pollo 250gr', 'Jamón de pollo', 12, 2000.00, 70, 9, 1, '2026-03-18 19:05:35', 1, 1200.00),
+(134, '7801234567982', 'Jamón de Cerdo 250gr', 'Jamón de cerdo', 12, 2100.00, 65, 8, 1, '2026-03-18 19:05:35', 1, 1300.00),
+(135, '7801234567983', 'Queso de Cerdo 250gr', 'Queso de cabeza', 12, 1800.00, 60, 8, 1, '2026-03-18 19:05:35', 1, 1100.00),
+(136, '7801234567984', 'Mortadela 250gr', 'Mortadela', 12, 1400.00, 85, 12, 1, '2026-03-18 19:05:35', 1, 800.00),
+(137, '7801234567985', 'Audífonos Bluetooth', 'Audífonos inalámbricos', 1, 14990.00, 30, 5, 1, '2026-03-18 19:05:35', 1, 8000.00),
+(138, '7801234567986', 'Cargador Rápido USB-C', 'Cargador 20W', 1, 8900.00, 45, 6, 1, '2026-03-18 19:05:35', 1, 4000.00),
+(139, '7801234567987', 'Cable USB-C 1m', 'Cable de carga', 1, 3500.00, 80, 10, 1, '2026-03-18 19:05:35', 1, 1500.00),
+(140, '7801234567988', 'Cable Lightning 1m', 'Cable para iPhone', 1, 4000.00, 60, 8, 1, '2026-03-18 19:05:35', 1, 1800.00),
+(141, '7801234567989', 'Adaptador Corriente', 'Adaptador universal', 1, 5500.00, 40, 5, 1, '2026-03-18 19:05:35', 1, 2500.00),
+(142, '7801234567990', 'Pila AA 4u', 'Pilas alcalinas', 1, 2500.00, 100, 15, 1, '2026-03-18 19:05:35', 1, 1200.00),
+(143, '7801234567991', 'Pila AAA 4u', 'Pilas alcalinas', 1, 2500.00, 100, 15, 1, '2026-03-18 19:05:35', 1, 1200.00),
+(144, '7801234567992', 'Memoria USB 16GB', 'Memoria USB', 1, 6900.00, 50, 7, 1, '2026-03-18 19:05:35', 1, 3500.00),
+(145, '7801234567993', 'Memoria USB 32GB', 'Memoria USB', 1, 9900.00, 40, 5, 1, '2026-03-18 19:05:35', 1, 5000.00),
+(146, '7801234567994', 'Mouse Óptico', 'Mouse con cable', 1, 4500.00, 55, 7, 1, '2026-03-18 19:05:35', 1, 2000.00),
+(147, '7801234567995', 'Mouse Inalámbrico', 'Mouse sin cable', 1, 6900.00, 35, 5, 1, '2026-03-18 19:05:35', 1, 3500.00),
+(148, '7801234567996', 'Teclado USB', 'Teclado con cable', 1, 7900.00, 30, 4, 1, '2026-03-18 19:05:35', 1, 4000.00),
+(149, '7801234567997', 'Teclado Inalámbrico', 'Teclado sin cable', 1, 11900.00, 20, 3, 1, '2026-03-18 19:05:35', 1, 6000.00),
+(150, '7801234567998', 'Webcam HD', 'Cámara para PC', 1, 13900.00, 25, 4, 1, '2026-03-18 19:05:35', 1, 7000.00),
+(151, '7801234567999', 'Hub USB 4 puertos', 'Multiplicador USB', 1, 5900.00, 35, 5, 1, '2026-03-18 19:05:35', 1, 3000.00),
+(152, '7801234568000', 'Toalla de Baño', 'Toalla 70x140cm', 13, 4500.00, 40, 5, 1, '2026-03-18 19:05:35', 1, 2500.00),
+(153, '7801234568001', 'Toalla de Mano', 'Toalla 50x80cm', 13, 2800.00, 50, 6, 1, '2026-03-18 19:05:35', 1, 1500.00),
+(154, '7801234568002', 'Juego de Sábanas 2 plazas', 'Sábanas de algodón', 13, 10900.00, 25, 4, 1, '2026-03-18 19:05:35', 1, 6000.00),
+(155, '7801234568003', 'Juego de Sábanas 1.5 plazas', 'Sábanas de algodón', 13, 8900.00, 30, 4, 1, '2026-03-18 19:05:35', 1, 5000.00),
+(156, '7801234568004', 'Cobertor 2 plazas', 'Cobertor polar', 13, 14900.00, 20, 3, 1, '2026-03-18 19:05:35', 1, 8000.00),
+(157, '7801234568005', 'Almohada', 'Almohada viscoelástica', 13, 6500.00, 45, 6, 1, '2026-03-18 19:05:35', 1, 3500.00),
+(158, '7801234568006', 'Cortina 2x2m', 'Cortina blackout', 13, 12900.00, 15, 2, 1, '2026-03-18 19:05:35', 1, 7000.00),
+(159, '7801234568007', 'Felpudo Entrada', 'Felpudo antideslizante', 13, 3800.00, 35, 5, 1, '2026-03-18 19:05:35', 1, 2000.00),
+(160, '7801234568008', 'Perchero Pared', 'Perchero metálico', 13, 3500.00, 40, 5, 1, '2026-03-18 19:05:35', 1, 1800.00),
+(161, '7801234568009', 'Jabonera', 'Jabonera de cerámica', 13, 1200.00, 60, 8, 1, '2026-03-18 19:05:35', 1, 500.00),
+(162, '7801234568010', 'Porta Cepillos', 'Porta cepillos de dientes', 13, 1400.00, 55, 7, 1, '2026-03-18 19:05:35', 1, 600.00),
+(163, '7801234568011', 'Cesto Ropa', 'Cesto para ropa sucia', 13, 5500.00, 25, 3, 1, '2026-03-18 19:05:35', 1, 3000.00),
+(164, '7801234568012', 'Organizador', 'Organizador plástico', 13, 2500.00, 50, 6, 1, '2026-03-18 19:05:35', 1, 1200.00),
+(165, '7801234568013', 'Caja Multiuso', 'Caja plástica', 13, 2900.00, 45, 6, 1, '2026-03-18 19:05:35', 1, 1500.00),
+(166, '7801234568014', 'Percha 10u', 'Perchas plásticas', 13, 1700.00, 70, 10, 1, '2026-03-18 19:05:35', 1, 800.00),
+(167, '7801234568015', 'Polera Hombre M', 'Polera algodón', 2, 5900.00, 40, 5, 1, '2026-03-18 19:05:35', 1, 3000.00),
+(168, '7801234568016', 'Polera Hombre L', 'Polera algodón', 2, 5900.00, 45, 6, 1, '2026-03-18 19:05:35', 1, 3000.00),
+(169, '7801234568017', 'Polera Mujer M', 'Polera algodón', 2, 5900.00, 35, 5, 1, '2026-03-18 19:05:35', 1, 3000.00),
+(170, '7801234568018', 'Polera Mujer L', 'Polera algodón', 2, 5900.00, 30, 4, 1, '2026-03-18 19:05:35', 1, 3000.00),
+(171, '7801234568019', 'Pantalón Hombre 42', 'Pantalón de vestir', 2, 11900.00, 20, 3, 1, '2026-03-18 19:05:35', 1, 6000.00),
+(172, '7801234568020', 'Pantalón Hombre 44', 'Pantalón de vestir', 2, 11900.00, 18, 3, 1, '2026-03-18 19:05:35', 1, 6000.00),
+(173, '7801234568021', 'Pantalón Mujer 40', 'Pantalón de vestir', 2, 11900.00, 15, 2, 1, '2026-03-18 19:05:35', 1, 6000.00),
+(174, '7801234568022', 'Pantalón Mujer 42', 'Pantalón de vestir', 2, 11900.00, 12, 2, 1, '2026-03-18 19:05:35', 1, 6000.00),
+(175, '7801234568023', 'Jeans Hombre 42', 'Jeans clásico', 2, 9900.00, 25, 4, 1, '2026-03-18 19:05:35', 1, 5000.00),
+(176, '7801234568024', 'Jeans Hombre 44', 'Jeans clásico', 2, 9900.00, 22, 3, 1, '2026-03-18 19:05:35', 1, 5000.00),
+(177, '7801234568025', 'Jeans Mujer 40', 'Jeans clásico', 2, 9900.00, 20, 3, 1, '2026-03-18 19:05:35', 1, 5000.00),
+(178, '7801234568026', 'Jeans Mujer 42', 'Jeans clásico', 2, 9900.00, 18, 3, 1, '2026-03-18 19:05:35', 1, 5000.00),
+(179, '7801234568027', 'Chaqueta Hombre M', 'Chaqueta impermeable', 2, 18900.00, 10, 2, 1, '2026-03-18 19:05:35', 1, 10000.00),
+(180, '7801234568028', 'Chaqueta Hombre L', 'Chaqueta impermeable', 2, 18900.00, 8, 1, 1, '2026-03-18 19:05:35', 1, 10000.00),
+(181, '7801234568029', 'Chaqueta Mujer M', 'Chaqueta impermeable', 2, 18900.00, 7, 1, 1, '2026-03-18 19:05:35', 1, 10000.00),
+(182, '7801234568030', 'Chaqueta Mujer L', 'Chaqueta impermeable', 2, 18900.00, 5, 1, 1, '2026-03-18 19:05:35', 1, 10000.00),
+(198, '1234567891019', 'Prueba 4', NULL, 18, 21.00, 20, 11, 1, '2026-03-20 16:12:32', 1, 12.00),
+(200, '4343254351435', 'Prueba 5', 'prueba', 18, 8.00, 23, 11, 1, '2026-03-20 16:27:18', 1, 5.00),
+(209, '8374629748392', 'Prueba', NULL, 18, 5.00, 23, 12, 1, '2026-03-20 17:37:52', 1, 2.00),
+(210, NULL, 'Prueba', NULL, 18, 3.00, 23, 11, 1, '2026-03-20 17:38:44', 1, 2.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos_backup`
+--
+
+DROP TABLE IF EXISTS `productos_backup`;
+CREATE TABLE `productos_backup` (
+  `id_producto` int(11) NOT NULL DEFAULT 0,
+  `codigo_barras` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `nombre_producto` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `descripcion` text CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
+  `precio_venta` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `stock_actual` int(11) DEFAULT 0,
+  `stock_minimo` int(11) DEFAULT 0,
+  `activo` tinyint(4) NOT NULL DEFAULT 1,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
+  `mostrar_en_tienda` tinyint(1) NOT NULL DEFAULT 1,
+  `precio_compras` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos_backup`
+--
+
+INSERT INTO `productos_backup` (`id_producto`, `codigo_barras`, `nombre_producto`, `descripcion`, `id_categoria`, `precio_venta`, `stock_actual`, `stock_minimo`, `activo`, `fecha_creacion`, `mostrar_en_tienda`, `precio_compras`) VALUES
+(1, NULL, 'Smartphone', NULL, 1, 299990.00, 10, 0, 0, '2026-02-16 18:24:30', 1, 0.00),
+(2, NULL, 'Camisa', NULL, 2, 19990.00, 50, 0, 0, '2026-02-16 18:24:30', 1, 0.00),
+(3, NULL, 'Arroz 1kg', NULL, 3, 1200.00, 10, 0, 0, '2026-02-16 18:24:30', 1, 0.00),
+(4, NULL, 'Arroz 1kg', NULL, 3, 1500.00, 100, 10, 0, '2026-02-28 18:37:06', 1, 0.00),
+(5, NULL, 'Prueba', 'Probando', 3, 0.09, 4, 1, 0, '2026-03-10 14:54:43', 1, 0.00),
+(6, NULL, 'Prueba', 'probando', 1, 0.03, 5, 7, 0, '2026-03-10 16:01:15', 1, 0.00),
+(7, NULL, 'Prueba', 'probando', 3, 0.05, 6, 9, 0, '2026-03-10 18:59:34', 1, 0.00),
+(8, NULL, 'Prueba', NULL, 3, 0.15, 6, 5, 0, '2026-03-10 20:16:00', 1, 0.00),
+(9, NULL, 'Prueba', NULL, NULL, 0.02, 0, 0, 0, '2026-03-11 19:59:44', 1, 0.00),
+(10, NULL, 'Prueba', NULL, 3, 0.04, 0, 0, 0, '2026-03-11 22:05:02', 1, 0.00),
+(11, NULL, 'Prueba', NULL, 1, 0.04, 0, 0, 0, '2026-03-11 22:16:57', 1, 0.00),
+(12, '7801234567890', 'Arroz 1kg', 'Arroz grado 1, bolsa de 1kg', 3, 1200.00, 150, 20, 1, '2026-03-12 02:15:23', 1, 800.00),
+(13, '7801234567891', 'Fideos Tallarines 500gr', 'Fideos de sémola, paquete 500gr', 3, 650.00, 200, 30, 1, '2026-03-12 02:15:23', 1, 450.00),
+(14, '7801234567892', 'Aceite Vegetal 1.5L', 'Aceite de maravilla, botella 1.5L', 3, 1800.00, 80, 10, 1, '2026-03-12 02:15:23', 1, 1200.00),
+(15, '7801234567893', 'Azúcar 1kg', 'Azúcar refinada, bolsa 1kg', 3, 1100.00, 120, 15, 1, '2026-03-12 02:15:23', 1, 700.00),
+(16, '7801234567894', 'Leche Entera 1L', 'Leche larga vida, caja 1L', 3, 950.00, 180, 25, 1, '2026-03-12 02:15:23', 1, 650.00),
+(17, '7801234567895', 'Coca Cola 591cc', 'Bebida cola, botella 591cc', 2, 850.00, 300, 40, 1, '2026-03-12 02:15:23', 1, 550.00),
+(18, '7801234567896', 'Coca Cola Zero 591cc', 'Bebida cola zero, botella 591cc', 2, 850.00, 250, 35, 1, '2026-03-12 02:15:23', 1, 550.00),
+(19, '7801234567897', 'Fanta 591cc', 'Bebida sabor naranja, botella 591cc', 2, 850.00, 200, 30, 1, '2026-03-12 02:15:23', 1, 550.00),
+(20, '7801234567898', 'Sprite 591cc', 'Bebida sabor limón, botella 591cc', 2, 850.00, 220, 30, 1, '2026-03-12 02:15:23', 1, 550.00),
+(21, '7801234567899', 'Cachantún con Gas 1.5L', 'Agua mineral con gas, botella 1.5L', 1, 600.00, 180, 25, 1, '2026-03-12 02:15:23', 1, 400.00),
+(22, '7801234567900', 'Cachantún sin Gas 1.5L', 'Agua mineral sin gas, botella 1.5L', 1, 600.00, 190, 25, 1, '2026-03-12 02:15:23', 1, 400.00),
+(23, '7801234567901', 'Vital con Gas 1.5L', 'Agua mineral con gas, botella 1.5L', 1, 550.00, 170, 20, 1, '2026-03-12 02:15:23', 1, 380.00),
+(24, '7801234567902', 'Vital sin Gas 1.5L', 'Agua mineral sin gas, botella 1.5L', 1, 550.00, 200, 30, 1, '2026-03-12 02:15:23', 1, 380.00),
+(25, '7801234567903', 'Smartphone Xiaomi Redmi 9', 'Teléfono 4GB/64GB, pantalla 6.5\"', 4, 199990.00, 25, 5, 1, '2026-03-12 02:15:23', 1, 150000.00),
+(26, '7801234567904', 'Audífonos Bluetooth', 'Audífonos inalámbricos, estuche carga', 4, 19990.00, 60, 10, 1, '2026-03-12 02:15:23', 1, 12000.00),
+(27, '7801234567905', 'Cargador Rápido USB-C', 'Cargador 20W, compatible PD', 4, 8900.00, 85, 15, 1, '2026-03-12 02:15:23', 1, 5000.00),
+(28, '7801234567906', 'Pendrive 32GB', 'Memoria USB 3.0, color negro', 4, 7900.00, 100, 20, 1, '2026-03-12 02:15:23', 1, 4500.00),
+(29, '7801234567907', 'Polera Hombre M', 'Polera de algodón, talla M, color negro', 5, 9900.00, 75, 15, 1, '2026-03-12 02:15:23', 1, 5000.00),
+(30, '7801234567908', 'Jeans Mujer 36', 'Pantalón de mezclilla, talle 36', 5, 16990.00, 45, 8, 1, '2026-03-12 02:15:23', 1, 10000.00),
+(31, '7801234567909', 'Zapatillas Deportivas 42', 'Zapatillas running, talla 42', 5, 39990.00, 30, 5, 1, '2026-03-12 02:15:23', 1, 25000.00),
+(32, '7801234567910', 'Powerade Rojo 850ml', 'Bebida isotónica sabor frutos rojos, botella 850ml', 2, 1200.00, 150, 25, 1, '2026-03-12 02:17:08', 1, 700.00),
+(33, '7801234567911', 'Powerade Azul 850ml', 'Bebida isotónica sabor mountain blast, botella 850ml', 2, 1200.00, 145, 25, 1, '2026-03-12 02:17:08', 1, 700.00),
+(34, '7801234567912', 'Gatorade Naranja 1L', 'Bebida isotónica sabor naranja, botella 1L', 2, 1300.00, 130, 20, 1, '2026-03-12 02:17:08', 1, 750.00),
+(35, '7801234567913', 'Cachantún con Gas Display 12u', 'Pack 12 botellas de 1.5L con gas', 1, 6000.00, 40, 8, 1, '2026-03-12 02:17:08', 1, 4200.00),
+(36, '7801234567914', 'Cachantún sin Gas Display 12u', 'Pack 12 botellas de 1.5L sin gas', 1, 6000.00, 38, 8, 1, '2026-03-12 02:17:08', 1, 4200.00),
+(37, '7801234567915', 'Vital con Gas Display 12u', 'Pack 12 botellas de 1.5L con gas', 1, 5800.00, 42, 8, 1, '2026-03-12 02:17:08', 1, 4000.00),
+(38, '7801234567916', 'Vital sin Gas Display 12u', 'Pack 12 botellas de 1.5L sin gas', 1, 5800.00, 45, 8, 1, '2026-03-12 02:17:08', 1, 4000.00),
+(39, '7801234567917', 'Mouse Inalámbrico', 'Mouse óptico, 2.4GHz, color negro', 4, 5900.00, 90, 15, 1, '2026-03-12 02:17:08', 1, 3500.00),
+(40, '7801234567918', 'Teclado USB', 'Teclado multimedia, conexión USB', 4, 8900.00, 60, 10, 1, '2026-03-12 02:17:08', 1, 5000.00),
+(41, '7801234567919', 'Gorra Deportiva', 'Gorra ajustable, color azul', 5, 4500.00, 110, 20, 1, '2026-03-12 02:17:08', 1, 2500.00),
+(42, '1234567891011', 'validación URL', 'Prueba validación URL', 1, 3.00, 50, 10, 1, '2026-03-17 19:35:48', 1, 2.00),
+(43, '1234567891012', 'validación URL 2', 'segundo intento', 1, 3.00, 50, 10, 1, '2026-03-17 19:38:53', 1, 2.00),
+(45, '1234567891013', 'zona horaria', 'Prueba zona horaria', 1, 4.00, 32, 12, 0, '2026-03-17 22:06:11', 1, 3.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos_backup_20260317`
+--
+
+DROP TABLE IF EXISTS `productos_backup_20260317`;
+CREATE TABLE `productos_backup_20260317` (
+  `id_producto` int(11) NOT NULL DEFAULT 0,
+  `codigo_barras` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `nombre_producto` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `descripcion` text CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `id_categoria` int(11) DEFAULT NULL,
+  `precio_venta` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `stock_actual` int(11) DEFAULT 0,
+  `stock_minimo` int(11) DEFAULT 0,
+  `activo` tinyint(4) NOT NULL DEFAULT 1,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  `mostrar_en_tienda` tinyint(1) NOT NULL DEFAULT 1,
+  `precio_compras` decimal(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `productos_backup_20260317`
+--
+
+INSERT INTO `productos_backup_20260317` (`id_producto`, `codigo_barras`, `nombre_producto`, `descripcion`, `id_categoria`, `precio_venta`, `stock_actual`, `stock_minimo`, `activo`, `fecha_creacion`, `mostrar_en_tienda`, `precio_compras`) VALUES
+(1, NULL, 'Smartphone', NULL, 1, 299990.00, 10, 0, 0, '2026-02-16 15:24:30', 1, 0.00),
+(2, NULL, 'Camisa', NULL, 2, 19990.00, 50, 0, 0, '2026-02-16 15:24:30', 1, 0.00),
+(3, NULL, 'Arroz 1kg', NULL, 3, 1200.00, 10, 0, 0, '2026-02-16 15:24:30', 1, 0.00),
+(4, NULL, 'Arroz 1kg', NULL, 3, 1500.00, 100, 10, 0, '2026-02-28 15:37:06', 1, 0.00),
+(5, NULL, 'Prueba', 'Probando', 3, 0.09, 4, 1, 0, '2026-03-10 11:54:43', 1, 0.00),
+(6, NULL, 'Prueba', 'probando', 1, 0.03, 5, 7, 0, '2026-03-10 13:01:15', 1, 0.00),
+(7, NULL, 'Prueba', 'probando', 3, 0.05, 6, 9, 0, '2026-03-10 15:59:34', 1, 0.00),
+(8, NULL, 'Prueba', NULL, 3, 0.15, 6, 5, 0, '2026-03-10 17:16:00', 1, 0.00),
+(9, NULL, 'Prueba', NULL, NULL, 0.02, 0, 0, 0, '2026-03-11 16:59:44', 1, 0.00),
+(10, NULL, 'Prueba', NULL, 3, 0.04, 0, 0, 0, '2026-03-11 19:05:02', 1, 0.00),
+(11, NULL, 'Prueba', NULL, 1, 0.04, 0, 0, 0, '2026-03-11 19:16:57', 1, 0.00),
+(12, '7801234567890', 'Arroz 1kg', 'Arroz grado 1, bolsa de 1kg', 3, 1200.00, 150, 20, 1, '2026-03-11 23:15:23', 1, 800.00),
+(13, '7801234567891', 'Fideos Tallarines 500gr', 'Fideos de sémola, paquete 500gr', 3, 650.00, 200, 30, 1, '2026-03-11 23:15:23', 1, 450.00),
+(14, '7801234567892', 'Aceite Vegetal 1.5L', 'Aceite de maravilla, botella 1.5L', 3, 1800.00, 80, 10, 1, '2026-03-11 23:15:23', 1, 1200.00),
+(15, '7801234567893', 'Azúcar 1kg', 'Azúcar refinada, bolsa 1kg', 3, 1100.00, 120, 15, 1, '2026-03-11 23:15:23', 1, 700.00),
+(16, '7801234567894', 'Leche Entera 1L', 'Leche larga vida, caja 1L', 3, 950.00, 180, 25, 1, '2026-03-11 23:15:23', 1, 650.00),
+(17, '7801234567895', 'Coca Cola 591cc', 'Bebida cola, botella 591cc', 2, 850.00, 300, 40, 1, '2026-03-11 23:15:23', 1, 550.00),
+(18, '7801234567896', 'Coca Cola Zero 591cc', 'Bebida cola zero, botella 591cc', 2, 850.00, 250, 35, 1, '2026-03-11 23:15:23', 1, 550.00),
+(19, '7801234567897', 'Fanta 591cc', 'Bebida sabor naranja, botella 591cc', 2, 850.00, 200, 30, 1, '2026-03-11 23:15:23', 1, 550.00),
+(20, '7801234567898', 'Sprite 591cc', 'Bebida sabor limón, botella 591cc', 2, 850.00, 220, 30, 1, '2026-03-11 23:15:23', 1, 550.00),
+(21, '7801234567899', 'Cachantún con Gas 1.5L', 'Agua mineral con gas, botella 1.5L', 1, 600.00, 180, 25, 1, '2026-03-11 23:15:23', 1, 400.00),
+(22, '7801234567900', 'Cachantún sin Gas 1.5L', 'Agua mineral sin gas, botella 1.5L', 1, 600.00, 190, 25, 1, '2026-03-11 23:15:23', 1, 400.00),
+(23, '7801234567901', 'Vital con Gas 1.5L', 'Agua mineral con gas, botella 1.5L', 1, 550.00, 170, 20, 1, '2026-03-11 23:15:23', 1, 380.00),
+(24, '7801234567902', 'Vital sin Gas 1.5L', 'Agua mineral sin gas, botella 1.5L', 1, 550.00, 200, 30, 1, '2026-03-11 23:15:23', 1, 380.00),
+(25, '7801234567903', 'Smartphone Xiaomi Redmi 9', 'Teléfono 4GB/64GB, pantalla 6.5\"', 4, 199990.00, 25, 5, 1, '2026-03-11 23:15:23', 1, 150000.00),
+(26, '7801234567904', 'Audífonos Bluetooth', 'Audífonos inalámbricos, estuche carga', 4, 19990.00, 60, 10, 1, '2026-03-11 23:15:23', 1, 12000.00),
+(27, '7801234567905', 'Cargador Rápido USB-C', 'Cargador 20W, compatible PD', 4, 8900.00, 85, 15, 1, '2026-03-11 23:15:23', 1, 5000.00),
+(28, '7801234567906', 'Pendrive 32GB', 'Memoria USB 3.0, color negro', 4, 7900.00, 100, 20, 1, '2026-03-11 23:15:23', 1, 4500.00),
+(29, '7801234567907', 'Polera Hombre M', 'Polera de algodón, talla M, color negro', 5, 9900.00, 75, 15, 1, '2026-03-11 23:15:23', 1, 5000.00),
+(30, '7801234567908', 'Jeans Mujer 36', 'Pantalón de mezclilla, talle 36', 5, 16990.00, 45, 8, 1, '2026-03-11 23:15:23', 1, 10000.00),
+(31, '7801234567909', 'Zapatillas Deportivas 42', 'Zapatillas running, talla 42', 5, 39990.00, 30, 5, 1, '2026-03-11 23:15:23', 1, 25000.00),
+(32, '7801234567910', 'Powerade Rojo 850ml', 'Bebida isotónica sabor frutos rojos, botella 850ml', 2, 1200.00, 150, 25, 1, '2026-03-11 23:17:08', 1, 700.00),
+(33, '7801234567911', 'Powerade Azul 850ml', 'Bebida isotónica sabor mountain blast, botella 850ml', 2, 1200.00, 145, 25, 1, '2026-03-11 23:17:08', 1, 700.00),
+(34, '7801234567912', 'Gatorade Naranja 1L', 'Bebida isotónica sabor naranja, botella 1L', 2, 1300.00, 130, 20, 1, '2026-03-11 23:17:08', 1, 750.00),
+(35, '7801234567913', 'Cachantún con Gas Display 12u', 'Pack 12 botellas de 1.5L con gas', 1, 6000.00, 40, 8, 1, '2026-03-11 23:17:08', 1, 4200.00),
+(36, '7801234567914', 'Cachantún sin Gas Display 12u', 'Pack 12 botellas de 1.5L sin gas', 1, 6000.00, 38, 8, 1, '2026-03-11 23:17:08', 1, 4200.00),
+(37, '7801234567915', 'Vital con Gas Display 12u', 'Pack 12 botellas de 1.5L con gas', 1, 5800.00, 42, 8, 1, '2026-03-11 23:17:08', 1, 4000.00),
+(38, '7801234567916', 'Vital sin Gas Display 12u', 'Pack 12 botellas de 1.5L sin gas', 1, 5800.00, 45, 8, 1, '2026-03-11 23:17:08', 1, 4000.00),
+(39, '7801234567917', 'Mouse Inalámbrico', 'Mouse óptico, 2.4GHz, color negro', 4, 5900.00, 90, 15, 1, '2026-03-11 23:17:08', 1, 3500.00),
+(40, '7801234567918', 'Teclado USB', 'Teclado multimedia, conexión USB', 4, 8900.00, 60, 10, 1, '2026-03-11 23:17:08', 1, 5000.00),
+(41, '7801234567919', 'Gorra Deportiva', 'Gorra ajustable, color azul', 5, 4500.00, 110, 20, 1, '2026-03-11 23:17:08', 1, 2500.00),
+(42, '1234567891011', 'validación URL', 'Prueba validación URL', 1, 3.00, 50, 10, 1, '2026-03-17 16:35:48', 1, 2.00),
+(43, '1234567891012', 'validación URL 2', 'segundo intento', 1, 3.00, 50, 10, 1, '2026-03-17 16:38:53', 1, 2.00),
+(45, '1234567891013', 'zona horaria', 'Prueba zona horaria', 1, 4.00, 32, 12, 0, '2026-03-17 19:06:11', 1, 3.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `regiones`
+--
+
+DROP TABLE IF EXISTS `regiones`;
+CREATE TABLE `regiones` (
+  `idRegion` int(11) NOT NULL,
+  `idPais` int(11) NOT NULL,
+  `nombreRegion` varchar(100) NOT NULL,
+  `codRegion` varchar(20) DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `regiones`
+--
+
+INSERT INTO `regiones` (`idRegion`, `idPais`, `nombreRegion`, `codRegion`, `vigente`) VALUES
+(1, 1, 'Arica y Parinacota', 'XV', 1),
+(2, 1, 'Tarapacá', 'I', 1),
+(3, 1, 'Antofagasta', 'II', 1),
+(4, 1, 'Atacama', 'III', 1),
+(5, 1, 'Coquimbo', 'IV', 1),
+(6, 1, 'Valparaíso', 'V', 1),
+(7, 1, 'Metropolitana de Santiago', 'RM', 1),
+(8, 1, 'Libertador General Bernardo O\'Higgins', 'VI', 1),
+(9, 1, 'Maule', 'VII', 1),
+(10, 1, 'Ñuble', 'XVI', 1),
+(11, 1, 'Biobío', 'VIII', 1),
+(12, 1, 'La Araucanía', 'IX', 1),
+(13, 1, 'Los Ríos', 'XIV', 1),
+(14, 1, 'Los Lagos', 'X', 1),
+(15, 1, 'Aysén del General Carlos Ibáñez del Campo', 'XI', 1),
+(16, 1, 'Magallanes y de la Antártica Chilena', 'XII', 1),
+(17, 1, 'Aysén', 'AY', 0),
+(18, 1, 'Aysén', 'AY', 0),
+(19, 1, 'Aysen', 'AY', 0),
+(20, 1, 'Aysén', 'AY', 0),
+(21, 202, 'Napolitana', 'nap', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+  `id_rol` int(11) NOT NULL,
+  `nombre_rol` varchar(50) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `nivel_acceso` int(11) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`, `nivel_acceso`) VALUES
+(1, 'Administrador', 'Acceso total al sistema', 100),
+(2, 'Vendedor', 'Puede realizar ventas y ver inventario', 50),
+(3, 'Supervisor', 'Puede ver reportes y gestionar cajas', 75);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+CREATE TABLE `usuarios` (
+  `idUsuario` int(11) NOT NULL,
+  `nombres` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp(),
+  `fecha_cambio` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ApPaterno` varchar(100) DEFAULT NULL,
+  `ApMaterno` varchar(100) DEFAULT NULL,
+  `NombreUsuario` varchar(50) NOT NULL,
+  `fonofijo` varchar(50) DEFAULT NULL,
+  `fonocelular1` varchar(50) DEFAULT NULL,
+  `fonocelular2` varchar(50) DEFAULT NULL,
+  `vigente` tinyint(4) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`idUsuario`, `nombres`, `email`, `password`, `fecha_registro`, `fecha_cambio`, `ApPaterno`, `ApMaterno`, `NombreUsuario`, `fonofijo`, `fonocelular1`, `fonocelular2`, `vigente`) VALUES
+(1, 'Jorge', 'jbravoh@gmail.com', '$2y$10$KBxtAPqWVBl0GXjlUmhkQOs8w0dYfwrRJ1EVmxOFu2g5HOoW0A0Uy', '2026-01-31 18:28:00', '2026-01-31 18:28:00', 'Bravo', 'Hinojosa', 'Jorge', '993123552', '993123552', '993123552', 1),
+(12, 'Carlos', 'carlosolivarescastillo@gmail.com', '$2y$10$cps1cKF/a0Bk5SoVSRZJlOB2mMlVAIQZa.qPznt137TP6hC7BKjO6', '2026-02-16 17:38:34', '2026-03-11 00:10:37', 'Olivares', 'Castillo', 'Carlos', '+56233179093', '+56963653603', '', 1),
+(13, 'Prueba', 'test@roles.com', '$2y$10$nTYe3XHt9jlP003CRtpg2.8CvMvZpkBRZS/irTryooQlLm6IukIyi', '2026-02-18 05:55:37', '2026-02-18 20:23:35', 'Roles', 'Múltiples', 'test_roles', '+56233179093', '+56963653603', '', 1),
+(14, 'León', 'leoncito@gmail.com', '$2y$10$RGSO2VrSM5/UQGLzI1wdMua/BZsvo.YXCdlj5JKg0y7uuB4jmsSNe', '2026-03-02 15:04:02', '2026-03-02 15:04:02', 'Olivares', 'Torres', 'leoncito', '', '', '', 0),
+(15, 'León', 'leoncito@gmail.com', '$2y$10$CWxHAYnbTzbkevJqdMpcd.unIOCrxi42mSiLj5QsLKdYus.xq0oEe', '2026-03-10 14:23:24', '2026-03-10 14:23:24', 'Olivares', 'Torres', 'leoncito', '+56233179093', '+56963653603', '', 0),
+(16, 'León', 'leoncito@gmail.com', '$2y$10$oXp4Mo0j045PiPcAkVttL.7wpaoRwLeYxkBEy3bEAK4R2xL62i.VG', '2026-03-10 16:01:58', '2026-03-10 16:01:58', 'Olivares', 'Torres', 'leoncito', '+56233179093', '+56963653603', '', 0),
+(17, 'León', 'leoncito@gmail.com', '$2y$10$Z5izedRN6CLEyZC.3N/TyevKfiLqt9BGTVfDU0VYaPhI9Ce/x9g2S', '2026-03-10 19:02:14', '2026-03-10 19:02:14', 'Olivares', 'Torres', 'Carlos', '+56233179093', '+56963653603', '', 0),
+(18, 'León', 'leoncito@gmail.com', '$2y$10$ezBdqGOw99WAXV8IyfeIouI0TSytld0TNVETC9jMAzjwtqKsRXqYW', '2026-03-10 20:11:01', '2026-03-11 00:11:36', 'Olivares', 'Torres', 'Carlos', '+56233179093', '+56963653603', '', 0),
+(19, 'Carlos', 'carlos.olivares@empresa.cl', '$2y$10$YourHashedPasswordHere1', '2026-03-19 01:09:55', '2026-03-19 01:09:55', 'Olivares', 'Castillo', 'colivares', '222345678', '987654321', '', 1),
+(20, 'María', 'maria.gonzalez@empresa.cl', '$2y$10$YourHashedPasswordHere2', '2026-03-19 01:09:55', '2026-03-19 01:09:55', 'González', 'Pérez', 'mgonzalez', '223456789', '987654322', '987654323', 1),
+(21, 'Juan', 'juan.rodriguez@empresa.cl', '$2y$10$YourHashedPasswordHere3', '2026-03-19 01:09:55', '2026-03-19 01:09:55', 'Rodríguez', 'Silva', 'jrodriguez', '224567890', '987654324', '', 1),
+(22, 'Patricia', 'patricia.lopez@empresa.cl', '$2y$10$YourHashedPasswordHere4', '2026-03-19 01:09:55', '2026-03-19 01:09:55', 'López', 'Fernández', 'plopez', '225678901', '987654325', '987654326', 1),
+(23, 'Roberto', 'roberto.martinez@empresa.cl', '$2y$10$YourHashedPasswordHere5', '2026-03-19 01:09:55', '2026-03-19 01:09:55', 'Martínez', 'Díaz', 'rmartinez', '226789012', '987654327', '', 1),
+(24, 'Ana', 'ana.sanchez@empresa.cl', '$2y$10$YourHashedPasswordHere6', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Sánchez', 'Torres', 'asanchez', '227890123', '987654328', '', 1),
+(25, 'Luis', 'luis.ramirez@empresa.cl', '$2y$10$YourHashedPasswordHere7', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Ramírez', 'Castro', 'lramirez', '228901234', '987654329', '987654330', 1),
+(26, 'Carmen', 'carmen.torres@empresa.cl', '$2y$10$YourHashedPasswordHere8', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Torres', 'Ruiz', 'ctorres', '229012345', '987654331', '', 1),
+(27, 'José', 'jose.flores@empresa.cl', '$2y$10$YourHashedPasswordHere9', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Flores', 'Mendoza', 'jflores', '230123456', '987654332', '987654333', 1),
+(28, 'Francisca', 'francisca.reyes@empresa.cl', '$2y$10$YourHashedPasswordHere10', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Reyes', 'Guzmán', 'freyes', '231234567', '987654334', '', 1),
+(29, 'Daniel', 'daniel.herrera@empresa.cl', '$2y$10$YourHashedPasswordHere11', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Herrera', 'Pizarro', 'dherrera', '232345678', '987654335', '987654336', 1),
+(30, 'Valentina', 'valentina.munoz@empresa.cl', '$2y$10$YourHashedPasswordHere12', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Muñoz', 'Vargas', 'vmunoz', '233456789', '987654337', '', 1),
+(31, 'Felipe', 'felipe.rojas@empresa.cl', '$2y$10$YourHashedPasswordHere13', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Rojas', 'Espinoza', 'frojas', '234567890', '987654338', '987654339', 1),
+(32, 'Constanza', 'constanza.castillo@empresa.cl', '$2y$10$YourHashedPasswordHere14', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Castillo', 'Navarro', 'ccastillo', '235678901', '987654340', '', 1),
+(33, 'Cristián', 'cristian.sepulveda@empresa.cl', '$2y$10$YourHashedPasswordHere15', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Sepúlveda', 'Figueroa', 'csepulveda', '236789012', '987654341', '987654342', 1),
+(34, 'Javiera', 'javiera.contreras@empresa.cl', '$2y$10$YourHashedPasswordHere16', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Contreras', 'Molina', 'jcontreras', '237890123', '987654343', '', 1),
+(35, 'Pablo', 'pablo.gutierrez@empresa.cl', '$2y$10$YourHashedPasswordHere17', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Gutiérrez', 'Acosta', 'pgutierrez', '238901234', '987654344', '987654345', 1),
+(36, 'Camila', 'camila.vega@empresa.cl', '$2y$10$YourHashedPasswordHere18', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Vega', 'Bravo', 'cvega', '239012345', '987654346', '', 1),
+(37, 'Nicolás', 'nicolas.caceres@empresa.cl', '$2y$10$YourHashedPasswordHere19', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Cáceres', 'Miranda', 'ncaceres', '240123456', '987654347', '987654348', 1),
+(38, 'Daniela', 'daniela.fuentes@empresa.cl', '$2y$10$YourHashedPasswordHere20', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Fuentes', 'Cortés', 'dfuentes', '241234567', '987654349', '', 1),
+(39, 'Mauricio', 'mauricio.aravena@empresa.cl', '$2y$10$YourHashedPasswordHere21', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Aravena', 'Lagos', 'maravena', '242345678', '987654350', '987654351', 1),
+(40, 'Claudia', 'claudia.paredes@empresa.cl', '$2y$10$YourHashedPasswordHere22', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Paredes', 'Riquelme', 'cparedes', '243456789', '987654352', '', 1),
+(41, 'Rodrigo', 'rodrigo.tapia@empresa.cl', '$2y$10$YourHashedPasswordHere23', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Tapia', 'Cárdenas', 'rtapia', '244567890', '987654353', '987654354', 1),
+(42, 'Paula', 'paula.salinas@empresa.cl', '$2y$10$YourHashedPasswordHere24', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Salinas', 'Garrido', 'psalinas', '245678901', '987654355', '', 1),
+(43, 'Gonzalo', 'gonzalo.figueroa@empresa.cl', '$2y$10$YourHashedPasswordHere25', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Figueroa', 'Herrera', 'gfigueroa', '246789012', '987654356', '987654357', 1),
+(44, 'Marcela', 'marcela.valenzuela@empresa.cl', '$2y$10$YourHashedPasswordHere26', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Valenzuela', 'Castro', 'mvalenzuela', '247890123', '987654358', '', 1),
+(45, 'César', 'cesar.morales@empresa.cl', '$2y$10$YourHashedPasswordHere27', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Morales', 'Fuentes', 'cmorales', '248901234', '987654359', '987654360', 1),
+(46, 'Andrea', 'andrea.navarro@empresa.cl', '$2y$10$YourHashedPasswordHere28', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Navarro', 'Vásquez', 'anavarro', '249012345', '987654361', '', 1),
+(47, 'Sergio', 'sergio.pizarro@empresa.cl', '$2y$10$YourHashedPasswordHere29', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Pizarro', 'Cortés', 'spizarro', '250123456', '987654362', '987654363', 1),
+(48, 'Verónica', 'veronica.delgado@empresa.cl', '$2y$10$YourHashedPasswordHere30', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Delgado', 'Araya', 'vdelgado', '251234567', '987654364', '', 1),
+(49, 'Alejandro', 'alejandro.soto@gmail.com', '$2y$10$YourHashedPasswordHere31', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Soto', 'Pérez', 'asoto', '252345678', '987654365', '', 1),
+(50, 'Beatriz', 'beatriz.castro@hotmail.com', '$2y$10$YourHashedPasswordHere32', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Castro', 'López', 'bcastro', '253456789', '987654366', '987654367', 1),
+(51, 'Carlos', 'carlos.diaz@yahoo.com', '$2y$10$YourHashedPasswordHere33', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Díaz', 'Muñoz', 'cdiaz', '254567890', '987654368', '', 1),
+(52, 'Daniela', 'daniela.fernandez@gmail.com', '$2y$10$YourHashedPasswordHere34', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Fernández', 'Rojas', 'dfernandez', '255678901', '987654369', '987654370', 1),
+(53, 'Eduardo', 'eduardo.gomez@outlook.com', '$2y$10$YourHashedPasswordHere35', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Gómez', 'Silva', 'egomez', '256789012', '987654371', '', 1),
+(54, 'Francisca', 'francisca.hernandez@gmail.com', '$2y$10$YourHashedPasswordHere36', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Hernández', 'Torres', 'fhernandez', '257890123', '987654372', '987654373', 1),
+(55, 'Gabriel', 'gabriel.jimenez@hotmail.com', '$2y$10$YourHashedPasswordHere37', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Jiménez', 'Ruiz', 'gjimenez', '258901234', '987654374', '', 1),
+(56, 'Héctor', 'hector.lara@yahoo.com', '$2y$10$YourHashedPasswordHere38', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Lara', 'Castro', 'hlara', '259012345', '987654375', '987654376', 1),
+(57, 'Isabel', 'isabel.maldonado@gmail.com', '$2y$10$YourHashedPasswordHere39', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Maldonado', 'Pizarro', 'imaldonado', '260123456', '987654377', '', 1),
+(58, 'Jorge', 'jorge.navarro@outlook.com', '$2y$10$YourHashedPasswordHere40', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Navarro', 'Contreras', 'jnavarro', '261234567', '987654378', '987654379', 1),
+(59, 'Karla', 'karla.orellana@gmail.com', '$2y$10$YourHashedPasswordHere41', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Orellana', 'Vega', 'korellana', '262345678', '987654380', '', 1),
+(60, 'Luis', 'luis.paredes@hotmail.com', '$2y$10$YourHashedPasswordHere42', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Paredes', 'Bravo', 'lparedes', '263456789', '987654381', '987654382', 1),
+(61, 'María', 'maria.quiroz@yahoo.com', '$2y$10$YourHashedPasswordHere43', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Quiroz', 'Acosta', 'mquiroz', '264567890', '987654383', '', 1),
+(62, 'Natalia', 'natalia.riquelme@gmail.com', '$2y$10$YourHashedPasswordHere44', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Riquelme', 'Fuentes', 'nriquelme', '265678901', '987654384', '987654385', 1),
+(63, 'Óscar', 'oscar.salazar@outlook.com', '$2y$10$YourHashedPasswordHere45', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Salazar', 'Guzmán', 'osalazar', '266789012', '987654386', '', 1),
+(64, 'Patricio', 'patricio.tapia@gmail.com', '$2y$10$YourHashedPasswordHere46', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Tapia', 'Herrera', 'ptapia', '267890123', '987654387', '987654388', 1),
+(65, 'Rosa', 'rosa.ulloa@hotmail.com', '$2y$10$YourHashedPasswordHere47', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Ulloa', 'Miranda', 'rulloa', '268901234', '987654389', '', 1),
+(66, 'Sergio', 'sergio.valdes@yahoo.com', '$2y$10$YourHashedPasswordHere48', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Valdés', 'Núñez', 'svaldes', '269012345', '987654390', '987654391', 1),
+(67, 'Tamara', 'tamara.zuniga@gmail.com', '$2y$10$YourHashedPasswordHere49', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Zúñiga', 'Lagos', 'tzuniga', '270123456', '987654392', '', 1),
+(68, 'Ulises', 'ulises.araya@outlook.com', '$2y$10$YourHashedPasswordHere50', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Araya', 'Molina', 'uaraya', '271234567', '987654393', '987654394', 1),
+(69, 'Valeria', 'valeria.bustos@gmail.com', '$2y$10$YourHashedPasswordHere51', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Bustos', 'Cáceres', 'vbustos', '272345678', '987654395', '', 1),
+(70, 'Walter', 'walter.campos@hotmail.com', '$2y$10$YourHashedPasswordHere52', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Campos', 'Delgado', 'wcampos', '273456789', '987654396', '987654397', 1),
+(71, 'Ximena', 'ximena.duran@yahoo.com', '$2y$10$YourHashedPasswordHere53', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Durán', 'Espinoza', 'xduran', '274567890', '987654398', '', 1),
+(72, 'Yerko', 'yerko.escobar@gmail.com', '$2y$10$YourHashedPasswordHere54', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Escobar', 'Figueroa', 'yescobar', '275678901', '987654399', '987654400', 1),
+(73, 'Zaida', 'zaida.flores@outlook.com', '$2y$10$YourHashedPasswordHere55', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Flores', 'González', 'zflores', '276789012', '987654401', '', 1),
+(74, 'Adrián', 'adrian.galvez@gmail.com', '$2y$10$YourHashedPasswordHere56', '2026-03-19 01:09:56', '2026-03-20 23:27:40', 'Gálvez', 'Herrera', 'agalvez', '277890123', '987654402', '', 1),
+(75, 'Bárbara', 'barbara.henriquez@hotmail.com', '$2y$10$YourHashedPasswordHere57', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Henríquez', 'Ibarra', 'bhenriquez', '278901234', '987654404', '', 1),
+(76, 'Cristóbal', 'cristobal.infante@yahoo.com', '$2y$10$YourHashedPasswordHere58', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Infante', 'Jara', 'cinfante', '279012345', '987654405', '987654406', 1),
+(77, 'Diana', 'diana.loyola@gmail.com', '$2y$10$YourHashedPasswordHere59', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Loyola', 'Kaiser', 'dloyola', '280123456', '987654407', '', 1),
+(78, 'Emilio', 'emilio.mora@outlook.com', '$2y$10$YourHashedPasswordHere60', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Mora', 'Lara', 'emora', '281234567', '987654408', '987654409', 1),
+(79, 'Fabiola', 'fabiola.nunez@gmail.com', '$2y$10$YourHashedPasswordHere61', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Núñez', 'Moya', 'fnunez', '282345678', '987654410', '', 1),
+(80, 'Guillermo', 'guillermo.ojeda@hotmail.com', '$2y$10$YourHashedPasswordHere62', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Ojeda', 'Navia', 'gojeda', '283456789', '987654411', '987654412', 1),
+(81, 'Hilda', 'hilda.pino@yahoo.com', '$2y$10$YourHashedPasswordHere63', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Pino', 'Ortiz', 'hpino', '284567890', '987654413', '', 1),
+(82, 'Ignacio', 'ignacio.quintana@gmail.com', '$2y$10$YourHashedPasswordHere64', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Quintana', 'Parra', 'iquintana', '285678901', '987654414', '987654415', 1),
+(83, 'Jacqueline', 'jacqueline.ramos@outlook.com', '$2y$10$YourHashedPasswordHere65', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Ramos', 'Quiroz', 'jramos', '286789012', '987654416', '', 1),
+(84, 'Kevin', 'kevin.saez@gmail.com', '$2y$10$YourHashedPasswordHere66', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Sáez', 'Reyes', 'ksaez', '287890123', '987654417', '987654418', 1),
+(85, 'Lorena', 'lorena.toro@hotmail.com', '$2y$10$YourHashedPasswordHere67', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Toro', 'Soto', 'ltoro', '288901234', '987654419', '', 1),
+(86, 'Manuel', 'manuel.urbina@yahoo.com', '$2y$10$YourHashedPasswordHere68', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Urbina', 'Tapia', 'murbina', '289012345', '987654420', '987654421', 1),
+(87, 'Nelson', 'nelson.vargas@gmail.com', '$2y$10$YourHashedPasswordHere69', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Vargas', 'Ulloa', 'nvargas', '290123456', '987654422', '', 1),
+(88, 'Olga', 'olga.yanez@outlook.com', '$2y$10$YourHashedPasswordHere70', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Yáñez', 'Valdés', 'oyanez', '291234567', '987654423', '987654424', 1),
+(89, 'Pamela', 'pamela.zamora@gmail.com', '$2y$10$YourHashedPasswordHere71', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Zamora', 'Vergara', 'pzamora', '292345678', '987654425', '', 1),
+(90, 'Rafael', 'rafael.aguilera@hotmail.com', '$2y$10$YourHashedPasswordHere72', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Aguilera', 'Zúñiga', 'raguilera', '293456789', '987654426', '987654427', 1),
+(91, 'Sandra', 'sandra.becerra@yahoo.com', '$2y$10$YourHashedPasswordHere73', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Becerra', 'Aravena', 'sbecerra', '294567890', '987654428', '', 1),
+(92, 'Tomás', 'tomas.cifuentes@gmail.com', '$2y$10$YourHashedPasswordHere74', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Cifuentes', 'Bustos', 'tcifuentes', '295678901', '987654429', '987654430', 1),
+(93, 'Úrsula', 'ursula.donoso@outlook.com', '$2y$10$YourHashedPasswordHere75', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Donoso', 'Campos', 'udonoso', '296789012', '987654431', '', 1),
+(94, 'Víctor', 'victor.espinoza@gmail.com', '$2y$10$YourHashedPasswordHere76', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Espinoza', 'Cortés', 'vespinoza', '297890123', '987654432', '987654433', 1),
+(95, 'Wendy', 'wendy.fuentealba@hotmail.com', '$2y$10$YourHashedPasswordHere77', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Fuentealba', 'Durán', 'wfuentealba', '298901234', '987654434', '', 1),
+(96, 'Xavier', 'xavier.gallardo@yahoo.com', '$2y$10$YourHashedPasswordHere78', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Gallardo', 'Escobar', 'xgallardo', '299012345', '987654435', '987654436', 1),
+(97, 'Yasna', 'yasna.henriquez@gmail.com', '$2y$10$YourHashedPasswordHere79', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Henríquez', 'Flores', 'yhenriquez', '300123456', '987654437', '', 1),
+(98, 'Zacarías', 'zacarias.ibarra@outlook.com', '$2y$10$YourHashedPasswordHere80', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Ibarra', 'Gálvez', 'zibarra', '301234567', '987654438', '987654439', 1),
+(99, 'Alicia', 'alicia.jara@gmail.com', '$2y$10$YourHashedPasswordHere81', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Jara', 'Guerra', 'ajara', '302345678', '987654440', '', 1),
+(100, 'Benjamín', 'benjamin.lara@hotmail.com', '$2y$10$YourHashedPasswordHere82', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Lara', 'Herrera', 'blara', '303456789', '987654441', '987654442', 1),
+(101, 'Carolina', 'carolina.molina@yahoo.com', '$2y$10$YourHashedPasswordHere83', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Molina', 'Ibarra', 'cmolina', '304567890', '987654443', '', 1),
+(102, 'David', 'david.narvaez@gmail.com', '$2y$10$YourHashedPasswordHere84', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Narváez', 'Jara', 'dnarvaez', '305678901', '987654444', '987654445', 1),
+(103, 'Elisa', 'elisa.oyarzo@outlook.com', '$2y$10$YourHashedPasswordHere85', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Oyarzo', 'Loyola', 'eoyarzo', '306789012', '987654446', '', 1),
+(104, 'Fernando', 'fernando.pacheco@gmail.com', '$2y$10$YourHashedPasswordHere86', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Pacheco', 'Mora', 'fpacheco', '307890123', '987654447', '987654448', 1),
+(105, 'Gladys', 'gladys.quezada@hotmail.com', '$2y$10$YourHashedPasswordHere87', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Quezada', 'Núñez', 'gquezada', '308901234', '987654449', '', 1),
+(106, 'Humberto', 'humberto.rivera@yahoo.com', '$2y$10$YourHashedPasswordHere88', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Rivera', 'Ojeda', 'hrivera', '309012345', '987654450', '987654451', 1),
+(107, 'Irene', 'irene.sandoval@gmail.com', '$2y$10$YourHashedPasswordHere89', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Sandoval', 'Pino', 'isandoval', '310123456', '987654452', '', 1),
+(108, 'Joaquín', 'joaquin.troncoso@outlook.com', '$2y$10$YourHashedPasswordHere90', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Troncoso', 'Quintana', 'jtroncoso', '311234567', '987654453', '987654454', 1),
+(109, 'Karen', 'karen.uribe@gmail.com', '$2y$10$YourHashedPasswordHere91', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Uribe', 'Ramos', 'kuribe', '312345678', '987654455', '', 1),
+(110, 'Leonardo', 'leonardo.vera@hotmail.com', '$2y$10$YourHashedPasswordHere92', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Vera', 'Sáez', 'lvera', '313456789', '987654456', '987654457', 1),
+(111, 'Mónica', 'monica.zapata@yahoo.com', '$2y$10$YourHashedPasswordHere93', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Zapata', 'Toro', 'mzapata', '314567890', '987654458', '', 1),
+(112, 'Néstor', 'nestor.ahumada@gmail.com', '$2y$10$YourHashedPasswordHere94', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Ahumada', 'Urbina', 'nahumada', '315678901', '987654459', '987654460', 1),
+(113, 'Oriana', 'oriana.barra@outlook.com', '$2y$10$YourHashedPasswordHere95', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Barra', 'Vargas', 'obarra', '316789012', '987654461', '', 1),
+(114, 'Paolo', 'paolo.carrasco@gmail.com', '$2y$10$YourHashedPasswordHere96', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Carrasco', 'Yáñez', 'pcarrasco', '317890123', '987654462', '987654463', 1),
+(115, 'Roxana', 'roxana.diaz@hotmail.com', '$2y$10$YourHashedPasswordHere97', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Díaz', 'Zamora', 'rdiaz', '318901234', '987654464', '', 1),
+(116, 'Samuel', 'samuel.espinoza@yahoo.com', '$2y$10$YourHashedPasswordHere98', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Espinoza', 'Aguilera', 'sespinoza', '319012345', '987654465', '987654466', 1),
+(117, 'Tatiana', 'tatiana.figueroa@gmail.com', '$2y$10$YourHashedPasswordHere99', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Figueroa', 'Becerra', 'tfigueroa', '320123456', '987654467', '', 1),
+(118, 'Ubaldo', 'ubaldo.gatica@outlook.com', '$2y$10$YourHashedPasswordHere100', '2026-03-19 01:09:56', '2026-03-19 01:09:56', 'Gatica', 'Cifuentes', 'ugatica', '321234567', '987654468', '987654469', 1),
+(119, 'juanito', 'juanitomena@gmail.com', '$2y$10$iO6p2sAY8n7ogd891bTcj.3ofwoUvAYsRJTRWHR01dlBb69yAJ8Ei', '2026-03-20 19:15:25', '2026-03-20 23:15:59', 'mena', 'hernandez', 'Juanito', '+56233179093', '987654402', '', 1),
+(120, 'Heraclito', 'herclito@gmail.com', '$2y$10$cZBuzK6JbzXTFlpsUC4pM.Itgw68ZPG7KTIGOyBTOCiRgQuvWLbRq', '2026-03-20 19:28:39', '2026-03-20 23:28:46', 'demostenes', 'silva', 'Carlos', '+56233179093', '+56963653603', '', 1),
+(121, 'juanito', 'juanitorena@gmail.com', '$2y$10$hwzOOsipQ4ZJ.1smbDfQjucdd6gGxTo3LJub2qjzHmQTxFCrVloES', '2026-03-20 20:56:55', '2026-03-21 00:57:11', 'Roles', 'Castillo', 'Juanito', '+56233179093', '987654402', '', 1),
+(122, 'juanito', 'fluteitoes@gmail.com', '$2y$10$Hb6i3r7RI/inQ5py2v903OLORRRGLPWhytMbl/v8KBcaQrfcdtN9C', '2026-03-20 21:26:54', '2026-03-21 01:27:09', 'demostenes', 'Castillo', 'Juanito', '', '', '', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios_roles`
+--
+
+DROP TABLE IF EXISTS `usuarios_roles`;
+CREATE TABLE `usuarios_roles` (
+  `idUsuario` int(11) NOT NULL,
+  `id_rol` int(11) NOT NULL,
+  `fecha_asignacion` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios_roles`
+--
+
+INSERT INTO `usuarios_roles` (`idUsuario`, `id_rol`, `fecha_asignacion`) VALUES
+(1, 1, '2026-02-18 00:21:01'),
+(12, 1, '2026-02-18 00:21:01'),
+(13, 1, '2026-02-18 16:23:35');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id_categoria`),
+  ADD KEY `id_categoria_padre` (`id_categoria_padre`);
+
+--
+-- Indices de la tabla `ciudades`
+--
+ALTER TABLE `ciudades`
+  ADD PRIMARY KEY (`idCiudad`),
+  ADD KEY `idRegion` (`idRegion`);
+
+--
+-- Indices de la tabla `comunas`
+--
+ALTER TABLE `comunas`
+  ADD PRIMARY KEY (`idComuna`),
+  ADD KEY `idCiudad` (`idCiudad`);
+
+--
+-- Indices de la tabla `empresas`
+--
+ALTER TABLE `empresas`
+  ADD PRIMARY KEY (`idEmpresa`),
+  ADD UNIQUE KEY `rut` (`rut`),
+  ADD KEY `idComuna` (`idComuna`);
+
+--
+-- Indices de la tabla `monedas`
+--
+ALTER TABLE `monedas`
+  ADD PRIMARY KEY (`idMoneda`),
+  ADD UNIQUE KEY `codMoneda` (`codMoneda`);
+
+--
+-- Indices de la tabla `paises`
+--
+ALTER TABLE `paises`
+  ADD PRIMARY KEY (`idPais`);
+
+--
+-- Indices de la tabla `paises_monedas`
+--
+ALTER TABLE `paises_monedas`
+  ADD PRIMARY KEY (`idPais`,`idMoneda`),
+  ADD KEY `idMoneda` (`idMoneda`);
+
+--
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`id_producto`),
+  ADD UNIQUE KEY `codigo_barras` (`codigo_barras`),
+  ADD KEY `id_categoria` (`id_categoria`);
+
+--
+-- Indices de la tabla `regiones`
+--
+ALTER TABLE `regiones`
+  ADD PRIMARY KEY (`idRegion`),
+  ADD KEY `idPais` (`idPais`);
+
+--
+-- Indices de la tabla `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id_rol`),
+  ADD UNIQUE KEY `nombre_rol` (`nombre_rol`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`idUsuario`);
+
+--
+-- Indices de la tabla `usuarios_roles`
+--
+ALTER TABLE `usuarios_roles`
+  ADD PRIMARY KEY (`idUsuario`,`id_rol`),
+  ADD KEY `id_rol` (`id_rol`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
+
+--
+-- AUTO_INCREMENT de la tabla `ciudades`
+--
+ALTER TABLE `ciudades`
+  MODIFY `idCiudad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=379;
+
+--
+-- AUTO_INCREMENT de la tabla `comunas`
+--
+ALTER TABLE `comunas`
+  MODIFY `idComuna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=572;
+
+--
+-- AUTO_INCREMENT de la tabla `empresas`
+--
+ALTER TABLE `empresas`
+  MODIFY `idEmpresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `monedas`
+--
+ALTER TABLE `monedas`
+  MODIFY `idMoneda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=279;
+
+--
+-- AUTO_INCREMENT de la tabla `paises`
+--
+ALTER TABLE `paises`
+  MODIFY `idPais` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+
+--
+-- AUTO_INCREMENT de la tabla `regiones`
+--
+ALTER TABLE `regiones`
+  MODIFY `idRegion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT de la tabla `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `categorias`
+--
+ALTER TABLE `categorias`
+  ADD CONSTRAINT `categorias_ibfk_1` FOREIGN KEY (`id_categoria_padre`) REFERENCES `categorias` (`id_categoria`);
+
+--
+-- Filtros para la tabla `ciudades`
+--
+ALTER TABLE `ciudades`
+  ADD CONSTRAINT `ciudades_ibfk_1` FOREIGN KEY (`idRegion`) REFERENCES `regiones` (`idRegion`);
+
+--
+-- Filtros para la tabla `comunas`
+--
+ALTER TABLE `comunas`
+  ADD CONSTRAINT `comunas_ibfk_1` FOREIGN KEY (`idCiudad`) REFERENCES `ciudades` (`idCiudad`);
+
+--
+-- Filtros para la tabla `empresas`
+--
+ALTER TABLE `empresas`
+  ADD CONSTRAINT `empresas_ibfk_1` FOREIGN KEY (`idComuna`) REFERENCES `comunas` (`idComuna`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `paises_monedas`
+--
+ALTER TABLE `paises_monedas`
+  ADD CONSTRAINT `paises_monedas_ibfk_1` FOREIGN KEY (`idPais`) REFERENCES `paises` (`idPais`) ON DELETE CASCADE,
+  ADD CONSTRAINT `paises_monedas_ibfk_2` FOREIGN KEY (`idMoneda`) REFERENCES `monedas` (`idMoneda`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`);
+
+--
+-- Filtros para la tabla `regiones`
+--
+ALTER TABLE `regiones`
+  ADD CONSTRAINT `regiones_ibfk_1` FOREIGN KEY (`idPais`) REFERENCES `paises` (`idPais`);
+
+--
+-- Filtros para la tabla `usuarios_roles`
+--
+ALTER TABLE `usuarios_roles`
+  ADD CONSTRAINT `usuarios_roles_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE,
+  ADD CONSTRAINT `usuarios_roles_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+COMMIT;

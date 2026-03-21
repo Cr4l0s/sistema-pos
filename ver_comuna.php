@@ -4,13 +4,40 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['idComuna'])) {
-    header('Location: gestionar_comunas.php');
+// 🔴 NUEVO: Si llega por GET, redirigir por POST para ocultar el ID
+if (isset($_GET['idComuna']) && !isset($_POST['idComuna'])) {
+    $id = intval($_GET['idComuna']);
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Redirigiendo...</title>
+    </head>
+    <body>
+        <form id="redirectForm" action="menu.php" method="POST">
+            <input type="hidden" name="page" value="ver_comuna.php">
+            <input type="hidden" name="idComuna" value="<?= $id ?>">
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>
+    </body>
+    </html>
+    <?php
     exit;
 }
 
-$idComuna = intval($_POST['idComuna']);
+// Recibir ID por POST
+$idComuna = 0;
+
+if (isset($_POST['idComuna'])) {
+    $idComuna = intval($_POST['idComuna']);
+} elseif (isset($_GET['idComuna'])) {
+    $idComuna = intval($_GET['idComuna']);
+} else {
+    header('Location: gestionar_comunas.php');
+    exit;
+}
 
 $sql = "SELECT com.*, ciu.nombreCiudad, reg.nombreRegion, pai.nombrePais
         FROM comunas com
@@ -43,15 +70,24 @@ if (!$comuna) {
 
 <body>
     <?php include('navbar.php'); ?>
-
     <div class="container mt-5">
-
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver Comuna</h4>
-                <a href="menu.php?page=gestionar_comunas.php" class="btn btn-danger">
-                    <span class="bi bi-arrow-left"></span> Volver
-                </a>
+                <div>
+                    <!-- 🔴 CORREGIDO: Formulario POST en lugar de enlace -->
+                    <form action="menu.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="page" value="editar_comuna.php">
+                        <input type="hidden" name="idComuna" value="<?= $idComuna ?>">
+                        <button type="submit" class="btn btn-warning me-2">
+                            <span class="bi bi-pencil"></span> Editar
+                        </button>
+                    </form>
+                    <a href="menu.php?page=gestionar_comunas.php" class="btn btn-danger">
+                        <span class="bi bi-arrow-left"></span> Volver
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="mb-3">

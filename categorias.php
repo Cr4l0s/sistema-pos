@@ -112,20 +112,20 @@ require_once 'config.php';
                 </div>
             </div>
             <div class="card-body">
-                <?php 
+                <?php
                 require_once 'components/tabla_pro/tabla_pro.php';
-                
+
                 $columnas = [
                     'nombre_categoria' => 'Nombre',
                     'descripcion' => 'Descripción'
                 ];
-                
-                tablaPro("components/tabla_pro/tabla_endpoint_categorias.php", 'nombre_categoria', $columnas); 
+
+                tablaPro("components/tabla_pro/tabla_endpoint_categorias.php", 'nombre_categoria', $columnas);
                 ?>
 
                 <!-- BOTÓN AGREGAR -->
                 <div class="btn-agregar">
-                    <a href="categoria-crear.php" class="btn btn-primary">
+                    <a href="menu.php?page=categoria-crear.php" class="btn btn-primary">
                         <span class="bi bi-plus-circle-fill"></span> Agregar Categoría
                     </a>
                 </div>

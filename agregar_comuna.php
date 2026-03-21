@@ -19,8 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nombreComuna'], $_POST
         if ($result_check->num_rows > 0) {
             $existente = $result_check->fetch_assoc();
             if ($existente['vigente'] == 1) {
-                $_SESSION['mensaje'] = 'Ya existe una comuna activa con ese nombre.';
-                $_SESSION['tipo_mensaje'] = 'warning';  // 🟡 Amarillo
+                $_SESSION['mensaje'] = "Ya existe una comuna activa con el nombre '$nombreComuna'.";
+                $_SESSION['tipo_mensaje'] = 'warning';
+                $stmt_check->close();
+                header('Location: menu.php?page=gestionar_comunas.php');
+                exit;
             } else {
                 // Reactivar
                 $sql_reactivar = "UPDATE comunas SET vigente = 1 WHERE idComuna = ?";
@@ -28,27 +31,75 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nombreComuna'], $_POST
                 $stmt_reactivar->bind_param("i", $existente['idComuna']);
                 $stmt_reactivar->execute();
                 $stmt_reactivar->close();
-                $_SESSION['mensaje'] = 'Comuna reactivada correctamente.';
-                $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
+                $stmt_check->close();
+                
+                $_SESSION['mensaje'] = "Comuna '$nombreComuna' reactivada exitosamente.";
+                $_SESSION['tipo_mensaje'] = 'success';
+                
+                // 🔴 REDIRIGIR CON POST A VER COMUNA
+                ?>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Redirigiendo...</title>
+                </head>
+                <body>
+                    <form id="redirectForm" action="menu.php" method="POST">
+                        <input type="hidden" name="page" value="ver_comuna.php">
+                        <input type="hidden" name="idComuna" value="<?= $existente['idComuna'] ?>">
+                    </form>
+                    <script>
+                        document.getElementById('redirectForm').submit();
+                    </script>
+                </body>
+                </html>
+                <?php
+                exit;
             }
-            $stmt_check->close();
         } else {
             // Insertar nueva
             $sql = "INSERT INTO comunas (idCiudad, nombreComuna, vigente) VALUES (?, ?, 1)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("is", $idCiudad, $nombreComuna);
-            $stmt->execute();
-            $stmt->close();
-            $_SESSION['mensaje'] = 'Comuna agregada correctamente.';
-            $_SESSION['tipo_mensaje'] = 'success';  // 🟢 Verde
+            
+            if ($stmt->execute()) {
+                $idComuna = $stmt->insert_id;
+                $_SESSION['mensaje'] = "Comuna '$nombreComuna' creada exitosamente.";
+                $_SESSION['tipo_mensaje'] = 'success';
+                $stmt->close();
+                
+                // 🔴 REDIRIGIR CON POST A VER COMUNA
+                ?>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Redirigiendo...</title>
+                </head>
+                <body>
+                    <form id="redirectForm" action="menu.php" method="POST">
+                        <input type="hidden" name="page" value="ver_comuna.php">
+                        <input type="hidden" name="idComuna" value="<?= $idComuna ?>">
+                    </form>
+                    <script>
+                        document.getElementById('redirectForm').submit();
+                    </script>
+                </body>
+                </html>
+                <?php
+                exit;
+            } else {
+                $_SESSION['mensaje'] = 'Error al agregar comuna: ' . $stmt->error;
+                $_SESSION['tipo_mensaje'] = 'danger';
+                $stmt->close();
+            }
         }
     } else {
         $_SESSION['mensaje'] = 'El nombre de la comuna no puede estar vacío.';
-        $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
+        $_SESSION['tipo_mensaje'] = 'danger';
     }
 } else {
     $_SESSION['mensaje'] = 'Solicitud inválida.';
-    $_SESSION['tipo_mensaje'] = 'danger';  // 🔴 Rojo
+    $_SESSION['tipo_mensaje'] = 'danger';
 }
 
 header('Location: menu.php?page=gestionar_comunas.php');

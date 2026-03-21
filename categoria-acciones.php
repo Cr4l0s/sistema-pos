@@ -11,38 +11,50 @@ require 'validaciones.php';
 if (isset($_POST['create_categoria'])) {
     $nombre = limpiarInput(trim($_POST['nombre_categoria']));
     $descripcion = !empty(trim($_POST['descripcion'])) ? limpiarInput(trim($_POST['descripcion'])) : null;
-    $url_imagen = !empty(trim($_POST['url_imagen'])) ? sanitizarURL(trim($_POST['url_imagen'])) : null;
 
-    // ===== VALIDACIONES =====
-    if (!validarNombreProducto($nombre)) { // Reutilizamos validación de nombres
+    if (!validarNombreProducto($nombre)) {
         $_SESSION['mensaje'] = 'El nombre de la categoría contiene caracteres no válidos';
         $_SESSION['tipo_mensaje'] = 'danger';
         header('Location: categoria-crear.php');
         exit;
     }
-    
-    if ($url_imagen && !validarURLImagen($url_imagen)) {
-        $_SESSION['mensaje'] = 'La URL de la imagen no es válida. Formatos permitidos: JPG, PNG, GIF, WEBP, BMP, SVG';
-        $_SESSION['tipo_mensaje'] = 'danger';
-        header('Location: categoria-crear.php');
-        exit;
-    }
 
-    $sql = "INSERT INTO categorias (nombre_categoria, descripcion, url_imagen, activo) VALUES (?, ?, ?, 1)";
+    $sql = "INSERT INTO categorias (nombre_categoria, descripcion, activo) VALUES (?, ?, 1)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $nombre, $descripcion, $url_imagen);
+    $stmt->bind_param("ss", $nombre, $descripcion);
 
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Categoría creada exitosamente.';
+        $id_categoria = $stmt->insert_id;
+        $_SESSION['mensaje'] = "Categoría '$nombre' creada exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
+        $stmt->close();
+        
+        // 🔴 REDIRIGIR CON POST SIN ID EN URL
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirigiendo...</title>
+        </head>
+        <body>
+            <form id="redirectForm" action="menu.php" method="POST">
+                <input type="hidden" name="page" value="categoria-ver.php">
+                <input type="hidden" name="id" value="<?= $id_categoria ?>">
+            </form>
+            <script>
+                document.getElementById('redirectForm').submit();
+            </script>
+        </body>
+        </html>
+        <?php
+        exit;
     } else {
         $_SESSION['mensaje'] = 'Error al crear la categoría: ' . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
+        $stmt->close();
+        header('Location: categoria-crear.php');
+        exit;
     }
-    $stmt->close();
-    
-    header('Location: menu.php?page=categorias.php');
-    exit;
 }
 
 // ============================================
@@ -60,38 +72,49 @@ if (isset($_POST['update_categoria'])) {
     
     $nombre = limpiarInput(trim($_POST['nombre_categoria']));
     $descripcion = !empty(trim($_POST['descripcion'])) ? limpiarInput(trim($_POST['descripcion'])) : null;
-    $url_imagen = !empty(trim($_POST['url_imagen'])) ? sanitizarURL(trim($_POST['url_imagen'])) : null;
 
-    // ===== VALIDACIONES =====
     if (!validarNombreProducto($nombre)) {
         $_SESSION['mensaje'] = 'El nombre de la categoría contiene caracteres no válidos';
         $_SESSION['tipo_mensaje'] = 'danger';
-        header("Location: categoria-editar.php?id=$id");
-        exit;
-    }
-    
-    if ($url_imagen && !validarURLImagen($url_imagen)) {
-        $_SESSION['mensaje'] = 'La URL de la imagen no es válida. Formatos permitidos: JPG, PNG, GIF, WEBP, BMP, SVG';
-        $_SESSION['tipo_mensaje'] = 'danger';
-        header("Location: categoria-editar.php?id=$id");
+        header("Location: menu.php?page=categoria-editar.php&id=$id");
         exit;
     }
 
-    $sql = "UPDATE categorias SET nombre_categoria = ?, descripcion = ?, url_imagen = ? WHERE id_categoria = ? AND activo = 1";
+    $sql = "UPDATE categorias SET nombre_categoria = ?, descripcion = ? WHERE id_categoria = ? AND activo = 1";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssi", $nombre, $descripcion, $url_imagen, $id);
+    $stmt->bind_param("ssi", $nombre, $descripcion, $id);
 
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Categoría actualizada exitosamente.';
+        $_SESSION['mensaje'] = "Categoría '$nombre' actualizada correctamente.";
         $_SESSION['tipo_mensaje'] = 'success';
+        $stmt->close();
+        
+        // 🔴 REDIRIGIR CON POST SIN ID EN URL
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirigiendo...</title>
+        </head>
+        <body>
+            <form id="redirectForm" action="menu.php" method="POST">
+                <input type="hidden" name="page" value="categoria-ver.php">
+                <input type="hidden" name="id" value="<?= $id ?>">
+            </form>
+            <script>
+                document.getElementById('redirectForm').submit();
+            </script>
+        </body>
+        </html>
+        <?php
+        exit;
     } else {
-        $_SESSION['mensaje'] = 'Error al actualizar la categoría.';
+        $_SESSION['mensaje'] = "Error al actualizar la categoría: " . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
+        $stmt->close();
+        header("Location: menu.php?page=categoria-editar.php&id=$id");
+        exit;
     }
-    $stmt->close();
-    
-    header('Location: menu.php?page=categorias.php');
-    exit;
 }
 
 // ============================================
@@ -106,16 +129,26 @@ if (isset($_POST['borrar_categoria'])) {
         header('Location: menu.php?page=categorias.php');
         exit;
     }
+    
+    // Obtener nombre antes de eliminar
+    $sql_nombre = "SELECT nombre_categoria FROM categorias WHERE id_categoria = ? AND activo = 1";
+    $stmt_nombre = $conn->prepare($sql_nombre);
+    $stmt_nombre->bind_param("i", $id);
+    $stmt_nombre->execute();
+    $result_nombre = $stmt_nombre->get_result();
+    $categoria = $result_nombre->fetch_assoc();
+    $nombre_categoria = $categoria ? $categoria['nombre_categoria'] : 'desconocido';
+    $stmt_nombre->close();
 
     $sql = "UPDATE categorias SET activo = 0 WHERE id_categoria = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Categoría eliminada exitosamente.';
+        $_SESSION['mensaje'] = "Categoría '$nombre_categoria' eliminada exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
     } else {
-        $_SESSION['mensaje'] = 'Error al eliminar la categoría.';
+        $_SESSION['mensaje'] = "Error al eliminar la categoría: " . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
     }
     $stmt->close();

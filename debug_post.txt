@@ -216,3 +216,171 @@ Array
     [nombrePais] => Afganistán
 )
 
+2026-03-20 16:56:12 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 17:58:46 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:05:15 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:18:58 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:19:34 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:22:56 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:27:24 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => CL
+    [nombrePais] => SRI LANKA
+    [monedas] => Array
+        (
+            [0] => 271
+        )
+
+)
+
+2026-03-20 18:31:10 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 210
+    [siglaPais] => CL
+    [nombrePais] => SRI LANKA
+)
+
+2026-03-20 18:31:48 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:32:00 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:35:27 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:35:42 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 18:35:49 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 19:03:49 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => LK
+    [nombrePais] => CHAD
+    [monedas] => Array
+        (
+            [0] => 55
+        )
+
+)
+
+2026-03-20 19:32:41 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => IS
+    [nombrePais] => CHAD
+    [monedas] => Array
+        (
+            [0] => 55
+        )
+
+)
+
+2026-03-20 19:32:55 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 212
+    [siglaPais] => IS
+    [nombrePais] => CHAD
+)
+
+2026-03-20 20:18:31 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+
+2026-03-20 20:19:28 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => LK
+    [nombrePais] => CHINA
+    [monedas] => Array
+        (
+            [0] => 271
+        )
+
+)
+
+2026-03-20 20:20:05 - POST: Array
+(
+    [editar_pais] => 1
+    [idPais] => 201
+    [siglaPais] => AF
+    [nombrePais] => Afganistán
+)
+

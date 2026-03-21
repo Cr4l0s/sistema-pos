@@ -4,9 +4,11 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id'])) {
+// Recibir ID por POST o GET
+if (isset($_POST['id'])) {
     $id = intval($_POST['id']);
+} elseif (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
 } else {
     header('Location: categorias.php');
     exit;
@@ -39,12 +41,22 @@ if (!$categoria) {
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver Categoría</h4>
-                <a href="menu.php?page=categorias.php" class="btn btn-danger">
-                    <span class="bi bi-arrow-left"></span> Volver
-                </a>
+                <div>
+                    <form action="menu.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="page" value="categoria-editar.php">
+                        <input type="hidden" name="id_categoria" value="<?= $categoria['id_categoria'] ?>">
+                        <button type="submit" class="btn btn-warning me-2">
+                            <span class="bi bi-pencil"></span> Editar
+                        </button>
+                    </form>
+                    <a href="menu.php?page=categorias.php" class="btn btn-danger">
+                        <span class="bi bi-arrow-left"></span> Volver
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="mb-3">
@@ -53,7 +65,7 @@ if (!$categoria) {
                 </div>
                 <div class="mb-3">
                     <label><b>Descripción</b></label>
-                    <p class="form-control"><?= htmlspecialchars($categoria['descripcion']) ?></p>
+                    <p class="form-control"><?= htmlspecialchars($categoria['descripcion'] ?: '—') ?></p>
                 </div>
             </div>
         </div>

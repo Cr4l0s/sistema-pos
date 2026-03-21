@@ -4,9 +4,15 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idUsuario'])) {
+// 🔴 MODIFICADO: Buscar ID en POST (desde usuario-ver.php) o GET
+$usuario_id = 0;
+
+if (isset($_POST['idUsuario'])) {
     $usuario_id = intval($_POST['idUsuario']);
+} elseif (isset($_GET['idUsuario'])) {
+    $usuario_id = intval($_GET['idUsuario']);
+} elseif (isset($_GET['id'])) {
+    $usuario_id = intval($_GET['id']);
 } else {
     header('Location: inicio-usuarios.php');
     exit;
@@ -41,6 +47,7 @@ $stmt->close();
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Editar Usuario</h4>

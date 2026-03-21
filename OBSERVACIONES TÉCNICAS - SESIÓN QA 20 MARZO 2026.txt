@@ -1,0 +1,407 @@
+================================================================================
+INFORME TÉCNICO - CORRECCIONES Y MEJORAS
+Fecha: 20-03-2026
+Proyecto: POS - Módulo de Mantenedores (Tabla Pro)
+================================================================================
+
+1. OBJETIVO
+--------------------------------------------------------------------------------
+Implementar un flujo de navegación consistente en todos los mantenedores donde:
+- El ID nunca aparezca en la URL
+- Los mensajes de éxito/error muestren el nombre del registro
+- Las redirecciones después de crear/editar vayan a la página "Ver"
+- El sidebar esté visible en todas las páginas
+
+
+2. CAMBIOS EN LA ARQUITECTURA DE URLs
+--------------------------------------------------------------------------------
+
+2.1. Archivo: menu.php
+------------------------
+Cambios realizados:
+- Aceptar parámetro "page" desde POST además de GET
+- Preservar parámetros adicionales (id, idPais, idRegion, etc.) para los archivos incluidos
+- Asignar parámetros POST a $_GET y $_REQUEST para que estén disponibles en las páginas hijas
+
+Código agregado:
+```php
+// Aceptar page desde POST
+$page = $_GET['page'] ?? $_POST['page'] ?? '';
+
+// Preservar parámetros adicionales
+foreach ($_POST as $key => $value) {
+    if ($key !== 'page') {
+        $_GET[$key] = $value;
+        $_REQUEST[$key] = $value;
+    }
+}
+2.2. Archivo: tabla_pro.js
+
+Cambios realizados:
+
+Separación de funciones de URL: construirUrlVista() vs construirUrlExportacion()
+
+Exportaciones ahora usan filas=-1 para obtener TODOS los registros
+
+Exportaciones ignoran filtros de búsqueda y categoría
+
+PDF: Conversión de íconos ✅/❌ a texto "Sí"/"No"
+
+Excel: Cambio de formato .xls → .xlsx
+
+Funciones clave:
+
+javascript
+function construirUrlVista() {
+    // Usa pagina, filas actuales, respeta filtros
+    // NO incluye sin_acciones
+}
+
+function construirUrlExportacion() {
+    // Usa filas=-1, pagina=1, buscar='', categoria=0
+    // sin_acciones=1 para ocultar botones
+}
+CORRECCIONES EN ENDPOINTS PHP
+
+3.1. Patrón común aplicado a todos los endpoints
+
+php
+// Soporte para filas=-1 (todos los registros)
+$es_todos = ($filas == -1);
+$offset = $es_todos ? 0 : ($pagina - 1) * $filas;
+
+// LIMIT solo si no es "todos"
+if (!$es_todos) {
+    $sql .= " LIMIT $offset, $filas";
+}
+
+// Paginación solo si no es "todos"
+if ($totalPaginas > 1 && !$es_todos) {
+    // generar botones de paginación
+}
+3.2. Archivos modificados
+
+tabla_endpoint_paises.php
+
+tabla_endpoint_regiones.php
+
+tabla_endpoint_ciudades.php
+
+tabla_endpoint_comunas.php
+
+tabla_endpoint_categorias.php
+
+tabla_endpoint_productos.php
+
+tabla_endpoint_usuarios.php
+
+FLUJO DE NAVEGACIÓN EN MANTENEDORES
+
+4.1. Patrón unificado para todos los mantenedores
+
+CREAR:
+
+Formulario en [mantenedor]-crear.php
+
+POST a [mantenedor]-acciones.php
+
+Redirección POST a [mantenedor]-ver.php con ID oculto
+
+Mensaje: "[Nombre] creado exitosamente."
+
+EDITAR:
+
+Botón Editar en [mantenedor]-ver.php con POST
+
+POST a [mantenedor]-editar.php
+
+Formulario POST a [mantenedor]-acciones.php
+
+Redirección POST a [mantenedor]-ver.php con ID oculto
+
+Mensaje: "[Nombre] actualizado correctamente."
+
+ELIMINAR:
+
+Botón Eliminar con confirmación
+
+POST a [mantenedor]-acciones.php
+
+Redirección a listado
+
+Mensaje: "[Nombre] eliminado exitosamente."
+
+VER:
+
+Recibe ID por POST (desde tabla o después de crear/editar)
+
+Conversión GET→POST automática
+
+Botón Editar con POST
+
+4.2. Archivos modificados por mantenedor
+
+PAÍSES:
+
+pais-ver.php: botón Editar POST, conversión GET→POST
+
+pais-editar.php: acepta ID por POST y GET
+
+eliminar_pais.php: mensaje con nombre
+
+REGIONES:
+
+ver_region.php: botón Editar POST, conversión GET→POST
+
+editar_region.php: acepta ID por POST y GET
+
+agregar_region.php: redirección POST a ver_region.php
+
+acciones_region.php: redirección POST a ver_region.php
+
+CIUDADES:
+
+ver_ciudad.php: botón Editar POST, conversión GET→POST
+
+editar_ciudad.php: acepta ID por POST y GET
+
+agregar_ciudad.php: redirección POST a ver_ciudad.php
+
+acciones_ciudad.php: redirección POST a ver_ciudad.php
+
+COMUNAS:
+
+ver_comuna.php: botón Editar POST, conversión GET→POST
+
+editar_comuna.php: acepta ID por POST y GET
+
+agregar_comuna.php: redirección POST a ver_comuna.php
+
+acciones_comuna.php: redirección POST a ver_comuna.php
+
+CATEGORÍAS:
+
+categoria-ver.php: botón Editar POST, conversión GET→POST
+
+categoria-editar.php: acepta ID por POST y GET
+
+categoria-acciones.php: redirección POST a categoria-ver.php
+
+PRODUCTOS:
+
+producto-ver.php: botón Editar POST, conversión GET→POST
+
+producto-editar.php: acepta ID por POST y GET
+
+producto-acciones.php: redirección POST a producto-ver.php
+
+Manejo de error 1062 (código de barras duplicado)
+
+USUARIOS:
+
+usuario-ver.php: botón Editar POST, conversión GET→POST
+
+usuario-editar.php: acepta ID por POST y GET
+
+acciones-usuario.php: redirección POST a usuario-ver.php
+
+VALIDACIONES Y MENSAJES
+
+5.1. Archivo: validaciones.php
+
+validarNombreProducto(): acepta letras, números, espacios, puntos, guiones, paréntesis
+
+Permite nombres como "7Up Original 1.5L"
+
+5.2. Manejo de errores de duplicado (MySQL 1062)
+
+php
+if ($stmt->errno == 1062) {
+    if (strpos($stmt->error, 'codigo_barras') !== false) {
+        $_SESSION['mensaje'] = "El código de barras '$codigo_barras' ya está registrado en otro producto.";
+    }
+    header('Location: menu.php?page=producto-crear.php');
+    exit;
+}
+5.3. Mensajes con nombre
+
+Crear: "Categoría 'Abrigos' creada exitosamente."
+
+Editar: "Categoría 'Abrigos' actualizada correctamente."
+
+Eliminar: "Categoría 'Abrigos' eliminada exitosamente."
+
+EXPORTACIONES
+
+6.1. Excel
+
+Cambio de extensión: .xls → .xlsx
+
+Tipo MIME: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+Exporta todos los registros (sin filtros)
+
+6.2. PDF
+
+Exporta todos los registros (sin filtros)
+
+Conversión de ✅ a "Sí" y ❌ a "No"
+
+Orientación horizontal (landscape) para tablas con muchas columnas
+
+Números de página en el pie
+
+6.3. Impresión
+
+Exporta todos los registros (sin filtros)
+
+Abre ventana de impresión automáticamente
+
+PROBLEMAS RESUELTOS
+
+Problema	Solución
+ID visible en URL	Cambio de GET a POST en botones y redirecciones
+Mensajes sin nombre	Obtener nombre antes de operación BD
+Exportaciones solo página activa	Usar filas=-1 en exportaciones
+PDF mostraba '—' en columna Tienda	Convertir ✅/❌ a "Sí"/"No"
+Error 1062 mostraba "0" en listado	Manejo específico de error duplicado
+Sidebar no visible en páginas crear	Cargar páginas a través de menu.php
+Conversión GET→POST en vistas	Redirección automática en ver_*.php
+ARCHIVOS MODIFICADOS
+
+8.1. Core del sistema
+
+menu.php
+
+components/tabla_pro/tabla_pro.js
+
+8.2. Endpoints Tabla Pro
+
+components/tabla_pro/tabla_endpoint_paises.php
+
+components/tabla_pro/tabla_endpoint_regiones.php
+
+components/tabla_pro/tabla_endpoint_ciudades.php
+
+components/tabla_pro/tabla_endpoint_comunas.php
+
+components/tabla_pro/tabla_endpoint_categorias.php
+
+components/tabla_pro/tabla_endpoint_productos.php
+
+components/tabla_pro/tabla_endpoint_usuarios.php
+
+8.3. Países
+
+pais-ver.php
+
+pais-editar.php
+
+eliminar_pais.php
+
+8.4. Regiones
+
+ver_region.php
+
+editar_region.php
+
+agregar_region.php
+
+acciones_region.php
+
+8.5. Ciudades
+
+ver_ciudad.php
+
+editar_ciudad.php
+
+agregar_ciudad.php
+
+acciones_ciudad.php
+
+8.6. Comunas
+
+ver_comuna.php
+
+editar_comuna.php
+
+agregar_comuna.php
+
+acciones_comuna.php
+
+8.7. Categorías
+
+categoria-ver.php
+
+categoria-editar.php
+
+categoria-crear.php
+
+categoria-acciones.php
+
+categorias.php
+
+8.8. Productos
+
+producto-ver.php
+
+producto-editar.php
+
+producto-crear.php
+
+producto-acciones.php
+
+productos.php
+
+8.9. Usuarios
+
+usuario-ver.php
+
+usuario-editar.php
+
+usuario-crear.php
+
+acciones-usuario.php
+
+inicio-usuarios.php
+
+8.10. Validaciones
+
+validaciones.php
+
+TOTAL DE ARCHIVOS MODIFICADOS
+
+Categoría	Cantidad
+Core	2
+Endpoints	7
+Países	3
+Regiones	4
+Ciudades	4
+Comunas	4
+Categorías	5
+Productos	5
+Usuarios	5
+Validaciones	1
+TOTAL	40
+COMMIT SUGERIDO
+
+git add .
+git commit -m "FEAT(global): Flujo POST unificado para todos los mantenedores
+
+Implementado flujo Crear → Ver y Editar → Ver con POST (ID oculto)
+
+Mensajes de éxito/error con nombre del registro
+
+Exportaciones completas (todos los registros) en Excel .xlsx, PDF e Impresión
+
+Sidebar visible en todas las páginas
+
+Manejo de error 1062 (código de barras duplicado)
+
+Conversión automática GET→POST en vistas para ocultar ID
+
+Archivos afectados: menu.php, tabla_pro.js, todos los endpoints, vistas y acciones"
+
+================================================================================
+FIN DEL INFORME
+================================================================================

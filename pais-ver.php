@@ -4,11 +4,38 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por GET (desde la URL) o por POST
-if (isset($_GET['id'])) {
-    $idPais = intval($_GET['id']);
-} elseif (isset($_POST['idPais'])) {
+// 🔴 NUEVO: Si llega por GET, redirigir por POST para ocultar el ID
+if (isset($_GET['id']) && !isset($_POST['idPais'])) {
+    $id = intval($_GET['id']);
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Redirigiendo...</title>
+    </head>
+    <body>
+        <form id="redirectForm" action="menu.php" method="POST">
+            <input type="hidden" name="page" value="pais-ver.php">
+            <input type="hidden" name="idPais" value="<?= $id ?>">
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+
+// Recibir ID por POST (desde la redirección o desde la tabla)
+$idPais = 0;
+
+if (isset($_POST['idPais'])) {
     $idPais = intval($_POST['idPais']);
+} elseif (isset($_POST['id'])) {
+    $idPais = intval($_POST['id']);
+} elseif (isset($_GET['id'])) {
+    $idPais = intval($_GET['id']);
 } else {
     header('Location: inicio_pais.php');
     exit;
@@ -62,9 +89,13 @@ $monedas_result = $monedas_stmt->get_result();
                     <span class="badge bg-info"><?= htmlspecialchars($pais['siglaPais']) ?></span>
                 </h4>
                 <div>
-                    <a href="menu.php?page=pais-editar.php&id=<?= $idPais ?>" class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Editar
-                    </a>
+                    <form action="menu.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="page" value="pais-editar.php">
+                        <input type="hidden" name="idPais" value="<?= $idPais ?>">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                    </form>
                     <a href="menu.php?page=inicio_pais.php" class="btn btn-danger">
                         <span class="bi bi-arrow-left"></span> Volver
                     </a>
@@ -74,15 +105,15 @@ $monedas_result = $monedas_stmt->get_result();
                 <div class="row">
                     <div class="col-md-6">
                         <table class="table table-bordered">
-                            <tr>
+                             <tr>
                                 <th width="30%">Sigla</th>
                                 <td><?= htmlspecialchars($pais['siglaPais']) ?></td>
-                            </tr>
-                            <tr>
+                             </tr>
+                             <tr>
                                 <th>Nombre</th>
                                 <td><?= htmlspecialchars($pais['nombrePais']) ?></td>
-                            </tr>
-                        </table>
+                             </tr>
+                         </table>
                     </div>
                     
                     <div class="col-md-6">

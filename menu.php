@@ -3,7 +3,8 @@ ob_start();
 require_once 'config.php';
 session_start();
 
-$page = $_GET['page'] ?? '';
+// 🔴 MODIFICADO: Aceptar page desde POST también
+$page = $_GET['page'] ?? $_POST['page'] ?? '';
 // Limpiar el parámetro page (quitar cualquier ? y lo que sigue)
 if (strpos($page, '?') !== false) {
     $page = substr($page, 0, strpos($page, '?'));
@@ -11,6 +12,26 @@ if (strpos($page, '?') !== false) {
 $currentPage = $page;
 $nombreSistema = APP_NOMBRE;
 $usuario = $_SESSION['usuario'] ?? 'Invitado';
+
+// 🔴 NUEVO: Preservar parámetros adicionales para los archivos incluidos
+// Procesar parámetros GET adicionales
+$queryString = $_SERVER['QUERY_STRING'] ?? '';
+if (!empty($queryString)) {
+    parse_str($queryString, $params);
+    foreach ($params as $key => $value) {
+        if ($key !== 'page') {
+            $_GET[$key] = $value;
+            $_REQUEST[$key] = $value;
+        }
+    }
+}
+// Procesar parámetros POST adicionales (como id_categoria, id, etc.)
+foreach ($_POST as $key => $value) {
+    if ($key !== 'page') {
+        $_GET[$key] = $value;
+        $_REQUEST[$key] = $value;
+    }
+}
 
 // Ruta del logo
 $logo = "img/logo.jpeg";
@@ -330,7 +351,7 @@ $menu = [
                         }
                     }
 
-                    // ===== ARCHIVOS EXTRA (CORREGIDO) =====
+                    // ===== ARCHIVOS EXTRA =====
                     $archivos_extra = [
                         'pais-crear.php',
                         'pais-editar.php',

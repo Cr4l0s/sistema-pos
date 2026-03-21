@@ -4,9 +4,15 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_producto'])) {
+// 🔴 MODIFICADO: Buscar ID en POST (desde producto-ver.php) o GET
+$id = 0;
+
+if (isset($_POST['id_producto'])) {
     $id = intval($_POST['id_producto']);
+} elseif (isset($_GET['id_producto'])) {
+    $id = intval($_GET['id_producto']);
+} elseif (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
 } else {
     header('Location: productos.php');
     exit;
@@ -41,6 +47,7 @@ $stmt->close();
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Editar Producto</h4>
@@ -52,7 +59,6 @@ $stmt->close();
                 <form action="producto-acciones.php" method="POST">
                     <input type="hidden" name="producto_id" value="<?= $producto['id_producto'] ?>">
 
-                    <!-- Fila 1: Nombre y Código -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Nombre del Producto</label>
@@ -67,14 +73,12 @@ $stmt->close();
                         </div>
                     </div>
 
-                    <!-- Fila 2: Descripción -->
                     <div class="mb-3">
                         <label>Descripción</label>
                         <textarea name="descripcion" class="form-control"
                             rows="3"><?= htmlspecialchars($producto['descripcion'] ?? '') ?></textarea>
                     </div>
 
-                    <!-- Fila 3: Categoría y Precio de Costo -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Categoría</label>
@@ -98,7 +102,6 @@ $stmt->close();
                         </div>
                     </div>
 
-                    <!-- Fila 4: Precio de Venta y Mostrar en Tienda -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Precio de Venta</label>
@@ -114,7 +117,6 @@ $stmt->close();
                         </div>
                     </div>
 
-                    <!-- Fila 5: Stock Actual y Stock Mínimo -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Stock Actual</label>
@@ -128,7 +130,6 @@ $stmt->close();
                         </div>
                     </div>
 
-                    <!-- Botón Actualizar -->
                     <div class="mb-3">
                         <button type="submit" name="update_producto" class="btn btn-primary">Actualizar</button>
                     </div>

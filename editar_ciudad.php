@@ -4,9 +4,13 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST (NO por GET)
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCiudad'])) {
+// 🔴 MODIFICADO: Buscar ID en POST (desde ver_ciudad.php) o GET
+$idCiudad = 0;
+
+if (isset($_POST['idCiudad'])) {
     $idCiudad = intval($_POST['idCiudad']);
+} elseif (isset($_GET['idCiudad'])) {
+    $idCiudad = intval($_GET['idCiudad']);
 } else {
     header('Location: gestionar_ciudades.php');
     exit;
@@ -41,6 +45,7 @@ $stmt->close();
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Editar Ciudad</h4>

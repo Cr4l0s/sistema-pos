@@ -126,13 +126,13 @@ require_once 'config.php';
 
                 <!-- BOTÓN AGREGAR -->
                 <div class="btn-agregar">
-                    <a href="usuario-crear.php" class="btn btn-primary">
+                    <a href="menu.php?page=usuario-crear.php" class="btn btn-primary">
                         <span class="bi bi-plus-circle-fill"></span> Agregar Usuario
                     </a>
                 </div>
-            </div>
-        </div>
-    </div>
+            </div> <!-- cierra card-body -->
+        </div> <!-- cierra card -->
+    </div> <!-- cierra container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="components/tabla_pro/tabla_pro.js"></script>
 </body>

@@ -4,9 +4,38 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
+// 🔴 NUEVO: Si llega por GET, redirigir por POST para ocultar el ID
+if (isset($_GET['id']) && !isset($_POST['id_producto'])) {
+    $id = intval($_GET['id']);
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Redirigiendo...</title>
+    </head>
+    <body>
+        <form id="redirectForm" action="menu.php" method="POST">
+            <input type="hidden" name="page" value="producto-ver.php">
+            <input type="hidden" name="id_producto" value="<?= $id ?>">
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+
 // Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_producto'])) {
+$id = 0;
+
+if (isset($_POST['id_producto'])) {
     $id = intval($_POST['id_producto']);
+} elseif (isset($_GET['id_producto'])) {
+    $id = intval($_GET['id_producto']);
+} elseif (isset($_GET['id'])) {
+    $id = intval($_GET['id']);
 } else {
     header('Location: productos.php');
     exit;
@@ -42,14 +71,19 @@ if (!$producto) {
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver Producto</h4>
                 <div>
-                    <a href="menu.php?page=producto-editar.php&id=<?= $producto['id_producto'] ?>"
-                        class="btn btn-warning">
-                        <i class="bi bi-pencil"></i> Editar
-                    </a>
+                    <!-- 🔴 CORREGIDO: Formulario POST en lugar de enlace GET -->
+                    <form action="menu.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="page" value="producto-editar.php">
+                        <input type="hidden" name="id_producto" value="<?= $producto['id_producto'] ?>">
+                        <button type="submit" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                    </form>
                     <a href="menu.php?page=productos.php" class="btn btn-danger">
                         <span class="bi bi-arrow-left"></span> Volver
                     </a>
@@ -103,32 +137,26 @@ if (!$producto) {
                     </div>
                 </div>
 
-                <!-- ===== FECHA DE CREACIÓN CON DETECCIÓN DE ENTORNO ===== -->
+                <!-- FECHA DE CREACIÓN -->
                 <div class="mb-3">
                     <label><b>Fecha de Creación</b></label>
                     <?php
                     $fecha_bd = $producto['fecha_creacion'];
 
                     if ($fecha_bd && $fecha_bd != '0000-00-00 00:00:00') {
-                        // Detectar si estamos en localhost o en el servidor
                         $es_localhost = ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1');
                         
                         if ($es_localhost) {
-                            // En LOCALHOST: la BD guarda hora Chile directamente
                             $fecha = new DateTime($fecha_bd);
                         } else {
-                            // En SERVIDOR: la BD guarda hora Chicago, hay que convertir a Chile
                             $fecha = new DateTime($fecha_bd, new DateTimeZone('America/Chicago'));
                             $fecha->setTimezone(new DateTimeZone('America/Santiago'));
                         }
 
-                        // Formatear la fecha
                         $fecha_formateada = $fecha->format('d-m-Y, H:i:s');
 
-                        // Calcular hace cuánto tiempo fue
                         $ahora = new DateTime();
                         $diferencia = $ahora->getTimestamp() - $fecha->getTimestamp();
-
                         if ($diferencia < 0) $diferencia = 0;
 
                         $hace_texto = '';

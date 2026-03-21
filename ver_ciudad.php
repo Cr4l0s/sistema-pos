@@ -4,9 +4,36 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST (NO por GET)
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCiudad'])) {
+// 🔴 NUEVO: Si llega por GET, redirigir por POST para ocultar el ID
+if (isset($_GET['idCiudad']) && !isset($_POST['idCiudad'])) {
+    $id = intval($_GET['idCiudad']);
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Redirigiendo...</title>
+    </head>
+    <body>
+        <form id="redirectForm" action="menu.php" method="POST">
+            <input type="hidden" name="page" value="ver_ciudad.php">
+            <input type="hidden" name="idCiudad" value="<?= $id ?>">
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+
+// Recibir ID por POST
+$idCiudad = 0;
+
+if (isset($_POST['idCiudad'])) {
     $idCiudad = intval($_POST['idCiudad']);
+} elseif (isset($_GET['idCiudad'])) {
+    $idCiudad = intval($_GET['idCiudad']);
 } else {
     header('Location: gestionar_ciudades.php');
     exit;
@@ -42,12 +69,23 @@ if (!$ciudad) {
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver Ciudad</h4>
-                <a href="menu.php?page=gestionar_ciudades.php" class="btn btn-danger">
-                    <span class="bi bi-arrow-left"></span> Volver
-                </a>
+                <div>
+                    <!-- 🔴 CORREGIDO: Formulario POST en lugar de enlace -->
+                    <form action="menu.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="page" value="editar_ciudad.php">
+                        <input type="hidden" name="idCiudad" value="<?= $idCiudad ?>">
+                        <button type="submit" class="btn btn-warning me-2">
+                            <span class="bi bi-pencil"></span> Editar
+                        </button>
+                    </form>
+                    <a href="menu.php?page=gestionar_ciudades.php" class="btn btn-danger">
+                        <span class="bi bi-arrow-left"></span> Volver
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="mb-3">

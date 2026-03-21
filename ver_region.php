@@ -4,13 +4,40 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['idRegion'])) {
-    header('Location: gestionar_regiones.php');
+// 🔴 NUEVO: Si llega por GET, redirigir por POST para ocultar el ID
+if (isset($_GET['idRegion']) && !isset($_POST['idRegion'])) {
+    $id = intval($_GET['idRegion']);
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Redirigiendo...</title>
+    </head>
+    <body>
+        <form id="redirectForm" action="menu.php" method="POST">
+            <input type="hidden" name="page" value="ver_region.php">
+            <input type="hidden" name="idRegion" value="<?= $id ?>">
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>
+    </body>
+    </html>
+    <?php
     exit;
 }
 
-$idRegion = intval($_POST['idRegion']);
+// Recibir ID por POST
+$idRegion = 0;
+
+if (isset($_POST['idRegion'])) {
+    $idRegion = intval($_POST['idRegion']);
+} elseif (isset($_GET['idRegion'])) {
+    $idRegion = intval($_GET['idRegion']);
+} else {
+    header('Location: gestionar_regiones.php');
+    exit;
+}
 
 // Obtener datos de la región
 $sql = "SELECT idRegion, idPais, nombreRegion, codRegion 
@@ -53,12 +80,23 @@ $nombrePais = $pais['nombrePais'] ?? 'País no encontrado';
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver Región</h4>
-                <a href="menu.php?page=gestionar_regiones.php" class="btn btn-danger">
-                    <span class="bi bi-arrow-left"></span> Volver
-                </a>
+                <div>
+                    <!-- 🔴 CORREGIDO: Formulario POST en lugar de enlace -->
+                    <form action="menu.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="page" value="editar_region.php">
+                        <input type="hidden" name="idRegion" value="<?= $idRegion ?>">
+                        <button type="submit" class="btn btn-warning me-2">
+                            <span class="bi bi-pencil"></span> Editar
+                        </button>
+                    </form>
+                    <a href="menu.php?page=gestionar_regiones.php" class="btn btn-danger">
+                        <span class="bi bi-arrow-left"></span> Volver
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="mb-3">

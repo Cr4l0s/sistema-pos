@@ -17,8 +17,9 @@ function validarPrecio($precio) {
     return preg_match('/^[0-9]+(\.[0-9]{1,2})?$/', $precio);
 }
 
+// 🔴 MODIFICADO: Aceptar letras, números, espacios, puntos, guiones, paréntesis
 function validarNombreProducto($nombre) {
-    return preg_match('/^[a-zA-ZáéíóúñÑ0-9\s]+$/', $nombre);
+    return preg_match('/^[a-zA-ZáéíóúñÑ0-9\s\.\-\(\)]+$/', $nombre);
 }
 
 function validarStock($stock) {
@@ -47,6 +48,7 @@ function validarNombrePais($nombre) {
 function validarID($id) {
     return preg_match('/^[1-9][0-9]*$/', $id);
 }
+
 // ===== FUNCIONES PARA URLs =====
 function sanitizarURL($url) {
     return filter_var($url, FILTER_SANITIZE_URL);

@@ -35,17 +35,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("issi", $idPais, $nombreRegion, $codRegion, $vigente);
 
     if ($stmt->execute()) {
-        $_SESSION['mensaje'] = 'Región agregada correctamente.';
+        $idRegion = $stmt->insert_id;
+        $_SESSION['mensaje'] = "Región '$nombreRegion' creada exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
-        header("Location: menu.php?page=gestionar_regiones.php");
+        $stmt->close();
+        
+        // 🔴 REDIRIGIR CON POST A VER REGIÓN
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirigiendo...</title>
+        </head>
+        <body>
+            <form id="redirectForm" action="menu.php" method="POST">
+                <input type="hidden" name="page" value="ver_region.php">
+                <input type="hidden" name="idRegion" value="<?= $idRegion ?>">
+            </form>
+            <script>
+                document.getElementById('redirectForm').submit();
+            </script>
+        </body>
+        </html>
+        <?php
+        exit;
     } else {
         $_SESSION['mensaje'] = 'Error al agregar la región: ' . $stmt->error;
         $_SESSION['tipo_mensaje'] = 'danger';
+        $stmt->close();
         header("Location: menu.php?page=gestionar_regiones.php");
+        exit();
     }
-
-    $stmt->close();
-    $conn->close();
-    exit();
 }
 ?>

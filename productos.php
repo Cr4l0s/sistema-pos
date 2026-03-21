@@ -106,7 +106,7 @@ $categoria_seleccionada = isset($_GET['categoria']) ? intval($_GET['categoria'])
                 <h4 class="mb-0">Listado de Productos</h4>
                 <div class="header-controls">
                     <input type="text" id="buscarTabla" class="form-control" placeholder="Buscar...">
-                    
+
                     <!-- NUEVO: Filtro por categoría -->
                     <select id="filtroCategoria" class="form-select">
                         <option value="">Todas las categorías</option>
@@ -119,7 +119,7 @@ $categoria_seleccionada = isset($_GET['categoria']) ? intval($_GET['categoria'])
                         }
                         ?>
                     </select>
-                    
+
                     <select id="filasTabla" class="form-select">
                         <option value="10">10</option>
                         <option value="25">25</option>
@@ -147,7 +147,7 @@ $categoria_seleccionada = isset($_GET['categoria']) ? intval($_GET['categoria'])
 
                 <!-- BOTÓN AGREGAR -->
                 <div class="btn-agregar">
-                    <a href="producto-crear.php" class="btn btn-primary">
+                    <a href="menu.php?page=producto-crear.php" class="btn btn-primary">
                         <span class="bi bi-plus-circle-fill"></span> Agregar Producto
                     </a>
                 </div>

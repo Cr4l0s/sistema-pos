@@ -4,13 +4,17 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
-// Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['idComuna'])) {
+// 🔴 MODIFICADO: Buscar ID en POST (desde ver_comuna.php) o GET
+$idComuna = 0;
+
+if (isset($_POST['idComuna'])) {
+    $idComuna = intval($_POST['idComuna']);
+} elseif (isset($_GET['idComuna'])) {
+    $idComuna = intval($_GET['idComuna']);
+} else {
     header('Location: gestionar_comunas.php');
     exit;
 }
-
-$idComuna = intval($_POST['idComuna']);
 
 // Obtener datos de la comuna
 $sql = "SELECT * FROM comunas WHERE idComuna = ? AND vigente = 1";
@@ -41,7 +45,7 @@ $stmt->close();
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
-
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Editar Comuna</h4>

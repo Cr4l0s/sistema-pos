@@ -4,9 +4,38 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require 'db.php';
 
+// 🔴 NUEVO: Si llega por GET, redirigir por POST para ocultar el ID
+if (isset($_GET['id']) && !isset($_POST['idUsuario'])) {
+    $id = intval($_GET['id']);
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Redirigiendo...</title>
+    </head>
+    <body>
+        <form id="redirectForm" action="menu.php" method="POST">
+            <input type="hidden" name="page" value="usuario-ver.php">
+            <input type="hidden" name="idUsuario" value="<?= $id ?>">
+        </form>
+        <script>
+            document.getElementById('redirectForm').submit();
+        </script>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+
 // Recibir ID por POST
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idUsuario'])) {
+$usuario_id = 0;
+
+if (isset($_POST['idUsuario'])) {
     $usuario_id = intval($_POST['idUsuario']);
+} elseif (isset($_GET['idUsuario'])) {
+    $usuario_id = intval($_GET['idUsuario']);
+} elseif (isset($_GET['id'])) {
+    $usuario_id = intval($_GET['id']);
 } else {
     header('Location: inicio-usuarios.php');
     exit;
@@ -39,12 +68,23 @@ if (!$usuario) {
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-5">
+        <?php include('mensaje.php'); ?>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">Ver Usuario</h4>
-                <a href="menu.php?page=inicio-usuarios.php" class="btn btn-danger">
-                    <span class="bi bi-arrow-left"></span> Volver
-                </a>
+                <div>
+                    <!-- 🔴 CORREGIDO: Formulario POST en lugar de enlace -->
+                    <form action="menu.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="page" value="usuario-editar.php">
+                        <input type="hidden" name="idUsuario" value="<?= $usuario_id ?>">
+                        <button type="submit" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                    </form>
+                    <a href="menu.php?page=inicio-usuarios.php" class="btn btn-danger">
+                        <span class="bi bi-arrow-left"></span> Volver
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="mb-3">
