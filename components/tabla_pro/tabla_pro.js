@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const ordenDefault = tabla.dataset.ordenDefault || 'id';
 
     console.log("🔍 Endpoint original:", endpoint);
+    console.log("🔍 VERIFICACIÓN GLOBAL - typeof globalIdPais:", typeof globalIdPais);
+    console.log("🔍 VERIFICACIÓN GLOBAL - globalIdPais:", globalIdPais);
 
     if (window.location.href.includes('inicio_pais')) {
         endpoint = "components/tabla_pro/tabla_endpoint_paises.php";
@@ -24,33 +26,49 @@ document.addEventListener("DOMContentLoaded", function () {
     let busqueda = "";
     let categoria = 0;
 
-    // ============================================
-    // FUNCIÓN PARA OBTENER BASE URL
-    // ============================================
     function getBaseUrl() {
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         return window.location.origin + (isLocalhost ? '/practica_sventas_desa/' : '/');
     }
 
-    // ============================================
-    // FUNCIÓN PARA CONSTRUIR URL (separa vista de exportación)
-    // ============================================
     function construirUrlVista() {
         const baseUrl = getBaseUrl() + endpoint.trim();
-        const params = new URLSearchParams({
+
+        console.log("🔍 URL BASE:", baseUrl);
+
+        const params = {
             pagina: pagina,
             orden: orden,
             direccion: direccion,
             filas: filas,
             buscar: busqueda,
             categoria: categoria
-        });
-        return `${baseUrl}?${params.toString()}`;
+        };
+
+        if (typeof globalIdPais !== 'undefined' && globalIdPais > 0) {
+            params.idPais = globalIdPais;
+            console.log("🌍 Usando globalIdPais:", globalIdPais);
+        } else {
+            console.log("⚠️ globalIdPais NO DEFINIDO o es 0");
+        }
+
+        console.log("📦 Parámetros:", params);
+
+        const queryString = Object.keys(params)
+            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+            .join('&');
+
+        const urlFinal = `${baseUrl}?${queryString}`;
+
+        console.log("🔍 URL FINAL:", urlFinal);
+
+        return urlFinal;
     }
 
     function construirUrlExportacion() {
         const baseUrl = getBaseUrl() + endpoint.trim();
-        const params = new URLSearchParams({
+
+        const params = {
             pagina: 1,
             orden: ordenDefault,
             direccion: "asc",
@@ -58,13 +76,19 @@ document.addEventListener("DOMContentLoaded", function () {
             buscar: '',
             categoria: 0,
             sin_acciones: 1
-        });
-        return `${baseUrl}?${params.toString()}`;
+        };
+
+        if (typeof globalIdPais !== 'undefined' && globalIdPais > 0) {
+            params.idPais = globalIdPais;
+        }
+
+        const queryString = Object.keys(params)
+            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+            .join('&');
+
+        return `${baseUrl}?${queryString}`;
     }
 
-    // ============================================
-    // FUNCIÓN PARA OBTENER ENCABEZADOS
-    // ============================================
     function obtenerEncabezados() {
         const encabezados = [];
         document.querySelectorAll('#tablaPro thead th').forEach((th, index) => {
@@ -75,23 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return encabezados;
     }
 
-    // ============================================
-    // FUNCIÓN PARA OBTENER TÍTULO
-    // ============================================
     function obtenerTitulo() {
         return document.querySelector('.card-header h4')?.innerText || 'Listado';
     }
 
-    // ============================================
-    // FUNCIÓN CARGAR TABLA
-    // ============================================
     function cargarTabla() {
+        console.log("🚀 CARGANDO TABLA - Página:", pagina);
         const urlFinal = construirUrlVista();
-
-        console.log("📡 URL FINAL:", urlFinal);
-        console.log("📊 Página solicitada:", pagina);
-        console.log("🔍 Búsqueda:", busqueda);
-        console.log("📏 Filas:", filas);
 
         fetch(urlFinal)
             .then(response => {
@@ -149,7 +163,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Búsqueda
     const buscarInput = document.querySelector("#buscarTabla");
     if (buscarInput) {
         buscarInput.addEventListener("keyup", function (e) {
@@ -159,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Selector de filas
     const filasSelect = document.querySelector("#filasTabla");
     if (filasSelect) {
         filasSelect.addEventListener("change", function (e) {
@@ -169,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Filtro de categorías
     const filtroCategoria = document.querySelector("#filtroCategoria");
     if (filtroCategoria) {
         categoria = parseInt(filtroCategoria.value) || 0;
@@ -180,7 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Paginación
     document.addEventListener("click", function (e) {
         if (e.target.classList.contains("pagina-btn")) {
             const nuevaPagina = parseInt(e.target.dataset.page);
@@ -195,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Ordenamiento
     document.addEventListener("click", function (e) {
         const th = e.target.closest(".sortable");
         if (th) {
@@ -206,75 +215,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-// ============================================
-// EXPORTACIÓN A EXCEL (TODOS LOS REGISTROS - SIN FILTROS)
-// ============================================
-document.getElementById("exportExcel")?.addEventListener("click", function () {
-    console.log("📊 Exportando TODOS los registros a Excel (sin filtros)...");
+    document.getElementById("exportExcel")?.addEventListener("click", function () {
+        console.log("📊 Exportando a Excel...");
+        const urlTodos = construirUrlExportacion();
+        const titulo = obtenerTitulo();
+        const encabezados = obtenerEncabezados();
+        const estilos = `<style>table{border-collapse:collapse;width:100%}th,td{border:1px solid #000;padding:4px}th{background-color:#f2f2f2}</style>`;
 
-    const urlTodos = construirUrlExportacion();
-    const titulo = obtenerTitulo();
-    const encabezados = obtenerEncabezados();
+        fetch(urlTodos)
+            .then(response => response.json())
+            .then(data => {
+                let tablaCompleta = '<table><thead><tr>';
+                encabezados.forEach(th => tablaCompleta += `<th>${th}</th>`);
+                tablaCompleta += '</tr></thead><tbody>' + data.html + '</tbody></tr>';
+                const htmlCompleto = `<html><head><meta charset="UTF-8"><title>Exportación ${titulo}</title>${estilos}</head><body><h2>${titulo} - TODOS LOS REGISTROS</h2>${tablaCompleta}</body></html>`;
+                const blob = new Blob([htmlCompleto], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${titulo.toLowerCase().replace(/\s+/g, '_')}_completo_${new Date().toISOString().slice(0, 10)}.xlsx`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            })
+            .catch(error => { console.error('❌ Error:', error); alert('Error al exportar a Excel'); });
+    });
 
-    const estilos = `
-        <style>
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid #000; padding: 4px; }
-            th { background-color: #f2f2f2; }
-        </style>
-    `;
-
-    fetch(urlTodos)
-        .then(response => response.json())
-        .then(data => {
-            let tablaCompleta = '<table>';
-            tablaCompleta += '<thead><tr>';
-            encabezados.forEach(th => {
-                tablaCompleta += `<th>${th}</th>`;
-            });
-            tablaCompleta += '</tr></thead>';
-            tablaCompleta += '<tbody>';
-            tablaCompleta += data.html;
-            tablaCompleta += '</tbody></table>';
-
-            const htmlCompleto = `
-                <html>
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>Exportación ${titulo}</title>
-                        ${estilos}
-                    </head>
-                    <body>
-                        <h2>${titulo} - TODOS LOS REGISTROS</h2>
-                        ${tablaCompleta}
-                    </body>
-                </html>
-            `;
-
-            // CAMBIO 1: Tipo MIME para Excel moderno
-            const blob = new Blob([htmlCompleto], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            
-            // CAMBIO 2: Extensión .xlsx
-            link.download = `${titulo.toLowerCase().replace(/\s+/g, '_')}_completo_${new Date().toISOString().slice(0, 10)}.xlsx`;
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-        })
-        .catch(error => {
-            console.error('❌ Error exportando a Excel:', error);
-            alert('Error al exportar a Excel');
-        });
-});
-    // ============================================
-    // EXPORTACIÓN IMPRESIÓN (TODOS LOS REGISTROS - SIN FILTROS)
-    // ============================================
     document.getElementById("exportPrint")?.addEventListener("click", function () {
-        console.log("🖨️ Preparando impresión de TODOS los registros (sin filtros)...");
-
+        console.log("🖨️ Preparando impresión...");
         const urlTodos = construirUrlExportacion();
         const titulo = obtenerTitulo();
         const encabezados = obtenerEncabezados();
@@ -282,254 +250,60 @@ document.getElementById("exportExcel")?.addEventListener("click", function () {
         fetch(urlTodos)
             .then(response => response.json())
             .then(data => {
-                let tablaCompleta = '<table>';
-                tablaCompleta += '<thead><tr>';
-                encabezados.forEach(th => {
-                    tablaCompleta += `<th>${th}</th>`;
-                });
-                tablaCompleta += '</tr></thead>';
-                tablaCompleta += '<tbody>';
-                tablaCompleta += data.html;
-                tablaCompleta += '</tbody></table>';
-
+                let tablaCompleta = '<table><thead><tr>';
+                encabezados.forEach(th => tablaCompleta += `<th>${th}</th>`);
+                tablaCompleta += '</tr></thead><tbody>' + data.html + '</tbody></table>';
                 const ventana = window.open('', '_blank');
-                if (!ventana) {
-                    alert("Por favor, permite los pop-ups para este sitio.");
-                    return;
-                }
-
-                ventana.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Imprimir ${titulo}</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; } 
-                            table { border-collapse: collapse; width: 100%; } 
-                            th, td { border: 1px solid #000; padding: 8px; } 
-                            th { background-color: #f2f2f2; }
-                        </style>
-                    </head>
-                    <body>
-                        <h2>${titulo} - TODOS LOS REGISTROS</h2>
-                        ${tablaCompleta}
-                        <script>
-                            window.onload = function() { setTimeout(function() { window.print(); }, 500); };
-                            window.onafterprint = function() { window.close(); };
-                            setTimeout(function() { window.close(); }, 30000);
-                        <\/script>
-                    </body>
-                    </html>
-                `);
+                if (!ventana) { alert("Permite los pop-ups para este sitio."); return; }
+                ventana.document.write(`<!DOCTYPE html><html><head><title>Imprimir ${titulo}</title><style>body{font-family:Arial;padding:20px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #000;padding:8px}th{background-color:#f2f2f2}</style></head><body><h2>${titulo} - TODOS LOS REGISTROS</h2>${tablaCompleta}<script>window.onload=function(){setTimeout(function(){window.print();},500)};window.onafterprint=function(){window.close()};setTimeout(function(){window.close()},30000);<\/script></body></html>`);
                 ventana.document.close();
             })
-            .catch(error => {
-                console.error('❌ Error preparando impresión:', error);
-                alert('Error al preparar la impresión');
-            });
+            .catch(error => { console.error('❌ Error:', error); alert('Error al preparar la impresión'); });
     });
 
-    // ============================================
-    // EXPORTACIÓN PDF (TODOS LOS REGISTROS - SIN FILTROS)
-    // ============================================
     document.getElementById("exportPDF")?.addEventListener("click", function () {
-        console.log("📑 Exportando TODOS los registros a PDF (sin filtros)...");
-
+        console.log("📑 Exportando a PDF...");
         const urlTodos = construirUrlExportacion();
         const titulo = obtenerTitulo();
         const encabezados = obtenerEncabezados();
-
-        // Mostrar indicador de carga
         const btnPDF = this;
         const textoOriginal = btnPDF.innerHTML;
-        btnPDF.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando PDF...';
+        btnPDF.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Generando PDF...';
         btnPDF.disabled = true;
 
-        console.log("📡 URL PDF:", urlTodos);
-        console.log("📋 Encabezados:", encabezados);
-
         fetch(urlTodos)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log("📦 Datos recibidos para PDF:", data);
-
-                if (!data.html || data.html.trim() === '') {
-                    throw new Error('No hay datos para exportar');
-                }
-
-                console.log("📄 HTML recibido:", data.html.substring(0, 200) + "...");
-
-                // Procesar los datos para PDF
                 const filas = [];
-
-                // Crear un elemento temporal para parsear el HTML
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = data.html;
-
-                // Buscar todas las filas (tr) directamente
                 const trs = tempDiv.querySelectorAll('tr');
-
-                console.log(`📊 Encontradas ${trs.length} filas en el HTML`);
-
-                if (trs.length === 0) {
-                    // Intentar parsear de otra forma si no encuentra tr
-                    console.log("⚠️ No se encontraron <tr>, intentando parsear el HTML como texto plano");
-
-                    // Dividir por </tr> para obtener filas individuales
-                    const filasHtml = data.html.split('</tr>').filter(f => f.trim() !== '');
-
-                    filasHtml.forEach(filaHtml => {
-                        // Extraer celdas
-                        const celdas = filaHtml.match(/<td[^>]*>(.*?)<\/td>/g) || [];
-                        const filaData = [];
-
-                        celdas.forEach((celda, index) => {
-                            let valor = celda.replace(/<[^>]*>/g, '').trim();
-
-                            // Determinar si es la columna Tienda (basado en el contenido)
-                            if (valor.includes('✅')) {
-                                valor = 'Sí';
-                            } else if (valor.includes('❌')) {
-                                valor = 'No';
-                            } else {
-                                // Limpiar solo iconos de acción, NO los de Sí/No
-                                valor = valor.replace(/[🔍📝🗑️]/g, '').trim();
-                            }
-
-                            filaData.push(valor || '—');
-                        });
-
-                        if (filaData.length > 0) {
-                            filas.push(filaData);
-                        }
+                trs.forEach(tr => {
+                    const filaData = [];
+                    const tds = tr.querySelectorAll('td');
+                    tds.forEach(td => {
+                        let valor = td.innerText.trim();
+                        if (valor.includes('✅')) valor = 'Sí';
+                        else if (valor.includes('❌')) valor = 'No';
+                        else valor = valor.replace(/[🔍📝🗑️]/g, '').trim();
+                        filaData.push(valor || '—');
                     });
-                } else {
-                    // Procesar normalmente con querySelectorAll
-                    trs.forEach(tr => {
-                        const filaData = [];
-                        const tds = tr.querySelectorAll('td');
-
-                        tds.forEach(td => {
-                            let valor = td.innerText.trim();
-
-                            // Convertir ✅ a "Sí" y ❌ a "No" para el PDF
-                            if (valor.includes('✅')) {
-                                valor = 'Sí';
-                            } else if (valor.includes('❌')) {
-                                valor = 'No';
-                            } else {
-                                // Limpiar otros iconos
-                                valor = valor.replace(/[🔍📝🗑️]/g, '').trim();
-                            }
-
-                            filaData.push(valor || '—');
-                        });
-
-                        if (filaData.length > 0) {
-                            filas.push(filaData);
-                        }
-                    });
-                }
-
-                console.log(`✅ ${filas.length} filas procesadas para PDF`);
-
-                if (filas.length > 0) {
-                    console.log("📊 Primera fila:", filas[0]);
-                }
-
-                if (filas.length === 0) {
-                    throw new Error('No se pudieron procesar las filas para el PDF');
-                }
-
-                // Verificar que el número de columnas coincide
-                const columnasEsperadas = encabezados.length;
-                const columnasReales = filas[0].length;
-
-                console.log(`📏 Columnas esperadas: ${columnasEsperadas}, columnas reales: ${columnasReales}`);
-
-                if (columnasReales !== columnasEsperadas) {
-                    console.warn(`⚠️ Discrepancia en columnas: esperaba ${columnasEsperadas}, recibí ${columnasReales}`);
-
-                    // Ajustar filas si es necesario
-                    if (columnasReales > columnasEsperadas) {
-                        filas.forEach(f => f.pop());
-                    }
-                }
-
-                if (typeof window.jspdf === 'undefined') {
-                    throw new Error('jsPDF no está cargado.');
-                }
-
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'mm'
+                    if (filaData.length > 0) filas.push(filaData);
                 });
 
-                // Título
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'landscape', unit: 'mm' });
                 doc.setFontSize(14);
                 doc.text(titulo + " - TODOS LOS REGISTROS", 14, 15);
                 doc.setFontSize(10);
                 doc.text(`Generado: ${new Date().toLocaleDateString()}`, 14, 22);
-
-                // Configuración de la tabla
-                doc.autoTable({
-                    head: [encabezados],
-                    body: filas,
-                    startY: 25,
-                    styles: {
-                        fontSize: 8,
-                        cellPadding: 2,
-                        overflow: 'linebreak',
-                        cellWidth: 'wrap'
-                    },
-                    headStyles: {
-                        fillColor: [41, 128, 185],
-                        textColor: 255,
-                        fontSize: 9,
-                        halign: 'center'
-                    },
-                    alternateRowStyles: {
-                        fillColor: [245, 245, 245]
-                    },
-                    margin: { top: 30 },
-                    didDrawPage: function (data) {
-                        doc.setFontSize(8);
-                        doc.text(
-                            'Página ' + data.pageNumber,
-                            data.settings.margin.left,
-                            doc.internal.pageSize.height - 10
-                        );
-                    }
-                });
-
-                const nombreArchivo = titulo.toLowerCase()
-                    .replace(/\s+/g, '_')
-                    .replace(/[áéíóúñ]/g, function (c) {
-                        const equivalencias = { 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ñ': 'n' };
-                        return equivalencias[c] || c;
-                    }) + '_completo_' +
-                    new Date().toISOString().slice(0, 10) + '.pdf';
-
+                doc.autoTable({ head: [encabezados], body: filas, startY: 25, styles: { fontSize: 8, cellPadding: 2 }, headStyles: { fillColor: [41, 128, 185], textColor: 255 }, margin: { top: 30 } });
+                const nombreArchivo = titulo.toLowerCase().replace(/\s+/g, '_').replace(/[áéíóúñ]/g, c => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ñ': 'n' }[c] || c)) + '_completo_' + new Date().toISOString().slice(0, 10) + '.pdf';
                 doc.save(nombreArchivo);
-                console.log("✅ PDF generado correctamente");
             })
-            .catch(error => {
-                console.error('❌ Error exportando a PDF:', error);
-                alert('Error al exportar a PDF: ' + error.message);
-            })
-            .finally(() => {
-                btnPDF.innerHTML = textoOriginal;
-                btnPDF.disabled = false;
-            });
+            .catch(error => { console.error('❌ Error:', error); alert('Error al exportar a PDF: ' + error.message); })
+            .finally(() => { btnPDF.innerHTML = textoOriginal; btnPDF.disabled = false; });
     });
-    // ============================================
-    // CARGA INICIAL
-    // ============================================
+
     cargarTabla();
 });

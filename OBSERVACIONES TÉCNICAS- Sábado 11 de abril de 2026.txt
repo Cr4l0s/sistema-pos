@@ -1,0 +1,97 @@
+================================================================================
+INFORME TÉCNICO - CORRECCIONES Y MEJORAS
+Fecha: 11-04-2026
+Proyecto: POS - Módulo de Mantenedores (Tabla Pro)
+================================================================================
+
+1. OBJETIVO
+--------------------------------------------------------------------------------
+Resolver problemas de paginación en el mantenedor de Regiones y corregir
+validaciones en Productos, Países y Usuarios según QA del 20-03-2026.
+
+
+2. PROBLEMAS RESUELTOS
+--------------------------------------------------------------------------------
+
+2.1. REGIONES - Paginación y filtro por país
+--------------------------------------------
+Problema: Al seleccionar un país, se mostraban regiones de todos los países.
+         La paginación no funcionaba correctamente.
+
+Solución:
+- Se agregó variable global `globalIdPais` en gestionar_regiones.php
+- Se modificó tabla_pro.js para incluir `idPais` en todas las peticiones
+- Se modificó tabla_endpoint_regiones.php para filtrar por `idPais`
+- Se corrigió la construcción de URLs para preservar parámetros
+
+Archivos modificados:
+- gestionar_regiones.php
+- components/tabla_pro/tabla_pro.js
+- components/tabla_pro/tabla_endpoint_regiones.php
+
+2.2. REGIONES - Mensaje de eliminación
+--------------------------------------
+Problema: Al eliminar una región, el mensaje no mostraba el nombre.
+
+Solución: Se modificó eliminar_region.php para obtener el nombre antes de eliminar.
+
+Archivo modificado: eliminar_region.php
+
+2.3. COMUNAS - Mensaje de eliminación
+--------------------------------------
+Problema: Al eliminar una comuna, el mensaje no mostraba el nombre.
+
+Solución: Se modificó eliminar_comuna.php para obtener el nombre antes de eliminar.
+
+Archivo modificado: eliminar_comuna.php
+
+2.4. PRODUCTOS - Código de barras
+----------------------------------
+Problema: El código de barras estaba limitado a 13 dígitos numéricos, pero en
+         Chile se utilizan diversos formatos (EAN-8, EAN-13, UPC, DUN-14, Code 39, Code 128).
+
+Solución:
+- Se modificó la tabla productos: `codigo_barras` VARCHAR(100)
+- Se eliminó la validación de 13 dígitos en producto-acciones.php
+- Se eliminó `maxlength="13"` y la restricción de solo números en producto-crear.php
+- Se modificó validaciones.php: `validarCodigoBarras()` ahora retorna `true`
+
+Archivos modificados:
+- producto-acciones.php
+- producto-crear.php
+- producto-editar.php
+- validaciones.php
+
+2.5. PRODUCTOS - Nuevo campo código interno
+--------------------------------------------
+Problema: No existía un código interno independiente del código de barras.
+
+Solución: Se agregó columna `codigo_interno` VARCHAR(50) en tabla productos.
+
+Pendiente: Implementar en formularios (próximo sprint).
+
+2.6. PAÍSES - Sigla de país
+----------------------------
+Problema: La sigla estaba limitada a 2 caracteres, pero la norma ISO 3166-1
+         permite 3 caracteres (alfa-3).
+
+Solución: Se modificó validarSiglaPais() en validaciones.php:
+         `preg_match('/^[A-Z]{2,3}$/', $sigla)`
+
+Archivo modificado: validaciones.php
+
+2.7. PAÍSES - Botón Quitar en moneda principal
+-----------------------------------------------
+Problema: El botón "Quitar" aparecía deshabilitado pero visible en la moneda
+         principal, lo que causaba confusión.
+
+Solución: Se ocultó completamente el botón cuando `es_principal = 1`:
+```php
+<?php if (!$moneda['es_principal']): ?>
+    <button type="button" class="btn btn-sm btn-outline-danger"
+        onclick="eliminarMoneda(<?= $moneda['idMoneda'] ?>)">
+        <i class="bi bi-trash"></i> Quitar
+    </button>
+<?php else: ?>
+    <span class="text-muted small">Moneda principal</span>
+<?php endif; ?>

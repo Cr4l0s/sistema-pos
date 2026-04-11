@@ -70,6 +70,7 @@ $stmt->close();
                             <label>Código de Barras</label>
                             <input type="text" name="codigo_barras"
                                 value="<?= htmlspecialchars($producto['codigo_barras'] ?? '') ?>" class="form-control">
+                            <small class="text-muted">Código alfanumérico, máximo 100 caracteres</small>
                         </div>
                     </div>
 
@@ -111,8 +112,10 @@ $stmt->close();
                         <div class="col-md-6 mb-3">
                             <label>Mostrar en Tienda Virtual</label>
                             <select class="form-control" name="mostrar_en_tienda">
-                                <option value="1" <?= ($producto['mostrar_en_tienda'] ?? 1) == 1 ? 'selected' : '' ?>>Sí</option>
-                                <option value="0" <?= ($producto['mostrar_en_tienda'] ?? 1) == 0 ? 'selected' : '' ?>>No</option>
+                                <option value="1" <?= ($producto['mostrar_en_tienda'] ?? 1) == 1 ? 'selected' : '' ?>>Sí
+                                </option>
+                                <option value="0" <?= ($producto['mostrar_en_tienda'] ?? 1) == 0 ? 'selected' : '' ?>>No
+                                </option>
                             </select>
                         </div>
                     </div>

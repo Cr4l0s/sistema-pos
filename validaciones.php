@@ -9,15 +9,16 @@ function limpiarInput($input) {
 }
 
 // ===== VALIDACIONES PARA PRODUCTOS =====
+// 🔴 MODIFICADO: Código de barras ahora acepta alfanumérico
 function validarCodigoBarras($codigo) {
-    return preg_match('/^[0-9]{13}$/', $codigo);
+    // Acepta caracteres alfanuméricos, guiones, guiones bajos, longitud 4-100
+    return preg_match('/^[a-zA-Z0-9\-_]{4,100}$/', $codigo);
 }
 
 function validarPrecio($precio) {
     return preg_match('/^[0-9]+(\.[0-9]{1,2})?$/', $precio);
 }
 
-// 🔴 MODIFICADO: Aceptar letras, números, espacios, puntos, guiones, paréntesis
 function validarNombreProducto($nombre) {
     return preg_match('/^[a-zA-ZáéíóúñÑ0-9\s\.\-\(\)]+$/', $nombre);
 }
@@ -36,8 +37,9 @@ function validarNombreUsuario($nombre) {
 }
 
 // ===== VALIDACIONES PARA PAÍSES =====
+// 🔴 MODIFICADO: Sigla de país ahora permite 2 o 3 caracteres
 function validarSiglaPais($sigla) {
-    return preg_match('/^[A-Z]{2}$/', $sigla);
+    return preg_match('/^[A-Z]{2,3}$/', $sigla);
 }
 
 function validarNombrePais($nombre) {
@@ -58,7 +60,6 @@ function validarURLImagen($url) {
     return preg_match('/^(https?:\/\/).+\.(jpg|jpeg|png|gif|webp|bmp|svg)(\?.*)?$/i', $url);
 }
 
-// ===== VALIDACIONES DE URLs =====
 function validarURL($url) {
     return preg_match('/^(https?|ftp):\/\/([a-z0-9-]+\.)+[a-z]{2,}(:\d+)?(\/[^\s]*)?$/i', $url);
 }

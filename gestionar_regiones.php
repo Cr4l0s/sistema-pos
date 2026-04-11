@@ -122,15 +122,15 @@ $nombrePais = $_SESSION['nombrePais'] ?? 'Desconocido';
                 </div>
             </div>
             <div class="card-body">
-                <?php 
+                <?php
                 require_once 'components/tabla_pro/tabla_pro.php';
-                
+
                 $columnas = [
                     'nombreRegion' => 'Nombre de la Región',
                     'codRegion' => 'Código'
                 ];
-                
-                tablaPro("components/tabla_pro/tabla_endpoint_regiones.php", 'nombreRegion', $columnas); 
+
+                tablaPro("components/tabla_pro/tabla_endpoint_regiones.php", 'nombreRegion', $columnas);
                 ?>
 
                 <!-- Formulario para agregar -->
@@ -155,6 +155,13 @@ $nombrePais = $_SESSION['nombrePais'] ?? 'Desconocido';
             </div>
         </div>
     </div>
+    
+    <!-- 🔴 VARIABLE GLOBAL - DEBE IR ANTES DE tabla_pro.js -->
+    <script>
+        var globalIdPais = <?= $idPais ?>;
+        console.log("🌍 globalIdPais definido:", globalIdPais);
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="components/tabla_pro/tabla_pro.js"></script>
 </body>

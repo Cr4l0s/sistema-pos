@@ -76,7 +76,8 @@ $stmt->close();
                     <div class="mb-3">
                         <label>Usuario</label>
                         <input type="text" name="username" value="<?= htmlspecialchars($usuario['NombreUsuario']) ?>"
-                            class="form-control" required>
+                            class="form-control" readonly>
+                        <small class="text-muted">El nombre de usuario no se puede modificar</small>
                     </div>
                     <div class="mb-3">
                         <label>Email</label>

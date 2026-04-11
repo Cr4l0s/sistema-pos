@@ -254,11 +254,16 @@ $todas_monedas = $conn->query($sql_monedas);
                                     <?php endif; ?>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-sm btn-outline-danger"
-                                        onclick="eliminarMoneda(<?= $moneda['idMoneda'] ?>)" <?= $moneda['es_principal'] ? 'disabled' : '' ?>>
-                                        <i class="bi bi-trash"></i> Quitar
-                                    </button>
+                                    <?php if (!$moneda['es_principal']): ?>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            onclick="eliminarMoneda(<?= $moneda['idMoneda'] ?>)">
+                                            <i class="bi bi-trash"></i> Quitar
+                                        </button>
+                                    <?php else: ?>
+                                        <span class="text-muted small">Moneda principal</span>
+                                    <?php endif; ?>
                                 </div>
+
                             </div>
                         <?php endwhile; ?>
                     </div>

@@ -27,8 +27,8 @@ require 'db.php';
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Código de Barras</label>
-                                <input type="text" class="form-control" name="codigo_barras" id="codigo_barras" maxlength="13">
-                                <small class="text-muted">13 dígitos numéricos</small>
+                                <input type="text" class="form-control" name="codigo_barras" id="codigo_barras">
+                                <small class="text-muted">Código alfanumérico, máximo 100 caracteres</small>
                             </div>
                         </div>
 
@@ -47,7 +47,7 @@ require 'db.php';
                                     <?php
                                     $categorias = mysqli_query($conn, "SELECT * FROM categorias WHERE activo = 1");
                                     while ($cat = mysqli_fetch_array($categorias)) {
-                                        echo '<option value="' . $cat['id_categoria'] . '">' . $cat['nombre_categoria'] . '</option>';
+                                        echo '<option value="' . $cat['id_categoria'] . '">' . htmlspecialchars($cat['nombre_categoria']) . '</option>';
                                     }
                                     ?>
                                 </select>
@@ -110,8 +110,9 @@ require 'db.php';
             return false;
         }
         
-        if (codigo && !Validaciones.validarCodigoBarras(codigo)) {
-            alert('El código de barras debe tener 13 dígitos numéricos');
+        // 🔴 MODIFICADO: Validación de código de barras simplificada
+        if (codigo && codigo.length > 100) {
+            alert('El código de barras es demasiado largo (máximo 100 caracteres)');
             return false;
         }
         
@@ -132,8 +133,4 @@ require 'db.php';
         
         return true;
     }
-    
-    document.getElementById('codigo_barras').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
 </script>
