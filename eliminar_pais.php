@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idPais'])) {
     exit;
 }
 
-// 🔴 NUEVO: Obtener nombre del país ANTES de eliminarlo
+// Obtener nombre del país ANTES de eliminarlo
 $sql_nombre = "SELECT nombrePais FROM paises WHERE idPais = ? AND vigente = 1";
 $stmt_nombre = $conn->prepare($sql_nombre);
 $stmt_nombre->bind_param("i", $idPais);
@@ -24,12 +24,30 @@ $pais = $result_nombre->fetch_assoc();
 $nombrePais = $pais ? $pais['nombrePais'] : 'desconocido';
 $stmt_nombre->close();
 
-// Después de recibir el ID
 error_log("ID recibido para eliminar: " . $idPais);
 error_log("Nombre del país a eliminar: " . $nombrePais);
 
-// Antes de ejecutar la consulta
-error_log("SQL: UPDATE paises SET vigente = 0 WHERE idPais = $idPais AND vigente = 1");
+// =============================================
+// REGLA 1: Verificar si el país tiene regiones activas
+// =============================================
+$sql_check_regiones = "SELECT COUNT(*) as total FROM regiones WHERE idPais = ? AND vigente = 1";
+$stmt_check = $conn->prepare($sql_check_regiones);
+$stmt_check->bind_param("i", $idPais);
+$stmt_check->execute();
+$result_check = $stmt_check->get_result();
+$row = $result_check->fetch_assoc();
+
+error_log("Regiones activas encontradas: " . $row['total']);
+
+if ($row['total'] > 0) {
+    $_SESSION['mensaje'] = "No se puede eliminar el país '$nombrePais' porque tiene {$row['total']} región(es) activa(s).";
+    $_SESSION['tipo_mensaje'] = 'warning';
+    $stmt_check->close();
+    $conn->close();
+    header('Location: menu.php?page=inicio_pais.php');
+    exit;
+}
+$stmt_check->close();
 
 // Borrado lógico (vigente = 0)
 $sql = "UPDATE paises SET vigente = 0 WHERE idPais = ? AND vigente = 1";
@@ -38,7 +56,6 @@ $stmt->bind_param("i", $idPais);
 
 if ($stmt->execute()) {
     if ($stmt->affected_rows > 0) {
-        // 🔴 MODIFICADO: Incluir nombre del país en el mensaje
         $_SESSION['mensaje'] = "País '$nombrePais' eliminado correctamente.";
         $_SESSION['tipo_mensaje'] = 'success';
     } else {
@@ -51,6 +68,7 @@ if ($stmt->execute()) {
 }
 
 $stmt->close();
+$conn->close();
 header('Location: menu.php?page=inicio_pais.php');
 exit;
 ?>

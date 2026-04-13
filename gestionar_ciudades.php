@@ -170,6 +170,14 @@ $nombreRegion = $_SESSION['nombreRegion'] ?? 'Desconocido';
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 🔴 NUEVO: Definir variables globales ANTES de tabla_pro.js -->
+    <script>
+        var globalIdPais = <?php echo $idPais; ?>;
+        var globalIdRegion = <?php echo $idRegion; ?>;
+        console.log("✅ Variables globales definidas:", {globalIdPais, globalIdRegion});
+    </script>
+    
     <script src="components/tabla_pro/tabla_pro.js"></script>
 </body>
 

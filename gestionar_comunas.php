@@ -180,6 +180,19 @@ $nombreCiudad = $_SESSION['nombreCiudad'] ?? 'Desconocido';
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Definir variables globales que espera tabla_pro.js -->
+    <script>
+        var globalIdPais = <?php echo $idPais; ?>;
+        var globalIdRegion = <?php echo $idRegion; ?>;
+        var globalIdCiudad = <?php echo $idCiudad; ?>;
+        console.log("✅ Variables globales definidas:", {
+            globalIdPais: globalIdPais,
+            globalIdRegion: globalIdRegion,
+            globalIdCiudad: globalIdCiudad
+        });
+    </script>
+    
     <script src="components/tabla_pro/tabla_pro.js"></script>
 </body>
 

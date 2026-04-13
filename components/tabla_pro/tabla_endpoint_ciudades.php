@@ -6,13 +6,15 @@ require '../../db.php';
 require_once '../../config.php';
 
 session_start();
+
+// Obtener idRegion de la sesión (ya debería estar guardada por gestionar_ciudades.php)
 $idRegion = $_SESSION['idRegion'] ?? 0;
 
 header('Content-Type: application/json');
 
 if (!$idRegion) {
     echo json_encode([
-        "html" => "<tr><td colspan='2' class='text-center text-danger'>Error: Región no seleccionada</td></tr>",
+        "html" => "<tr><td colspan='2' class='text-center text-danger'>Error: Región no seleccionada. Por favor, vuelva a seleccionar una región.</td></tr>",
         "paginacion" => ""
     ]);
     exit;
@@ -79,7 +81,7 @@ while ($r = $result->fetch_assoc()) {
             </form>
             <form action='eliminar_ciudad.php' method='POST' style='display:inline;'>
                 <input type='hidden' name='idCiudad' value='{$r['idCiudad']}'>
-                <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Eliminar?\")'><i class='bi bi-trash'></i></button>
+                <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Eliminar ciudad {$r['nombreCiudad']}?\")'><i class='bi bi-trash'></i></button>
             </form>
         </td>";
     }
@@ -98,7 +100,7 @@ $paginacion = "";
 if ($totalPaginas > 1 && !$es_todos) {
     // Botón Anterior
     if ($pagina > 1) {
-        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='" . ($pagina - 1) . "'>
+        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='" . ($pagina - 1) . "' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>
             <i class='bi bi-chevron-left'></i> Anterior
         </button>";
     }
@@ -109,7 +111,7 @@ if ($totalPaginas > 1 && !$es_todos) {
 
     // Mostrar primera página si está fuera del rango
     if ($inicio > 1) {
-        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='1'>1</button>";
+        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='1' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>1</button>";
         if ($inicio > 2) {
             $paginacion .= "<span class='btn btn-sm btn-outline-secondary disabled me-1'>...</span>";
         }
@@ -117,8 +119,8 @@ if ($totalPaginas > 1 && !$es_todos) {
 
     // Páginas del rango
     for ($i = $inicio; $i <= $fin; $i++) {
-        $active = ($i == $pagina) ? 'active' : '';
-        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1 $active' data-page='$i'>$i</button>";
+        $active = ($i == $pagina) ? 'active btn-primary' : 'btn-outline-primary';
+        $paginacion .= "<button class='btn btn-sm $active pagina-btn me-1' data-page='$i' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>$i</button>";
     }
 
     // Mostrar última página si está fuera del rango
@@ -126,12 +128,12 @@ if ($totalPaginas > 1 && !$es_todos) {
         if ($fin < $totalPaginas - 1) {
             $paginacion .= "<span class='btn btn-sm btn-outline-secondary disabled me-1'>...</span>";
         }
-        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='$totalPaginas'>$totalPaginas</button>";
+        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='$totalPaginas' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>$totalPaginas</button>";
     }
 
     // Botón Siguiente
     if ($pagina < $totalPaginas) {
-        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn' data-page='" . ($pagina + 1) . "'>
+        $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn' data-page='" . ($pagina + 1) . "' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>
             Siguiente <i class='bi bi-chevron-right'></i>
         </button>";
     }

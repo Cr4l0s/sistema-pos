@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idRegion'])) {
     exit;
 }
 
-// 🔴 NUEVO: Obtener nombre de la región antes de eliminarla
+// Obtener nombre de la región antes de eliminarla
 $sql_nombre = "SELECT nombreRegion FROM regiones WHERE idRegion = ? AND vigente = 1";
 $stmt_nombre = $conn->prepare($sql_nombre);
 $stmt_nombre->bind_param("i", $idRegion);
@@ -40,6 +40,26 @@ if ($result_check->num_rows == 0) {
 }
 $stmt_check->close();
 
+// =============================================
+// REGLA 3: Verificar si la región tiene ciudades activas
+// =============================================
+$sql_check_ciudades = "SELECT COUNT(*) as total FROM ciudades WHERE idRegion = ? AND vigente = 1";
+$stmt_check = $conn->prepare($sql_check_ciudades);
+$stmt_check->bind_param("i", $idRegion);
+$stmt_check->execute();
+$result_check = $stmt_check->get_result();
+$row = $result_check->fetch_assoc();
+
+if ($row['total'] > 0) {
+    $_SESSION['mensaje'] = "No se puede eliminar la región '$nombre_region' porque tiene {$row['total']} ciudad(es) activa(s).";
+    $_SESSION['tipo_mensaje'] = 'warning';
+    $stmt_check->close();
+    $conn->close();
+    header('Location: menu.php?page=gestionar_regiones.php');
+    exit;
+}
+$stmt_check->close();
+
 // Borrado lógico
 $sql = "UPDATE regiones SET vigente = 0 WHERE idRegion = ?";
 $stmt = $conn->prepare($sql);
@@ -54,6 +74,7 @@ if ($stmt->execute()) {
 }
 
 $stmt->close();
+$conn->close();
 header('Location: menu.php?page=gestionar_regiones.php');
 exit;
 ?>

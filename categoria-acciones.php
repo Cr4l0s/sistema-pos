@@ -139,6 +139,26 @@ if (isset($_POST['borrar_categoria'])) {
     $categoria = $result_nombre->fetch_assoc();
     $nombre_categoria = $categoria ? $categoria['nombre_categoria'] : 'desconocido';
     $stmt_nombre->close();
+    
+    // =============================================
+    // REGLA 5: Verificar si la categoría tiene productos activos
+    // =============================================
+    $sql_check_productos = "SELECT COUNT(*) as total FROM productos WHERE id_categoria = ? AND activo = 1";
+    $stmt_check = $conn->prepare($sql_check_productos);
+    $stmt_check->bind_param("i", $id);
+    $stmt_check->execute();
+    $result_check = $stmt_check->get_result();
+    $row = $result_check->fetch_assoc();
+    
+    if ($row['total'] > 0) {
+        $_SESSION['mensaje'] = "No se puede eliminar la categoría '$nombre_categoria' porque tiene {$row['total']} producto(s) activo(s).";
+        $_SESSION['tipo_mensaje'] = 'warning';
+        $stmt_check->close();
+        $conn->close();
+        header('Location: menu.php?page=categorias.php');
+        exit;
+    }
+    $stmt_check->close();
 
     $sql = "UPDATE categorias SET activo = 0 WHERE id_categoria = ?";
     $stmt = $conn->prepare($sql);

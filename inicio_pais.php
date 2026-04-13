@@ -133,6 +133,13 @@ require_once 'config.php';
             </div>
         </div>
     </div>
+    
+    <!-- 🔴 VARIABLE GLOBAL para tabla_pro.js -->
+    <script>
+        var globalIdPais = 0;
+        console.log("🌍 globalIdPais definido en inicio_pais:", globalIdPais);
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="components/tabla_pro/tabla_pro.js"></script>
 </body>

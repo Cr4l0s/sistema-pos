@@ -6,17 +6,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const ordenDefault = tabla.dataset.ordenDefault || 'id';
 
     console.log("🔍 Endpoint original:", endpoint);
-    console.log("🔍 VERIFICACIÓN GLOBAL - typeof globalIdPais:", typeof globalIdPais);
-    console.log("🔍 VERIFICACIÓN GLOBAL - globalIdPais:", globalIdPais);
+
+    // Verificar si globalIdPais existe, si no, crearlo
+    if (typeof globalIdPais === 'undefined') {
+        window.globalIdPais = 0;
+        console.log("🆕 globalIdPais no existía, creado con valor:", globalIdPais);
+    } else {
+        console.log("🔍 VERIFICACIÓN GLOBAL - typeof globalIdPais:", typeof globalIdPais);
+        console.log("🔍 VERIFICACIÓN GLOBAL - globalIdPais:", globalIdPais);
+    }
 
     if (window.location.href.includes('inicio_pais')) {
         endpoint = "components/tabla_pro/tabla_endpoint_paises.php";
         console.log("🔍 Endpoint forzado para países:", endpoint);
-    }
-
-    if (!endpoint) {
-        console.error("Error: No se definió el endpoint en la tabla");
-        return;
     }
 
     let pagina = 1;
