@@ -5,12 +5,12 @@ ini_set('display_errors', 1);
 require '../../db.php';
 require_once '../../config.php';
 
-$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-$filas = isset($_GET['filas']) ? (int)$_GET['filas'] : 10;
+$pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+$filas = isset($_GET['filas']) ? (int) $_GET['filas'] : 10;
 $orden = $_GET['orden'] ?? 'nombre_producto';
 $direccion = $_GET['direccion'] ?? 'ASC';
 $buscar = $_GET['buscar'] ?? '';
-$categoria = isset($_GET['categoria']) ? (int)$_GET['categoria'] : 0;
+$categoria = isset($_GET['categoria']) ? (int) $_GET['categoria'] : 0;
 $sin_acciones = isset($_GET['sin_acciones']) ? true : false;
 
 // Si filas es -1, significa "todos los registros"
@@ -96,30 +96,39 @@ if (!$result) {
 
 $html = "";
 while ($r = $result->fetch_assoc()) {
+    // Guardar en un archivo temporal
+    file_put_contents('debug_stock.txt', "Producto: " . $r['nombre_producto'] . " - Stock: " . $r['stock_actual'] . "\n", FILE_APPEND);
     // Formatear precios como moneda
     $precio_compras = '$' . number_format($r['precio_compras'], 0, ',', '.');
     $precio_venta = '$' . number_format($r['precio_venta'], 0, ',', '.');
-    
+
     // Determinar si el stock es bajo
     $stock_class = '';
     if ($r['stock_actual'] <= $r['stock_minimo']) {
         $stock_class = 'text-danger fw-bold';
     }
-    
-    // Icono para mostrar_en_tienda
-    $tienda_icono = $r['mostrar_en_tienda'] ? '✅' : '❌';
-    $tienda_texto = $r['mostrar_en_tienda'] ? 'Sí' : 'No';
-    
+
+    // Para exportación (sin_acciones) usar texto, para vista normal usar ícono
+    if ($sin_acciones) {
+        $tienda_valor = $r['mostrar_en_tienda'] ? 'Sí' : 'No';
+        $stock_celda = (int)$r['stock_actual'];
+        $stock_html = "<td>" . $stock_celda . "</td>";
+    } else {
+        $tienda_valor = $r['mostrar_en_tienda'] ? '✅' : '❌';
+        $stock_class = ($r['stock_actual'] <= $r['stock_minimo']) ? 'text-danger fw-bold' : '';
+        $stock_html = "<td class='$stock_class'>" . (int)$r['stock_actual'] . "</td>";
+    }
+
     // ORDEN CORRECTO de celdas según la vista
-    $html .= "<tr>
-        <td>" . htmlspecialchars($r['codigo_barras'] ?: '—') . "</td>
-        <td>" . htmlspecialchars($r['nombre_producto']) . "</td>
-        <td>" . htmlspecialchars($r['nombre_categoria'] ?: '—') . "</td>
-        <td>" . $precio_compras . "</td>
-        <td>" . $precio_venta . "</td>
-        <td class='$stock_class'>" . (int)$r['stock_actual'] . "</td>
-        <td data-tooltip='$tienda_texto'>$tienda_icono</td>";
-    
+    $html .= "<tr>";
+    $html .= "<td>" . htmlspecialchars($r['codigo_barras'] ?: '—') . "</td>";
+    $html .= "<td>" . htmlspecialchars($r['nombre_producto']) . "</td>";
+    $html .= "<td>" . htmlspecialchars($r['nombre_categoria'] ?: '—') . "</td>";
+    $html .= "<td>" . $precio_compras . "</td>";
+    $html .= "<td>" . $precio_venta . "</td>";
+    $html .= $stock_html;
+    $html .= "<td>" . $tienda_valor . "</td>";
+
     // Solo agregamos la columna de acciones si NO es sin_acciones
     if (!$sin_acciones) {
         $html .= "<td>
@@ -137,7 +146,7 @@ while ($r = $result->fetch_assoc()) {
             </form>
         </td>";
     }
-    
+
     $html .= "</tr>";
 }
 

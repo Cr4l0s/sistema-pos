@@ -120,7 +120,7 @@ $monedas = $conn->query("SELECT * FROM monedas WHERE vigente = 1 ORDER BY codMon
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="fw-bold">Sigla del País</label>
-                                    <input type="text" class="form-control" id="siglaInput" maxlength="2"
+                                    <input type="text" class="form-control" id="siglaInput" maxlength="3"
                                         placeholder="Ej: CL" required>
                                     <div class="ayuda-selector">
                                         <i class="bi bi-search"></i> Buscar por sigla:

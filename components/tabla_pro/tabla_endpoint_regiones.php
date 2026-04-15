@@ -101,29 +101,29 @@ if (!$result) {
 
 $html = "";
 while ($r = $result->fetch_assoc()) {
-    $html .= "<tr>
-        <td>" . htmlspecialchars($r['nombreRegion']) . "</td>
-        <td>" . htmlspecialchars($r['codRegion']) . "</td>";
-
+    $html .= '<tr>';
+    $html .= '<td>' . htmlspecialchars($r['nombreRegion']) . '</td>';
+    $html .= '<td>' . htmlspecialchars($r['codRegion']) . '</td>';
+    
     if (!$sin_acciones) {
-        $html .= "<td>
-            <form action='menu.php?page=ver_region.php' method='POST' style='display:inline;'>
-                <input type='hidden' name='idRegion' value='{$r['idRegion']}'>
-                <button type='submit' class='btn btn-sm btn-secondary'><i class='bi bi-eye'></i></button>
-            </form>
-            <form action='menu.php' method='POST' style='display:inline;'>
-                <input type='hidden' name='page' value='editar_region.php'>
-                <input type='hidden' name='idRegion' value='{$r['idRegion']}'>
-                <button type='submit' class='btn btn-sm btn-success'><i class='bi bi-pencil'></i></button>
-            </form>
-            <form action='eliminar_region.php' method='POST' style='display:inline;'>
-                <input type='hidden' name='idRegion' value='{$r['idRegion']}'>
-                <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Está seguro de eliminar la región " . htmlspecialchars($r['nombreRegion']) . "?\")'><i class='bi bi-trash'></i></button>
-            </form>
-        </td>";
+        $html .= '<td>';
+        $html .= '<form action="menu.php?page=ver_region.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="idRegion" value="' . $r['idRegion'] . '">
+                    <button type="submit" class="btn btn-sm btn-secondary"><i class="bi bi-eye"></i></button>
+                  </form>';
+        $html .= '<form action="menu.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="page" value="editar_region.php">
+                    <input type="hidden" name="idRegion" value="' . $r['idRegion'] . '">
+                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-pencil"></i></button>
+                  </form>';
+        $html .= '<form action="eliminar_region.php" method="POST" style="display:inline;">
+                    <input type="hidden" name="idRegion" value="' . $r['idRegion'] . '">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'¿Está seguro de eliminar la región ' . htmlspecialchars($r['nombreRegion']) . '?\')"><i class="bi bi-trash"></i></button>
+                  </form>';
+        $html .= '</td>';
     }
-
-    $html .= "</tr>";
+    
+    $html .= '</tr>';
 }
 
 // ============================================

@@ -15,13 +15,11 @@ $sin_acciones = isset($_GET['sin_acciones']) ? true : false;
 $es_todos = ($filas == -1);
 $offset = $es_todos ? 0 : ($pagina - 1) * $filas;
 
-// Campos válidos para ordenamiento
 $campos_validos = ['nombre_categoria', 'descripcion'];
 $orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombre_categoria';
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
 
-// Consulta principal
 $where = "WHERE activo = 1";
 if (!empty($buscar)) {
     $where .= " AND (nombre_categoria LIKE '%$buscar_escapado%' OR descripcion LIKE '%$buscar_escapado%')";
@@ -40,7 +38,7 @@ $result = $conn->query($sql);
 
 if (!$result) {
     echo json_encode([
-        "html" => "<tr><td colspan='3' class='text-center text-danger'>Error en consulta: " . $conn->error . "</td></tr>",
+        "html" => "<td><td colspan='3' class='text-center text-danger'>Error en consulta: " . $conn->error . "</td></tr>",
         "paginacion" => ""
     ]);
     exit;
@@ -66,19 +64,18 @@ while ($r = $result->fetch_assoc()) {
                 <input type='hidden' name='id_categoria' value='{$r['id_categoria']}'>
                 <button type='submit' name='borrar_categoria' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Eliminar?\")'><i class='bi bi-trash'></i></button>
             </form>
-        </td>";
+        
+";
     }
 
     $html .= "</tr>";
 }
 
-// Total de registros
 $sql_total = "SELECT COUNT(*) as total FROM categorias $where";
 $total_result = $conn->query($sql_total);
 $total = $total_result ? $total_result->fetch_assoc()['total'] : 0;
 $totalPaginas = $filas > 0 && !$es_todos ? ceil($total / $filas) : 1;
 
-// Paginación
 $paginacion = "";
 if ($totalPaginas > 1 && !$es_todos) {
     if ($pagina > 1) {

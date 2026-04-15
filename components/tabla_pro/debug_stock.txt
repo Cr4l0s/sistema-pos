@@ -1,0 +1,696 @@
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: Almohada - Stock: 45
+Producto: Arroz 1kg - Stock: 150
+Producto: Arroz Grado 1 1kg - Stock: 150
+Producto: Arroz Grado 2 1kg - Stock: 200
+Producto: Asado de Tira 1kg - Stock: 18
+Producto: Audífonos Bluetooth - Stock: 60
+Producto: Audífonos Bluetooth - Stock: 30
+Producto: Azúcar 1kg - Stock: 120
+Producto: Azúcar Blanca 1kg - Stock: 120
+Producto: Azúcar Morena 1kg - Stock: 80
+Producto: Cable Lightning 1m - Stock: 60
+Producto: Cable USB-C 1m - Stock: 80
+Producto: Cachantún con Gas 1.5L - Stock: 180
+Producto: Cachantún con Gas Display 12u - Stock: 40
+Producto: Cachantún sin Gas 1.5L - Stock: 190
+Producto: Cachantún sin Gas Display 12u - Stock: 38
+Producto: Caja Multiuso - Stock: 45
+Producto: Cargador Rápido USB-C - Stock: 85
+Producto: Cargador Rápido USB-C - Stock: 45
+Producto: Cesto Ropa - Stock: 25
+Producto: Chaqueta Hombre L - Stock: 8
+Producto: Chaqueta Hombre M - Stock: 10
+Producto: Chaqueta Mujer L - Stock: 5
+Producto: Chaqueta Mujer M - Stock: 7
+Producto: Chorizo 500gr - Stock: 45
+Producto: Cobertor 2 plazas - Stock: 20
+Producto: Coca Cola 591cc - Stock: 300
+Producto: Coca Cola Original 1.5L - Stock: 200
+Producto: Coca Cola Original 2.5L - Stock: 140
+Producto: Coca Cola Original 3L - Stock: 100
+Producto: Coca Cola Original 591cc - Stock: 300
+Producto: Coca Cola Zero 1.5L - Stock: 180
+Producto: Coca Cola Zero 2.5L - Stock: 130
+Producto: Coca Cola Zero 3L - Stock: 90
+Producto: Coca Cola Zero 591cc - Stock: 280
+Producto: Coca Cola Zero 591cc - Stock: 250
+Producto: Cortina 2x2m - Stock: 15
+Producto: Crema de Leche 200ml - Stock: 130
+Producto: Fanta 591cc - Stock: 200
+Producto: Fanta Naranja 1.5L - Stock: 140
+Producto: Fanta Zero 1.5L - Stock: 120
+Producto: Felpudo Entrada - Stock: 35
+Producto: Fideos Spaghetti 400gr - Stock: 300
+Producto: Fideos Tallarines 400gr - Stock: 280
+Producto: Fideos Tallarines 500gr - Stock: 200
+Producto: Garbanzos 500gr - Stock: 120
+Producto: Gatorade Naranja 1L - Stock: 130
+Producto: Gorra Deportiva - Stock: 110
+Producto: Hamburguesa de Pollo 4u - Stock: 60
+Producto: Hamburguesa de Vacuno 4u - Stock: 55
+Producto: Harina con Polvos 1kg - Stock: 140
+Producto: Harina sin Polvos 1kg - Stock: 180
+Producto: Hub USB 4 puertos - Stock: 35
+Producto: Jabonera - Stock: 60
+Producto: Jamón de Cerdo 250gr - Stock: 65
+Producto: Jamón de Pollo 250gr - Stock: 70
+Producto: Jeans Hombre 42 - Stock: 25
+Producto: Jeans Hombre 44 - Stock: 22
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Jeans Mujer 40 - Stock: 20
+Producto: Jeans Mujer 42 - Stock: 18
+Producto: Juego de Sábanas 1.5 plazas - Stock: 30
+Producto: Juego de Sábanas 2 plazas - Stock: 25
+Producto: Leche Condensada 395gr - Stock: 90
+Producto: Leche Descremada 1L - Stock: 160
+Producto: Leche en Polvo Entera 400gr - Stock: 60
+Producto: Leche Entera 1L - Stock: 180
+Producto: Leche Entera 1L - Stock: 200
+Producto: Leche Semi Descremada 1L - Stock: 180
+Producto: Leche Sin Lactosa 1L - Stock: 100
+Producto: Lentejas 500gr - Stock: 160
+Producto: Lomo Liso 1kg - Stock: 15
+Producto: Mantequilla 250gr - Stock: 120
+Producto: Mantequilla sin Sal 250gr - Stock: 100
+Producto: Memoria USB 16GB - Stock: 50
+Producto: Memoria USB 32GB - Stock: 40
+Producto: Mortadela 250gr - Stock: 85
+Producto: Mouse Inalámbrico - Stock: 35
+Producto: Mouse Inalámbrico - Stock: 90
+Producto: Mouse Óptico - Stock: 55
+Producto: Organizador - Stock: 50
+Producto: Pantalón Hombre 42 - Stock: 20
+Producto: Pantalón Hombre 44 - Stock: 18
+Producto: Pantalón Mujer 40 - Stock: 15
+Producto: Pantalón Mujer 42 - Stock: 12
+Producto: Pendrive 32GB - Stock: 100
+Producto: Pepsi Original 1.5L - Stock: 160
+Producto: Pepsi Zero 1.5L - Stock: 140
+Producto: Percha 10u - Stock: 70
+Producto: Perchero Pared - Stock: 40
+Producto: Pila AA 4u - Stock: 100
+Producto: Pila AAA 4u - Stock: 100
+Producto: Polera Hombre L - Stock: 45
+Producto: Polera Hombre M - Stock: 40
+Producto: Polera Hombre M - Stock: 75
+Producto: Polera Mujer L - Stock: 30
+Producto: Polera Mujer M - Stock: 35
+Producto: Pollo Entero - Stock: 40
+Producto: Pollo Pechuga - Stock: 35
+Producto: Pollo Trutro - Stock: 50
+Producto: Porotos 500gr - Stock: 140
+Producto: Porta Cepillos - Stock: 55
+Producto: Posta Negra 1kg - Stock: 20
+Producto: Powerade Azul 850ml - Stock: 145
+Producto: Powerade Rojo 850ml - Stock: 150
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 4 - Stock: 20
+Producto: Prueba 5 - Stock: 23
+Producto: Queso Chanco 500gr - Stock: 55
+Producto: Queso de Cerdo 250gr - Stock: 60
+Producto: Queso Gauda 500gr - Stock: 45
+Producto: Queso Mantecoso 500gr - Stock: 50
+Producto: Sal de Mar 1kg - Stock: 200
+Producto: Sal de Mar Gruesa 1kg - Stock: 150
+Producto: Smartphone Xiaomi Redmi 9 - Stock: 25
+Producto: Sprite 591cc - Stock: 220
+Producto: Sprite Original 1.5L - Stock: 170
+Producto: Sprite Zero 1.5L - Stock: 150
+Producto: Teclado Inalámbrico - Stock: 20
+Producto: Teclado USB - Stock: 30
+Producto: Teclado USB - Stock: 60
+Producto: Toalla de Baño - Stock: 40
+Producto: Toalla de Mano - Stock: 50
+Producto: Tocino 250gr - Stock: 50
+Producto: validación URL - Stock: 50
+Producto: validación URL 2 - Stock: 50
+Producto: Vienesas 10u - Stock: 80
+Producto: Vital con Gas 1.5L - Stock: 170
+Producto: Vital con Gas Display 12u - Stock: 42
+Producto: Vital sin Gas 1.5L - Stock: 200
+Producto: Vital sin Gas Display 12u - Stock: 45
+Producto: Webcam HD - Stock: 25
+Producto: Yogurt Frutilla Batido 1kg - Stock: 90
+Producto: Yogurt Natural Batido 1kg - Stock: 80
+Producto: Yogurt Vainilla Batido 1kg - Stock: 85
+Producto: Zapatillas Deportivas 42 - Stock: 30
+Producto: zona horaria - Stock: 0
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: Almohada - Stock: 45
+Producto: Arroz 1kg - Stock: 150
+Producto: Arroz Grado 1 1kg - Stock: 150
+Producto: Arroz Grado 2 1kg - Stock: 200
+Producto: Asado de Tira 1kg - Stock: 18
+Producto: Audífonos Bluetooth - Stock: 60
+Producto: Audífonos Bluetooth - Stock: 30
+Producto: Azúcar 1kg - Stock: 120
+Producto: Azúcar Blanca 1kg - Stock: 120
+Producto: Azúcar Morena 1kg - Stock: 80
+Producto: Cable Lightning 1m - Stock: 60
+Producto: Cable USB-C 1m - Stock: 80
+Producto: Cachantún con Gas 1.5L - Stock: 180
+Producto: Cachantún con Gas Display 12u - Stock: 40
+Producto: Cachantún sin Gas 1.5L - Stock: 190
+Producto: Cachantún sin Gas Display 12u - Stock: 38
+Producto: Caja Multiuso - Stock: 45
+Producto: Cargador Rápido USB-C - Stock: 85
+Producto: Cargador Rápido USB-C - Stock: 45
+Producto: Cesto Ropa - Stock: 25
+Producto: Chaqueta Hombre L - Stock: 8
+Producto: Chaqueta Hombre M - Stock: 10
+Producto: Chaqueta Mujer L - Stock: 5
+Producto: Chaqueta Mujer M - Stock: 7
+Producto: Chorizo 500gr - Stock: 45
+Producto: Cobertor 2 plazas - Stock: 20
+Producto: Coca Cola 591cc - Stock: 300
+Producto: Coca Cola Original 1.5L - Stock: 200
+Producto: Coca Cola Original 2.5L - Stock: 140
+Producto: Coca Cola Original 3L - Stock: 100
+Producto: Coca Cola Original 591cc - Stock: 300
+Producto: Coca Cola Zero 1.5L - Stock: 180
+Producto: Coca Cola Zero 2.5L - Stock: 130
+Producto: Coca Cola Zero 3L - Stock: 90
+Producto: Coca Cola Zero 591cc - Stock: 280
+Producto: Coca Cola Zero 591cc - Stock: 250
+Producto: Cortina 2x2m - Stock: 15
+Producto: Crema de Leche 200ml - Stock: 130
+Producto: Fanta 591cc - Stock: 200
+Producto: Fanta Naranja 1.5L - Stock: 140
+Producto: Fanta Zero 1.5L - Stock: 120
+Producto: Felpudo Entrada - Stock: 35
+Producto: Fideos Spaghetti 400gr - Stock: 300
+Producto: Fideos Tallarines 400gr - Stock: 280
+Producto: Fideos Tallarines 500gr - Stock: 200
+Producto: Garbanzos 500gr - Stock: 120
+Producto: Gatorade Naranja 1L - Stock: 130
+Producto: Gorra Deportiva - Stock: 110
+Producto: Hamburguesa de Pollo 4u - Stock: 60
+Producto: Hamburguesa de Vacuno 4u - Stock: 55
+Producto: Harina con Polvos 1kg - Stock: 140
+Producto: Harina sin Polvos 1kg - Stock: 180
+Producto: Hub USB 4 puertos - Stock: 35
+Producto: Jabonera - Stock: 60
+Producto: Jamón de Cerdo 250gr - Stock: 65
+Producto: Jamón de Pollo 250gr - Stock: 70
+Producto: Jeans Hombre 42 - Stock: 25
+Producto: Jeans Hombre 44 - Stock: 22
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Jeans Mujer 40 - Stock: 20
+Producto: Jeans Mujer 42 - Stock: 18
+Producto: Juego de Sábanas 1.5 plazas - Stock: 30
+Producto: Juego de Sábanas 2 plazas - Stock: 25
+Producto: Leche Condensada 395gr - Stock: 90
+Producto: Leche Descremada 1L - Stock: 160
+Producto: Leche en Polvo Entera 400gr - Stock: 60
+Producto: Leche Entera 1L - Stock: 180
+Producto: Leche Entera 1L - Stock: 200
+Producto: Leche Semi Descremada 1L - Stock: 180
+Producto: Leche Sin Lactosa 1L - Stock: 100
+Producto: Lentejas 500gr - Stock: 160
+Producto: Lomo Liso 1kg - Stock: 15
+Producto: Mantequilla 250gr - Stock: 120
+Producto: Mantequilla sin Sal 250gr - Stock: 100
+Producto: Memoria USB 16GB - Stock: 50
+Producto: Memoria USB 32GB - Stock: 40
+Producto: Mortadela 250gr - Stock: 85
+Producto: Mouse Inalámbrico - Stock: 35
+Producto: Mouse Inalámbrico - Stock: 90
+Producto: Mouse Óptico - Stock: 55
+Producto: Organizador - Stock: 50
+Producto: Pantalón Hombre 42 - Stock: 20
+Producto: Pantalón Hombre 44 - Stock: 18
+Producto: Pantalón Mujer 40 - Stock: 15
+Producto: Pantalón Mujer 42 - Stock: 12
+Producto: Pendrive 32GB - Stock: 100
+Producto: Pepsi Original 1.5L - Stock: 160
+Producto: Pepsi Zero 1.5L - Stock: 140
+Producto: Percha 10u - Stock: 70
+Producto: Perchero Pared - Stock: 40
+Producto: Pila AA 4u - Stock: 100
+Producto: Pila AAA 4u - Stock: 100
+Producto: Polera Hombre L - Stock: 45
+Producto: Polera Hombre M - Stock: 40
+Producto: Polera Hombre M - Stock: 75
+Producto: Polera Mujer L - Stock: 30
+Producto: Polera Mujer M - Stock: 35
+Producto: Pollo Entero - Stock: 40
+Producto: Pollo Pechuga - Stock: 35
+Producto: Pollo Trutro - Stock: 50
+Producto: Porotos 500gr - Stock: 140
+Producto: Porta Cepillos - Stock: 55
+Producto: Posta Negra 1kg - Stock: 20
+Producto: Powerade Azul 850ml - Stock: 145
+Producto: Powerade Rojo 850ml - Stock: 150
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 4 - Stock: 20
+Producto: Prueba 5 - Stock: 23
+Producto: Queso Chanco 500gr - Stock: 55
+Producto: Queso de Cerdo 250gr - Stock: 60
+Producto: Queso Gauda 500gr - Stock: 45
+Producto: Queso Mantecoso 500gr - Stock: 50
+Producto: Sal de Mar 1kg - Stock: 200
+Producto: Sal de Mar Gruesa 1kg - Stock: 150
+Producto: Smartphone Xiaomi Redmi 9 - Stock: 25
+Producto: Sprite 591cc - Stock: 220
+Producto: Sprite Original 1.5L - Stock: 170
+Producto: Sprite Zero 1.5L - Stock: 150
+Producto: Teclado Inalámbrico - Stock: 20
+Producto: Teclado USB - Stock: 30
+Producto: Teclado USB - Stock: 60
+Producto: Toalla de Baño - Stock: 40
+Producto: Toalla de Mano - Stock: 50
+Producto: Tocino 250gr - Stock: 50
+Producto: validación URL - Stock: 50
+Producto: validación URL 2 - Stock: 50
+Producto: Vienesas 10u - Stock: 80
+Producto: Vital con Gas 1.5L - Stock: 170
+Producto: Vital con Gas Display 12u - Stock: 42
+Producto: Vital sin Gas 1.5L - Stock: 200
+Producto: Vital sin Gas Display 12u - Stock: 45
+Producto: Webcam HD - Stock: 25
+Producto: Yogurt Frutilla Batido 1kg - Stock: 90
+Producto: Yogurt Natural Batido 1kg - Stock: 80
+Producto: Yogurt Vainilla Batido 1kg - Stock: 85
+Producto: Zapatillas Deportivas 42 - Stock: 30
+Producto: zona horaria - Stock: 0
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: Almohada - Stock: 45
+Producto: Arroz 1kg - Stock: 150
+Producto: Arroz Grado 1 1kg - Stock: 150
+Producto: Arroz Grado 2 1kg - Stock: 200
+Producto: Asado de Tira 1kg - Stock: 18
+Producto: Audífonos Bluetooth - Stock: 60
+Producto: Audífonos Bluetooth - Stock: 30
+Producto: Azúcar 1kg - Stock: 120
+Producto: Azúcar Blanca 1kg - Stock: 120
+Producto: Azúcar Morena 1kg - Stock: 80
+Producto: Cable Lightning 1m - Stock: 60
+Producto: Cable USB-C 1m - Stock: 80
+Producto: Cachantún con Gas 1.5L - Stock: 180
+Producto: Cachantún con Gas Display 12u - Stock: 40
+Producto: Cachantún sin Gas 1.5L - Stock: 190
+Producto: Cachantún sin Gas Display 12u - Stock: 38
+Producto: Caja Multiuso - Stock: 45
+Producto: Cargador Rápido USB-C - Stock: 85
+Producto: Cargador Rápido USB-C - Stock: 45
+Producto: Cesto Ropa - Stock: 25
+Producto: Chaqueta Hombre L - Stock: 8
+Producto: Chaqueta Hombre M - Stock: 10
+Producto: Chaqueta Mujer L - Stock: 5
+Producto: Chaqueta Mujer M - Stock: 7
+Producto: Chorizo 500gr - Stock: 45
+Producto: Cobertor 2 plazas - Stock: 20
+Producto: Coca Cola 591cc - Stock: 300
+Producto: Coca Cola Original 1.5L - Stock: 200
+Producto: Coca Cola Original 2.5L - Stock: 140
+Producto: Coca Cola Original 3L - Stock: 100
+Producto: Coca Cola Original 591cc - Stock: 300
+Producto: Coca Cola Zero 1.5L - Stock: 180
+Producto: Coca Cola Zero 2.5L - Stock: 130
+Producto: Coca Cola Zero 3L - Stock: 90
+Producto: Coca Cola Zero 591cc - Stock: 280
+Producto: Coca Cola Zero 591cc - Stock: 250
+Producto: Cortina 2x2m - Stock: 15
+Producto: Crema de Leche 200ml - Stock: 130
+Producto: Fanta 591cc - Stock: 200
+Producto: Fanta Naranja 1.5L - Stock: 140
+Producto: Fanta Zero 1.5L - Stock: 120
+Producto: Felpudo Entrada - Stock: 35
+Producto: Fideos Spaghetti 400gr - Stock: 300
+Producto: Fideos Tallarines 400gr - Stock: 280
+Producto: Fideos Tallarines 500gr - Stock: 200
+Producto: Garbanzos 500gr - Stock: 120
+Producto: Gatorade Naranja 1L - Stock: 130
+Producto: Gorra Deportiva - Stock: 110
+Producto: Hamburguesa de Pollo 4u - Stock: 60
+Producto: Hamburguesa de Vacuno 4u - Stock: 55
+Producto: Harina con Polvos 1kg - Stock: 140
+Producto: Harina sin Polvos 1kg - Stock: 180
+Producto: Hub USB 4 puertos - Stock: 35
+Producto: Jabonera - Stock: 60
+Producto: Jamón de Cerdo 250gr - Stock: 65
+Producto: Jamón de Pollo 250gr - Stock: 70
+Producto: Jeans Hombre 42 - Stock: 25
+Producto: Jeans Hombre 44 - Stock: 22
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Jeans Mujer 40 - Stock: 20
+Producto: Jeans Mujer 42 - Stock: 18
+Producto: Juego de Sábanas 1.5 plazas - Stock: 30
+Producto: Juego de Sábanas 2 plazas - Stock: 25
+Producto: Leche Condensada 395gr - Stock: 90
+Producto: Leche Descremada 1L - Stock: 160
+Producto: Leche en Polvo Entera 400gr - Stock: 60
+Producto: Leche Entera 1L - Stock: 180
+Producto: Leche Entera 1L - Stock: 200
+Producto: Leche Semi Descremada 1L - Stock: 180
+Producto: Leche Sin Lactosa 1L - Stock: 100
+Producto: Lentejas 500gr - Stock: 160
+Producto: Lomo Liso 1kg - Stock: 15
+Producto: Mantequilla 250gr - Stock: 120
+Producto: Mantequilla sin Sal 250gr - Stock: 100
+Producto: Memoria USB 16GB - Stock: 50
+Producto: Memoria USB 32GB - Stock: 40
+Producto: Mortadela 250gr - Stock: 85
+Producto: Mouse Inalámbrico - Stock: 35
+Producto: Mouse Inalámbrico - Stock: 90
+Producto: Mouse Óptico - Stock: 55
+Producto: Organizador - Stock: 50
+Producto: Pantalón Hombre 42 - Stock: 20
+Producto: Pantalón Hombre 44 - Stock: 18
+Producto: Pantalón Mujer 40 - Stock: 15
+Producto: Pantalón Mujer 42 - Stock: 12
+Producto: Pendrive 32GB - Stock: 100
+Producto: Pepsi Original 1.5L - Stock: 160
+Producto: Pepsi Zero 1.5L - Stock: 140
+Producto: Percha 10u - Stock: 70
+Producto: Perchero Pared - Stock: 40
+Producto: Pila AA 4u - Stock: 100
+Producto: Pila AAA 4u - Stock: 100
+Producto: Polera Hombre L - Stock: 45
+Producto: Polera Hombre M - Stock: 40
+Producto: Polera Hombre M - Stock: 75
+Producto: Polera Mujer L - Stock: 30
+Producto: Polera Mujer M - Stock: 35
+Producto: Pollo Entero - Stock: 40
+Producto: Pollo Pechuga - Stock: 35
+Producto: Pollo Trutro - Stock: 50
+Producto: Porotos 500gr - Stock: 140
+Producto: Porta Cepillos - Stock: 55
+Producto: Posta Negra 1kg - Stock: 20
+Producto: Powerade Azul 850ml - Stock: 145
+Producto: Powerade Rojo 850ml - Stock: 150
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 4 - Stock: 20
+Producto: Prueba 5 - Stock: 23
+Producto: Queso Chanco 500gr - Stock: 55
+Producto: Queso de Cerdo 250gr - Stock: 60
+Producto: Queso Gauda 500gr - Stock: 45
+Producto: Queso Mantecoso 500gr - Stock: 50
+Producto: Sal de Mar 1kg - Stock: 200
+Producto: Sal de Mar Gruesa 1kg - Stock: 150
+Producto: Smartphone Xiaomi Redmi 9 - Stock: 25
+Producto: Sprite 591cc - Stock: 220
+Producto: Sprite Original 1.5L - Stock: 170
+Producto: Sprite Zero 1.5L - Stock: 150
+Producto: Teclado Inalámbrico - Stock: 20
+Producto: Teclado USB - Stock: 30
+Producto: Teclado USB - Stock: 60
+Producto: Toalla de Baño - Stock: 40
+Producto: Toalla de Mano - Stock: 50
+Producto: Tocino 250gr - Stock: 50
+Producto: validación URL - Stock: 50
+Producto: validación URL 2 - Stock: 50
+Producto: Vienesas 10u - Stock: 80
+Producto: Vital con Gas 1.5L - Stock: 170
+Producto: Vital con Gas Display 12u - Stock: 42
+Producto: Vital sin Gas 1.5L - Stock: 200
+Producto: Vital sin Gas Display 12u - Stock: 45
+Producto: Webcam HD - Stock: 25
+Producto: Yogurt Frutilla Batido 1kg - Stock: 90
+Producto: Yogurt Natural Batido 1kg - Stock: 80
+Producto: Yogurt Vainilla Batido 1kg - Stock: 85
+Producto: Zapatillas Deportivas 42 - Stock: 30
+Producto: zona horaria - Stock: 0
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: Almohada - Stock: 45
+Producto: Arroz 1kg - Stock: 150
+Producto: Arroz Grado 1 1kg - Stock: 150
+Producto: Arroz Grado 2 1kg - Stock: 200
+Producto: Asado de Tira 1kg - Stock: 18
+Producto: Audífonos Bluetooth - Stock: 60
+Producto: Audífonos Bluetooth - Stock: 30
+Producto: Azúcar 1kg - Stock: 120
+Producto: Azúcar Blanca 1kg - Stock: 120
+Producto: Azúcar Morena 1kg - Stock: 80
+Producto: Cable Lightning 1m - Stock: 60
+Producto: Cable USB-C 1m - Stock: 80
+Producto: Cachantún con Gas 1.5L - Stock: 180
+Producto: Cachantún con Gas Display 12u - Stock: 40
+Producto: Cachantún sin Gas 1.5L - Stock: 190
+Producto: Cachantún sin Gas Display 12u - Stock: 38
+Producto: Caja Multiuso - Stock: 45
+Producto: Cargador Rápido USB-C - Stock: 85
+Producto: Cargador Rápido USB-C - Stock: 45
+Producto: Cesto Ropa - Stock: 25
+Producto: Chaqueta Hombre L - Stock: 8
+Producto: Chaqueta Hombre M - Stock: 10
+Producto: Chaqueta Mujer L - Stock: 5
+Producto: Chaqueta Mujer M - Stock: 7
+Producto: Chorizo 500gr - Stock: 45
+Producto: Cobertor 2 plazas - Stock: 20
+Producto: Coca Cola 591cc - Stock: 300
+Producto: Coca Cola Original 1.5L - Stock: 200
+Producto: Coca Cola Original 2.5L - Stock: 140
+Producto: Coca Cola Original 3L - Stock: 100
+Producto: Coca Cola Original 591cc - Stock: 300
+Producto: Coca Cola Zero 1.5L - Stock: 180
+Producto: Coca Cola Zero 2.5L - Stock: 130
+Producto: Coca Cola Zero 3L - Stock: 90
+Producto: Coca Cola Zero 591cc - Stock: 280
+Producto: Coca Cola Zero 591cc - Stock: 250
+Producto: Cortina 2x2m - Stock: 15
+Producto: Crema de Leche 200ml - Stock: 130
+Producto: Fanta 591cc - Stock: 200
+Producto: Fanta Naranja 1.5L - Stock: 140
+Producto: Fanta Zero 1.5L - Stock: 120
+Producto: Felpudo Entrada - Stock: 35
+Producto: Fideos Spaghetti 400gr - Stock: 300
+Producto: Fideos Tallarines 400gr - Stock: 280
+Producto: Fideos Tallarines 500gr - Stock: 200
+Producto: Garbanzos 500gr - Stock: 120
+Producto: Gatorade Naranja 1L - Stock: 130
+Producto: Gorra Deportiva - Stock: 110
+Producto: Hamburguesa de Pollo 4u - Stock: 60
+Producto: Hamburguesa de Vacuno 4u - Stock: 55
+Producto: Harina con Polvos 1kg - Stock: 140
+Producto: Harina sin Polvos 1kg - Stock: 180
+Producto: Hub USB 4 puertos - Stock: 35
+Producto: Jabonera - Stock: 60
+Producto: Jamón de Cerdo 250gr - Stock: 65
+Producto: Jamón de Pollo 250gr - Stock: 70
+Producto: Jeans Hombre 42 - Stock: 25
+Producto: Jeans Hombre 44 - Stock: 22
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Jeans Mujer 40 - Stock: 20
+Producto: Jeans Mujer 42 - Stock: 18
+Producto: Juego de Sábanas 1.5 plazas - Stock: 30
+Producto: Juego de Sábanas 2 plazas - Stock: 25
+Producto: Leche Condensada 395gr - Stock: 90
+Producto: Leche Descremada 1L - Stock: 160
+Producto: Leche en Polvo Entera 400gr - Stock: 60
+Producto: Leche Entera 1L - Stock: 180
+Producto: Leche Entera 1L - Stock: 200
+Producto: Leche Semi Descremada 1L - Stock: 180
+Producto: Leche Sin Lactosa 1L - Stock: 100
+Producto: Lentejas 500gr - Stock: 160
+Producto: Lomo Liso 1kg - Stock: 15
+Producto: Mantequilla 250gr - Stock: 120
+Producto: Mantequilla sin Sal 250gr - Stock: 100
+Producto: Memoria USB 16GB - Stock: 50
+Producto: Memoria USB 32GB - Stock: 40
+Producto: Mortadela 250gr - Stock: 85
+Producto: Mouse Inalámbrico - Stock: 35
+Producto: Mouse Inalámbrico - Stock: 90
+Producto: Mouse Óptico - Stock: 55
+Producto: Organizador - Stock: 50
+Producto: Pantalón Hombre 42 - Stock: 20
+Producto: Pantalón Hombre 44 - Stock: 18
+Producto: Pantalón Mujer 40 - Stock: 15
+Producto: Pantalón Mujer 42 - Stock: 12
+Producto: Pendrive 32GB - Stock: 100
+Producto: Pepsi Original 1.5L - Stock: 160
+Producto: Pepsi Zero 1.5L - Stock: 140
+Producto: Percha 10u - Stock: 70
+Producto: Perchero Pared - Stock: 40
+Producto: Pila AA 4u - Stock: 100
+Producto: Pila AAA 4u - Stock: 100
+Producto: Polera Hombre L - Stock: 45
+Producto: Polera Hombre M - Stock: 40
+Producto: Polera Hombre M - Stock: 75
+Producto: Polera Mujer L - Stock: 30
+Producto: Polera Mujer M - Stock: 35
+Producto: Pollo Entero - Stock: 40
+Producto: Pollo Pechuga - Stock: 35
+Producto: Pollo Trutro - Stock: 50
+Producto: Porotos 500gr - Stock: 140
+Producto: Porta Cepillos - Stock: 55
+Producto: Posta Negra 1kg - Stock: 20
+Producto: Powerade Azul 850ml - Stock: 145
+Producto: Powerade Rojo 850ml - Stock: 150
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 4 - Stock: 20
+Producto: Prueba 5 - Stock: 23
+Producto: Queso Chanco 500gr - Stock: 55
+Producto: Queso de Cerdo 250gr - Stock: 60
+Producto: Queso Gauda 500gr - Stock: 45
+Producto: Queso Mantecoso 500gr - Stock: 50
+Producto: Sal de Mar 1kg - Stock: 200
+Producto: Sal de Mar Gruesa 1kg - Stock: 150
+Producto: Smartphone Xiaomi Redmi 9 - Stock: 25
+Producto: Sprite 591cc - Stock: 220
+Producto: Sprite Original 1.5L - Stock: 170
+Producto: Sprite Zero 1.5L - Stock: 150
+Producto: Teclado Inalámbrico - Stock: 20
+Producto: Teclado USB - Stock: 30
+Producto: Teclado USB - Stock: 60
+Producto: Toalla de Baño - Stock: 40
+Producto: Toalla de Mano - Stock: 50
+Producto: Tocino 250gr - Stock: 50
+Producto: validación URL - Stock: 50
+Producto: validación URL 2 - Stock: 50
+Producto: Vienesas 10u - Stock: 80
+Producto: Vital con Gas 1.5L - Stock: 170
+Producto: Vital con Gas Display 12u - Stock: 42
+Producto: Vital sin Gas 1.5L - Stock: 200
+Producto: Vital sin Gas Display 12u - Stock: 45
+Producto: Webcam HD - Stock: 25
+Producto: Yogurt Frutilla Batido 1kg - Stock: 90
+Producto: Yogurt Natural Batido 1kg - Stock: 80
+Producto: Yogurt Vainilla Batido 1kg - Stock: 85
+Producto: Zapatillas Deportivas 42 - Stock: 30
+Producto: zona horaria - Stock: 0
+Producto: zona horaria - Stock: 0
+Producto: Zapatillas Deportivas 42 - Stock: 30
+Producto: Yogurt Vainilla Batido 1kg - Stock: 85
+Producto: Yogurt Natural Batido 1kg - Stock: 80
+Producto: Yogurt Frutilla Batido 1kg - Stock: 90
+Producto: Webcam HD - Stock: 25
+Producto: Vital sin Gas Display 12u - Stock: 45
+Producto: Vital sin Gas 1.5L - Stock: 200
+Producto: Vital con Gas Display 12u - Stock: 42
+Producto: Vital con Gas 1.5L - Stock: 170
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: zona horaria - Stock: 0
+Producto: Zapatillas Deportivas 42 - Stock: 30
+Producto: Yogurt Vainilla Batido 1kg - Stock: 85
+Producto: Yogurt Natural Batido 1kg - Stock: 80
+Producto: Yogurt Frutilla Batido 1kg - Stock: 90
+Producto: Webcam HD - Stock: 25
+Producto: Vital sin Gas Display 12u - Stock: 45
+Producto: Vital sin Gas 1.5L - Stock: 200
+Producto: Vital con Gas Display 12u - Stock: 42
+Producto: Vital con Gas 1.5L - Stock: 170
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Arroz 1kg - Stock: 150
+Producto: Arroz Grado 1 1kg - Stock: 150
+Producto: Arroz Grado 2 1kg - Stock: 200
+Producto: Azúcar 1kg - Stock: 120
+Producto: Azúcar Blanca 1kg - Stock: 120
+Producto: Azúcar Morena 1kg - Stock: 80
+Producto: Chorizo 500gr - Stock: 45
+Producto: Cobertor 2 plazas - Stock: 20
+Producto: Coca Cola Zero 1.5L - Stock: 180
+Producto: Chorizo 500gr - Stock: 45
+Producto: Garbanzos 500gr - Stock: 120
+Producto: zona horaria - Stock: 0
+Producto: Garbanzos 500gr - Stock: 120
+Producto: Chorizo 500gr - Stock: 45
+Producto: Garbanzos 500gr - Stock: 120
+Producto: zona horaria - Stock: 0
+Producto: Chorizo 500gr - Stock: 45
+Producto: Garbanzos 500gr - Stock: 120
+Producto: zona horaria - Stock: 0
+Producto: zona horaria - Stock: 0
+Producto: zona horaria - Stock: 0
+Producto: zona horaria - Stock: 0
+Producto: Chorizo 500gr - Stock: 45
+Producto: Garbanzos 500gr - Stock: 120
+Producto: zona horaria - Stock: 0
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Arroz 1kg - Stock: 150
+Producto: Arroz Grado 1 1kg - Stock: 150
+Producto: Arroz Grado 2 1kg - Stock: 200
+Producto: Azúcar 1kg - Stock: 120
+Producto: Azúcar Blanca 1kg - Stock: 120
+Producto: Azúcar Morena 1kg - Stock: 80
+Producto: Chorizo 500gr - Stock: 45
+Producto: Cobertor 2 plazas - Stock: 20
+Producto: Coca Cola Zero 1.5L - Stock: 180
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380

@@ -80,15 +80,34 @@ document.addEventListener("DOMContentLoaded", function () {
             sin_acciones: 1
         };
 
-        if (typeof globalIdPais !== 'undefined' && globalIdPais > 0) {
+        // Incluir idPais si existe (incluso si es 0, lo enviamos)
+        if (typeof globalIdPais !== 'undefined') {
             params.idPais = globalIdPais;
+            console.log("🌍 Exportación - Usando globalIdPais:", globalIdPais);
+        } else {
+            console.log("⚠️ Exportación - globalIdPais NO DEFINIDO");
+        }
+
+        // También incluir idRegion si existe (para ciudades)
+        if (typeof globalIdRegion !== 'undefined' && globalIdRegion > 0) {
+            params.idRegion = globalIdRegion;
+            console.log("🌍 Exportación - Usando globalIdRegion:", globalIdRegion);
+        }
+
+        // También incluir idCiudad si existe (para comunas)
+        if (typeof globalIdCiudad !== 'undefined' && globalIdCiudad > 0) {
+            params.idCiudad = globalIdCiudad;
+            console.log("🌍 Exportación - Usando globalIdCiudad:", globalIdCiudad);
         }
 
         const queryString = Object.keys(params)
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
             .join('&');
 
-        return `${baseUrl}?${queryString}`;
+        const urlFinal = `${baseUrl}?${queryString}`;
+        console.log("🔍 URL Exportación:", urlFinal);
+
+        return urlFinal;
     }
 
     function obtenerEncabezados() {
@@ -122,6 +141,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.html) {
                     document.querySelector("#tablaProBody").innerHTML = data.html;
                     console.log("✅ Tabla actualizada");
+                } else {
+                    // Si no hay datos, limpiar la tabla
+                    document.querySelector("#tablaProBody").innerHTML = '';
+                    console.log("🧹 Tabla limpiada porque no hay resultados");
                 }
 
                 const paginacionDiv = document.querySelector("#tablaProPaginacion");
@@ -167,8 +190,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const buscarInput = document.querySelector("#buscarTabla");
     if (buscarInput) {
+        console.log("🔍 Input de búsqueda encontrado:", buscarInput);
         buscarInput.addEventListener("keyup", function (e) {
+            console.log("⌨️ Tecla presionada - Valor actual:", e.target.value);
             busqueda = e.target.value;
+            console.log("📝 Variable busqueda actualizada a:", busqueda);
             pagina = 1;
             cargarTabla();
         });
@@ -222,25 +248,95 @@ document.addEventListener("DOMContentLoaded", function () {
         const urlTodos = construirUrlExportacion();
         const titulo = obtenerTitulo();
         const encabezados = obtenerEncabezados();
-        const estilos = `<style>table{border-collapse:collapse;width:100%}th,td{border:1px solid #000;padding:4px}th{background-color:#f2f2f2}</style>`;
 
         fetch(urlTodos)
             .then(response => response.json())
             .then(data => {
-                let tablaCompleta = '<table><thead><tr>';
-                encabezados.forEach(th => tablaCompleta += `<th>${th}</th>`);
-                tablaCompleta += '</tr></thead><tbody>' + data.html + '</tbody></tr>';
-                const htmlCompleto = `<html><head><meta charset="UTF-8"><title>Exportación ${titulo}</title>${estilos}</head><body><h2>${titulo} - TODOS LOS REGISTROS</h2>${tablaCompleta}</body></html>`;
-                const blob = new Blob([htmlCompleto], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `${titulo.toLowerCase().replace(/\s+/g, '_')}_completo_${new Date().toISOString().slice(0, 10)}.xlsx`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(link.href);
+                console.log("📦 Datos recibidos para Excel:", data);
+
+                if (!data.html || data.html === '') {
+                    throw new Error('No hay datos para exportar');
+                }
+
+                // Extraer datos de las filas
+                const filas = [];
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = data.html;
+
+                // Buscar todas las filas (tr)
+                let trs = tempDiv.querySelectorAll('tr');
+
+                // Si no hay trs, buscar con regex
+                if (trs.length === 0) {
+                    console.log("⚠️ Usando regex para extraer filas...");
+                    const trMatches = data.html.match(/<tr>(.*?)<\/tr>/gs);
+                    if (trMatches) {
+                        trMatches.forEach(trHtml => {
+                            const tdMatches = trHtml.match(/<td>(.*?)<\/td>/gs);
+                            if (tdMatches) {
+                                const filaData = [];
+                                tdMatches.forEach(tdHtml => {
+                                    let valor = tdHtml.replace(/<\/?td>/g, '').trim();
+                                    // Reemplazar íconos por texto
+                                    if (valor.includes('✅')) valor = 'Sí';
+                                    else if (valor.includes('❌')) valor = 'No';
+                                    valor = valor.replace(/[🔍📝🗑️]/g, '').trim();
+                                    filaData.push(valor === '' ? '' : valor);
+                                });
+                                if (filaData.length > 0) {
+                                    filas.push(filaData);
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    // Procesar trs normalmente
+                    trs.forEach(tr => {
+                        const filaData = [];
+                        const tds = tr.querySelectorAll('td');
+                        tds.forEach(td => {
+                            let valor = td.innerText.trim();
+                            valor = valor.replace(/[🔍📝🗑️✅❌]/g, '').trim();
+                            filaData.push(valor);
+                        });
+                        if (filaData.length > 0) {
+                            filas.push(filaData);
+                        }
+                    });
+                }
+
+                console.log("📊 Filas extraídas:", filas.length);
+
+                if (filas.length === 0) {
+                    throw new Error('No hay registros para exportar');
+                }
+
+                // Crear libro de Excel con nombre de hoja personalizado
+                const wsData = [encabezados, ...filas];
+                const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+                // Ajustar anchos de columnas (opcional)
+                const colWidths = encabezados.map(h => ({ wch: Math.max(h.length, 15) }));
+                ws['!cols'] = colWidths;
+
+                // Crear libro y agregar hoja con el título como nombre
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, titulo);
+
+                // Nombre del archivo
+                const nombreArchivo = titulo.toLowerCase()
+                    .replace(/\s+/g, '_')
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9_]/g, '') + '_completo_' + new Date().toISOString().slice(0, 10) + '.xlsx';
+
+                // Descargar archivo
+                XLSX.writeFile(wb, nombreArchivo);
+                console.log("✅ Excel generado correctamente:", nombreArchivo);
             })
-            .catch(error => { console.error('❌ Error:', error); alert('Error al exportar a Excel'); });
+            .catch(error => {
+                console.error('❌ Error:', error);
+                alert('Error al exportar a Excel: ' + error.message);
+            });
     });
 
     document.getElementById("exportPrint")?.addEventListener("click", function () {
@@ -265,46 +361,116 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("exportPDF")?.addEventListener("click", function () {
         console.log("📑 Exportando a PDF...");
+
         const urlTodos = construirUrlExportacion();
         const titulo = obtenerTitulo();
         const encabezados = obtenerEncabezados();
         const btnPDF = this;
         const textoOriginal = btnPDF.innerHTML;
+
         btnPDF.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Generando PDF...';
         btnPDF.disabled = true;
 
+        console.log("🔍 URL para PDF:", urlTodos);
+
         fetch(urlTodos)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log("📦 Datos recibidos para PDF:", data);
+
+                if (!data.html || data.html === '') {
+                    throw new Error('No hay datos para exportar');
+                }
+
                 const filas = [];
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = data.html;
-                const trs = tempDiv.querySelectorAll('tr');
-                trs.forEach(tr => {
-                    const filaData = [];
-                    const tds = tr.querySelectorAll('td');
-                    tds.forEach(td => {
-                        let valor = td.innerText.trim();
-                        if (valor.includes('✅')) valor = 'Sí';
-                        else if (valor.includes('❌')) valor = 'No';
-                        else valor = valor.replace(/[🔍📝🗑️]/g, '').trim();
-                        filaData.push(valor || '—');
+
+                // Buscar tr directamente (pueden estar sin tbody)
+                let trs = tempDiv.querySelectorAll('tr');
+                console.log("🔍 Filas encontradas (tr):", trs.length);
+
+                // Si no hay trs, buscar en el texto directamente
+                if (trs.length === 0) {
+                    console.log("⚠️ Parseando HTML manualmente...");
+                    // Extraer filas usando regex
+                    const trMatches = data.html.match(/<tr>(.*?)<\/tr>/gs);
+                    if (trMatches) {
+                        trMatches.forEach(trHtml => {
+                            const tdMatches = trHtml.match(/<td>(.*?)<\/td>/gs);
+                            if (tdMatches) {
+                                const filaData = [];
+                                tdMatches.forEach(tdHtml => {
+                                    let valor = tdHtml.replace(/<\/?td>/g, '').trim();
+                                    valor = valor.replace(/[🔍📝🗑️✅❌]/g, '').trim();
+                                    filaData.push(valor === '' ? '—' : valor);
+                                });
+                                if (filaData.length > 0 && filaData.some(v => v !== '—')) {
+                                    filas.push(filaData);
+                                }
+                            }
+                        });
+                    }
+                    console.log("📊 Filas parseadas con regex:", filas.length);
+                } else {
+                    // Procesar trs normalmente
+                    trs.forEach(tr => {
+                        const filaData = [];
+                        const tds = tr.querySelectorAll('td');
+                        tds.forEach(td => {
+                            let valor = td.innerText.trim();
+                            valor = valor.replace(/[🔍📝🗑️✅❌]/g, '').trim();
+                            filaData.push(valor === '' ? '—' : valor);
+                        });
+                        if (filaData.length > 0 && filaData.some(v => v !== '—')) {
+                            filas.push(filaData);
+                        }
                     });
-                    if (filaData.length > 0) filas.push(filaData);
-                });
+                    console.log("📊 Filas procesadas:", filas.length);
+                }
+
+                if (filas.length === 0) {
+                    console.error("❌ HTML recibido:", data.html.substring(0, 500));
+                    throw new Error('No hay registros para exportar');
+                }
 
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'landscape', unit: 'mm' });
+
                 doc.setFontSize(14);
                 doc.text(titulo + " - TODOS LOS REGISTROS", 14, 15);
                 doc.setFontSize(10);
                 doc.text(`Generado: ${new Date().toLocaleDateString()}`, 14, 22);
-                doc.autoTable({ head: [encabezados], body: filas, startY: 25, styles: { fontSize: 8, cellPadding: 2 }, headStyles: { fillColor: [41, 128, 185], textColor: 255 }, margin: { top: 30 } });
-                const nombreArchivo = titulo.toLowerCase().replace(/\s+/g, '_').replace(/[áéíóúñ]/g, c => ({ 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ñ': 'n' }[c] || c)) + '_completo_' + new Date().toISOString().slice(0, 10) + '.pdf';
+
+                doc.autoTable({
+                    head: [encabezados],
+                    body: filas,
+                    startY: 30,
+                    styles: { fontSize: 8, cellPadding: 2 },
+                    headStyles: { fillColor: [41, 128, 185], textColor: 255 },
+                    margin: { top: 30 }
+                });
+
+                const nombreArchivo = titulo.toLowerCase()
+                    .replace(/\s+/g, '_')
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9_]/g, '') + '_completo_' + new Date().toISOString().slice(0, 10) + '.pdf';
+
                 doc.save(nombreArchivo);
             })
-            .catch(error => { console.error('❌ Error:', error); alert('Error al exportar a PDF: ' + error.message); })
-            .finally(() => { btnPDF.innerHTML = textoOriginal; btnPDF.disabled = false; });
+            .catch(error => {
+                console.error('❌ Error:', error);
+                alert('Error al exportar a PDF: ' + error.message);
+            })
+            .finally(() => {
+                btnPDF.innerHTML = textoOriginal;
+                btnPDF.disabled = false;
+            });
     });
 
     cargarTabla();

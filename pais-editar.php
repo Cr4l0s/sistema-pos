@@ -187,7 +187,7 @@ $todas_monedas = $conn->query($sql_monedas);
                             <label class="fw-bold">Sigla del País</label>
                             <input type="text" class="form-control" id="siglaInput" name="siglaPais"
                                 value="<?= htmlspecialchars($pais['siglaPais'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
-                                maxlength="2" placeholder="Ej: CL" required>
+                                maxlength="3" placeholder="Ej: CL" required>
                             <div class="ayuda-selector">
                                 <i class="bi bi-search"></i> Buscar por sigla:
                                 <select class="form-control form-control-sm mt-1" id="buscadorSigla"
