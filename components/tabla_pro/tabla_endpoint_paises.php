@@ -4,9 +4,31 @@ ini_set('display_errors', 1);
 
 require '../../db.php';
 require_once '../../config.php';
+session_start();
 
-$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-$filas = isset($_GET['filas']) ? (int)$_GET['filas'] : 10;
+$idUsuario = 12; //$_SESSION['usuario_id'] ?? 12;
+
+// ============================================
+// Lista de administradores
+// ============================================
+$admins = [1, 12];
+
+// Si es administrador, mostrar todos los países; si no, filtrar por sus países
+if (in_array($idUsuario, $admins)) {
+    $join_usuario = "";
+    $where_usuario = "";
+} elseif ($idUsuario > 0) {
+    $join_usuario = "INNER JOIN usuarios_paises up ON p.idPais = up.idPais";
+    $where_usuario = "AND up.idUsuario = $idUsuario";
+} else {
+    $join_usuario = "";
+    $where_usuario = "";
+    // Si no hay usuario, no mostrar nada
+    $where_usuario = "AND 1=0";
+}
+
+$pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+$filas = isset($_GET['filas']) ? (int) $_GET['filas'] : 10;
 $orden = $_GET['orden'] ?? 'nombrePais';
 $direccion = $_GET['direccion'] ?? 'ASC';
 $buscar = $_GET['buscar'] ?? '';
@@ -51,7 +73,8 @@ $sql = "SELECT
         FROM paises p
         LEFT JOIN paises_monedas pm ON p.idPais = pm.idPais AND pm.es_principal = 1
         LEFT JOIN monedas m ON pm.idMoneda = m.idMoneda
-        WHERE p.vigente = 1";
+        $join_usuario
+        WHERE p.vigente = 1 $where_usuario";
 
 if (!empty($buscar)) {
     $sql .= " AND (p.nombrePais LIKE '%$buscar_escapado%' 
@@ -85,7 +108,7 @@ while ($r = $result->fetch_assoc()) {
         <td>" . htmlspecialchars($r['codMoneda'] ?? '—') . "</td>
         <td>" . htmlspecialchars($r['simbolo_moneda'] ?? '$') . "</td>
         <td>" . htmlspecialchars($r['nombrePais']) . "</td>";
-    
+
     // Solo agregamos la columna de acciones si NO es sin_acciones
     if (!$sin_acciones) {
         $html .= "<td>
@@ -103,7 +126,7 @@ while ($r = $result->fetch_assoc()) {
             </form>
         </td>";
     }
-    
+
     $html .= "</tr>";
 }
 
@@ -112,7 +135,8 @@ $sql_total = "SELECT COUNT(DISTINCT p.idPais) as total
               FROM paises p
               LEFT JOIN paises_monedas pm ON p.idPais = pm.idPais AND pm.es_principal = 1
               LEFT JOIN monedas m ON pm.idMoneda = m.idMoneda
-              WHERE p.vigente = 1";
+              $join_usuario
+              WHERE p.vigente = 1 $where_usuario";
 
 if (!empty($buscar)) {
     $sql_total .= " AND (p.nombrePais LIKE '%$buscar_escapado%' 

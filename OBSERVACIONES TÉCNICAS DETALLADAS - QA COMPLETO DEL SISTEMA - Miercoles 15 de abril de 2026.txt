@@ -1,0 +1,350 @@
+================================================================================
+OBSERVACIONES TÉCNICAS DETALLADAS - QA COMPLETO DEL SISTEMA
+================================================================================
+Fechas: 13, 14, 15 y 16 de Abril 2026
+================================================================================
+
+1. LIMPIEZA Y CORRECCIÓN DE DATOS
+================================================================================
+
+1.1 PAÍSES
+----------
+PROBLEMA DETECTADO:
+- Múltiples registros duplicados de "Chile" (ids: 1, 9, 31, 202, 208, 214, 215, 216)
+- Chile principal (id=1) tenía vigente = 0 (desactivado)
+- Países duplicados tenían regiones asociadas incorrectamente
+
+SOLUCIÓN APLICADA:
+- Se reasignaron todas las regiones al país Chile correcto (idPais = 1)
+- Se eliminaron los países duplicados (9, 31, 202, 208, 214, 215, 216)
+- Se activó Chile (vigente = 1)
+
+SQL UTILIZADO:
+UPDATE regiones SET idPais = 1 WHERE idPais IN (9,31,202,208,214,215,216);
+DELETE FROM paises WHERE idPais IN (9,31,202,208,214,215,216);
+UPDATE paises SET vigente = 1 WHERE idPais = 1;
+
+1.2 REGIONES
+------------
+PROBLEMA DETECTADO:
+- 51 regiones cuando Chile solo tiene 16 (cada región repetida 3-4 veces)
+- Región Metropolitana duplicada (ids: 7, 29, 45)
+- Regiones extras: "Aysén" (id 17) y "región de prueba" (id 22)
+
+SOLUCIÓN APLICADA:
+- Se eliminaron regiones duplicadas manteniendo la de menor idRegion
+- Se consolidó la Región Metropolitana en idRegion = 7
+- Se eliminaron regiones extras
+- Resultado final: 16 regiones únicas
+
+SQL UTILIZADO:
+DELETE r1 FROM regiones r1
+INNER JOIN regiones r2 
+WHERE r1.idRegion > r2.idRegion 
+  AND r1.nombreRegion = r2.nombreRegion
+  AND r1.idPais = r2.idPais;
+
+1.3 CIUDADES
+------------
+PROBLEMA DETECTADO:
+- Ciudades de la Región Metropolitana: se tenían comunas como ciudades
+- Ejemplo: "La Florida", "Las Condes", "Maipú" estaban en tabla ciudades (error conceptual)
+- Múltiples duplicados de cada ciudad
+
+SOLUCIÓN APLICADA:
+- Se identificaron las 6 ciudades correctas de la RM:
+  * Santiago (id=379) - 32 comunas
+  * Puente Alto - 3 comunas
+  * San Bernardo - 4 comunas
+  * Melipilla - 5 comunas
+  * Talagante - 5 comunas
+  * Colina - 3 comunas
+- Se reasignaron comunas a las ciudades correctas
+- Se eliminaron ciudades duplicadas
+
+1.4 COMUNAS
+-----------
+PROBLEMA DETECTADO:
+- Santiago tenía 39-64 comunas (deberían ser 32)
+- Comunas duplicadas (cada una aparecía 2 veces)
+- Comunas que no pertenecían a Santiago
+
+SOLUCIÓN APLICADA:
+- Se eliminaron comunas duplicadas
+- Se eliminaron comunas que no pertenecen a Santiago
+- Se insertaron las 32 comunas correctas de Santiago
+
+================================================================================
+2. REGLAS DE VALIDACIÓN AL ELIMINAR
+================================================================================
+
+2.1 País con región activa → no eliminar (eliminar_pais.php)
+------------------------------------------------------------
+CÓDIGO AGREGADO:
+$sql_check_regiones = "SELECT COUNT(*) as total FROM regiones WHERE idPais = ? AND vigente = 1";
+if ($row['total'] > 0) {
+    $_SESSION['mensaje'] = "No se puede eliminar el país '$nombrePais' porque tiene {$row['total']} región(es) activa(s).";
+    header('Location: menu.php?page=inicio_pais.php');
+    exit;
+}
+
+2.2 Región con ciudad activa → no eliminar (eliminar_region.php)
+----------------------------------------------------------------
+CÓDIGO AGREGADO:
+$sql_check_ciudades = "SELECT COUNT(*) as total FROM ciudades WHERE idRegion = ? AND vigente = 1";
+if ($row['total'] > 0) {
+    $_SESSION['mensaje'] = "No se puede eliminar la región '$nombre_region' porque tiene {$row['total']} ciudad(es) activa(s).";
+    header('Location: menu.php?page=gestionar_regiones.php');
+    exit;
+}
+
+2.3 Ciudad con comuna activa → no eliminar (eliminar_ciudad.php)
+----------------------------------------------------------------
+CÓDIGO AGREGADO:
+$sql_check_comunas = "SELECT COUNT(*) as total FROM comunas WHERE idCiudad = ? AND vigente = 1";
+if ($row['total'] > 0) {
+    $_SESSION['mensaje'] = "No se puede eliminar la ciudad '$nombre_ciudad' porque tiene {$row['total']} comuna(s) activa(s).";
+    header('Location: menu.php?page=gestionar_ciudades.php');
+    exit;
+}
+
+2.4 Categoría con producto activo → no eliminar (categoria-acciones.php)
+------------------------------------------------------------------------
+CÓDIGO AGREGADO:
+$sql_check_productos = "SELECT COUNT(*) as total FROM productos WHERE id_categoria = ? AND activo = 1";
+if ($row['total'] > 0) {
+    $_SESSION['mensaje'] = "No se puede eliminar la categoría '$nombre_categoria' porque tiene {$row['total']} producto(s) activo(s).";
+    header('Location: menu.php?page=categorias.php');
+    exit;
+}
+
+================================================================================
+3. CORRECCIONES DE EXPORTACIONES (EXCEL, PDF, IMPRIMIR)
+================================================================================
+
+3.1 Nombre de hoja personalizado en Excel (tabla_pro.js)
+---------------------------------------------------------
+SOLUCIÓN: Se implementó SheetJS para crear Excel verdadero con nombre de hoja personalizado.
+
+CÓDIGO IMPLEMENTADO:
+const wsData = [encabezados, ...filas];
+const ws = XLSX.utils.aoa_to_sheet(wsData);
+const wb = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb, ws, titulo);  // ← título como nombre de hoja
+XLSX.writeFile(wb, nombreArchivo);
+
+LIBRERÍA AGREGADA:
+<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+
+3.2 Stock y Tienda en exportación de productos (tabla_endpoint_productos.php)
+-----------------------------------------------------------------------------
+PROBLEMA: Stock y Tienda aparecían vacíos en exportaciones.
+
+SOLUCIÓN:
+if ($sin_acciones) {
+    $tienda_valor = $r['mostrar_en_tienda'] ? 'Sí' : 'No';
+    $stock_celda = (int)$r['stock_actual'];
+    $stock_html = "<td>" . $stock_celda . "</td>";
+} else {
+    $tienda_valor = $r['mostrar_en_tienda'] ? '✅' : '❌';
+    $stock_class = ($r['stock_actual'] <= $r['stock_minimo']) ? 'text-danger fw-bold' : '';
+    $stock_html = "<td class='$stock_class'>" . (int)$r['stock_actual'] . "</td>";
+}
+
+3.3 Limpieza de tabla cuando no hay resultados (tabla_pro.js)
+-------------------------------------------------------------
+PROBLEMA: Cuando la búsqueda no tenía resultados, la tabla mantenía el contenido anterior.
+
+SOLUCIÓN:
+if (data.html !== undefined) {
+    document.querySelector("#tablaProBody").innerHTML = data.html || '';
+    console.log("✅ Tabla actualizada" + (data.html ? '' : ' (vacía)'));
+}
+
+================================================================================
+4. CORRECCIONES DE FUNCIONALIDAD
+================================================================================
+
+4.1 Código de país de 3 caracteres (ISO 3166-1 alfa-3)
+-------------------------------------------------------
+PROBLEMA: Solo permitía 2 caracteres.
+
+SOLUCIÓN:
+- Base de datos: `siglaPais VARCHAR(3)`
+- pais-crear.php: `maxlength="3"`
+- pais-editar.php: `maxlength="3"`
+
+4.2 Agregar moneda nueva en editar país
+----------------------------------------
+PROBLEMA: No funcionaba correctamente.
+
+SOLUCIÓN: Se corrigió el archivo `ajax_agregar_moneda.php` y la tabla `paises_monedas`.
+
+4.3 Filtro de regiones por país
+-------------------------------
+PROBLEMA: Al seleccionar un país, mostraba todas las regiones de Chile.
+
+SOLUCIÓN: Se corrigió `get_regiones.php` para filtrar correctamente por idPais.
+
+================================================================================
+5. SEGURIDAD Y FILTROS POR USUARIO
+================================================================================
+
+5.1 Tabla de relación usuarios_paises
+--------------------------------------
+Se creó la tabla para asociar países a usuarios:
+
+CREATE TABLE usuarios_paises (
+    idUsuario INT NOT NULL,
+    idPais INT NOT NULL,
+    fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (idUsuario, idPais),
+    FOREIGN KEY (idUsuario) REFERENCES usuarios(idUsuario) ON DELETE CASCADE,
+    FOREIGN KEY (idPais) REFERENCES paises(idPais) ON DELETE CASCADE
+);
+
+5.2 Filtro de países por usuario (tabla_endpoint_paises.php)
+-------------------------------------------------------------
+CÓDIGO IMPLEMENTADO:
+$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$admins = [1, 12];
+
+if (in_array($idUsuario, $admins)) {
+    $join_usuario = "";
+    $where_usuario = "";
+} elseif ($idUsuario > 0) {
+    $join_usuario = "INNER JOIN usuarios_paises up ON p.idPais = up.idPais";
+    $where_usuario = "AND up.idUsuario = $idUsuario";
+} else {
+    $join_usuario = "";
+    $where_usuario = "AND 1=0";
+}
+
+5.3 Filtro de categorías por usuario (tabla_endpoint_categorias.php)
+---------------------------------------------------------------------
+CÓDIGO IMPLEMENTADO:
+session_start();
+$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$admins = [1, 12];
+
+$where = "WHERE activo = 1";
+if (!in_array($idUsuario, $admins)) {
+    $where .= " AND idUsuario = $idUsuario";
+}
+
+5.4 Filtro de productos por usuario (tabla_endpoint_productos.php)
+------------------------------------------------------------------
+CÓDIGO IMPLEMENTADO:
+session_start();
+$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$admins = [1, 12];
+
+$where = "WHERE p.activo = 1";
+if (!in_array($idUsuario, $admins)) {
+    $where .= " AND p.idUsuario = $idUsuario";
+}
+
+5.5 Usuarios - solo administradores (tabla_endpoint_usuarios.php)
+-----------------------------------------------------------------
+CÓDIGO IMPLEMENTADO:
+session_start();
+$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$admins = [1, 12];
+
+if (!in_array($idUsuario, $admins)) {
+    echo json_encode([
+        "html" => "<tr><td colspan='5' class='text-center text-danger'>Acceso denegado. Solo administradores pueden ver usuarios.",
+        "paginacion" => ""
+    ]);
+    exit;
+}
+
+5.6 Guardar idUsuario al crear (categoria-acciones.php y producto-acciones.php)
+-------------------------------------------------------------------------------
+CÓDIGO IMPLEMENTADO:
+$idUsuario = $_SESSION['usuario_id'] ?? 0;
+
+// En categorías
+$sql = "INSERT INTO categorias (nombre_categoria, descripcion, activo, idUsuario) VALUES (?, ?, 1, ?)";
+$stmt->bind_param("ssi", $nombre, $descripcion, $idUsuario);
+
+// En productos
+$sql = "INSERT INTO productos (codigo_barras, nombre_producto, id_categoria, precio_compras, precio_venta, stock_actual, stock_minimo, mostrar_en_tienda, activo, idUsuario) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)";
+$stmt->bind_param("ssidddiiii", $codigo_barras, $nombre, $id_categoria, $precio_compras, $precio_venta, $stock_actual, $stock_minimo, $mostrar_en_tienda, $idUsuario);
+
+================================================================================
+6. CONFIGURACIÓN PARA QA (Validaciones desactivadas)
+================================================================================
+
+Para facilitar el QA, se forzó el usuario administrador en todos los endpoints:
+
+// En todos los tabla_endpoint_*.php
+session_start();
+$idUsuario = 1;  // Forzado para QA
+$admins = [1, 12];
+
+================================================================================
+7. ARCHIVOS MODIFICADOS/CREADOS
+================================================================================
+
+MODIFICADOS:
+-----------
+- eliminar_pais.php (validación regiones)
+- eliminar_region.php (validación ciudades)
+- eliminar_ciudad.php (validación comunas)
+- categoria-acciones.php (validación productos, guardar idUsuario)
+- producto-acciones.php (guardar idUsuario, bind_param corregido)
+- tabla_pro.js (exportaciones, limpieza tabla, globalIdPais)
+- tabla_endpoint_productos.php (stock y tienda exportación, filtro usuario)
+- tabla_endpoint_categorias.php (filtro usuario)
+- tabla_endpoint_paises.php (filtro usuario)
+- tabla_endpoint_regiones.php (filtro usuario)
+- tabla_endpoint_ciudades.php (filtro usuario)
+- tabla_endpoint_comunas.php (filtro usuario)
+- tabla_endpoint_usuarios.php (solo admins)
+- pais-crear.php (maxlength 3)
+- pais-editar.php (maxlength 3, agregar moneda)
+- categorias.php (librería SheetJS)
+- gestionar_ciudades.php (librería SheetJS)
+- gestionar_comunas.php (librería SheetJS)
+- gestionar_regiones.php (variables globales)
+- get_regiones.php (filtro por país)
+
+CREADOS:
+--------
+- components/tabla_pro/tabla_endpoint_categorias.php
+- tabla usuarios_paises
+
+================================================================================
+8. PENDIENTES PARA FUTURO
+================================================================================
+
+| # | Punto | Estado | Nota |
+|---|-------|--------|------|
+| 1 | Sistema de login completo | ⏳ | Implementar autenticación |
+| 2 | Reactivar validaciones de usuario | ⏳ | Después del login |
+| 3 | País con empresa activa → no eliminar | ⏳ | Tabla empresas no existe |
+| 4 | "about:blank" al pie de página | ✅ | No aparece |
+
+================================================================================
+9. VERIFICACIÓN FINAL
+================================================================================
+
+Consultas de verificación ejecutadas exitosamente:
+
+-- Países Chile: 1 registro activo
+SELECT COUNT(*) FROM paises WHERE nombrePais = 'Chile' AND vigente = 1;  -- Resultado: 1
+
+-- Regiones Chile: 16 registros
+SELECT COUNT(*) FROM regiones WHERE idPais = 1 AND vigente = 1;  -- Resultado: 16
+
+-- Ciudades RM: 6 registros
+SELECT COUNT(*) FROM ciudades WHERE idRegion = 7 AND vigente = 1;  -- Resultado: 6
+
+-- Comunas Santiago: 32 registros
+SELECT COUNT(*) FROM comunas WHERE idCiudad = 379 AND vigente = 1;  -- Resultado: 32
+
+================================================================================
+FIN DEL DOCUMENTO
+================================================================================

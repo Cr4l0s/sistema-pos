@@ -20,9 +20,14 @@ $orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombre_categoria
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
 
+session_start();
+//$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$idUsuario = 1;  // Forzar admin para QA
+$admins = [1, 12];
+
 $where = "WHERE activo = 1";
-if (!empty($buscar)) {
-    $where .= " AND (nombre_categoria LIKE '%$buscar_escapado%' OR descripcion LIKE '%$buscar_escapado%')";
+if (!in_array($idUsuario, $admins)) {
+    $where .= " AND idUsuario = $idUsuario";
 }
 
 $sql = "SELECT id_categoria, nombre_categoria, descripcion 

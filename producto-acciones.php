@@ -9,7 +9,7 @@ require 'validaciones.php';
 
 date_default_timezone_set('America/Santiago');
 $fecha_actual = date('Y-m-d H:i:s');
-
+$idUsuario = $_SESSION['usuario_id'] ?? 0;
 // ============================================
 // CREAR PRODUCTO
 // ============================================
@@ -78,11 +78,12 @@ if (isset($_POST['create_producto'])) {
     }
 
     // Insertar
-    $sql = "INSERT INTO productos (codigo_barras, nombre_producto, descripcion, id_categoria, 
-            precio_compras, precio_venta, stock_actual, stock_minimo, mostrar_en_tienda, activo) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
-
+// En CREATE PRODUCTO
+    $sql = "INSERT INTO productos (codigo_barras, nombre_producto, id_categoria, precio_compras, precio_venta, stock_actual, stock_minimo, mostrar_en_tienda, activo, idUsuario) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)";
     $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssidddiiii", $codigo_barras, $nombre, $id_categoria, $precio_compras, $precio_venta, $stock_actual, $stock_minimo, $mostrar_en_tienda, $idUsuario);
+
     if (!$stmt) {
         error_log("Error prepare CREATE: " . $conn->error);
         $_SESSION['mensaje'] = 'Error al preparar la consulta';
@@ -90,19 +91,6 @@ if (isset($_POST['create_producto'])) {
         header('Location: menu.php?page=productos.php');
         exit;
     }
-
-    $stmt->bind_param(
-        "sssiddiii",
-        $codigo_barras,
-        $nombre,
-        $descripcion,
-        $id_categoria,
-        $precio_compras,
-        $precio_venta,
-        $stock_actual,
-        $stock_minimo,
-        $mostrar_en_tienda
-    );
 
     if ($stmt->execute()) {
         $id_producto = $stmt->insert_id;
@@ -112,9 +100,11 @@ if (isset($_POST['create_producto'])) {
         ?>
         <!DOCTYPE html>
         <html>
+
         <head>
             <title>Redirigiendo...</title>
         </head>
+
         <body>
             <form id="redirectForm" action="menu.php" method="POST">
                 <input type="hidden" name="page" value="producto-ver.php">
@@ -124,6 +114,7 @@ if (isset($_POST['create_producto'])) {
                 document.getElementById('redirectForm').submit();
             </script>
         </body>
+
         </html>
         <?php
         exit;
@@ -154,9 +145,9 @@ if (isset($_POST['create_producto'])) {
 // ACTUALIZAR PRODUCTO
 // ============================================
 if (isset($_POST['update_producto'])) {
-    
+
     $id = intval($_POST['producto_id']);
-    
+
     if (!validarID($id)) {
         $_SESSION['mensaje'] = 'ID de producto no válido';
         $_SESSION['tipo_mensaje'] = 'danger';
@@ -230,7 +221,7 @@ if (isset($_POST['update_producto'])) {
             stock_minimo = ?,
             mostrar_en_tienda = ?
             WHERE id_producto = ?";
-    
+
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         error_log("Error prepare UPDATE: " . $conn->error);
@@ -261,9 +252,11 @@ if (isset($_POST['update_producto'])) {
         ?>
         <!DOCTYPE html>
         <html>
+
         <head>
             <title>Redirigiendo...</title>
         </head>
+
         <body>
             <form id="redirectForm" action="menu.php" method="POST">
                 <input type="hidden" name="page" value="producto-ver.php">
@@ -273,6 +266,7 @@ if (isset($_POST['update_producto'])) {
                 document.getElementById('redirectForm').submit();
             </script>
         </body>
+
         </html>
         <?php
         exit;

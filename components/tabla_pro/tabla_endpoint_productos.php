@@ -5,6 +5,10 @@ ini_set('display_errors', 1);
 require '../../db.php';
 require_once '../../config.php';
 
+session_start();
+//$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$idUsuario = 1;  // Forzar admin para QA
+$admins = [1, 12];
 $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
 $filas = isset($_GET['filas']) ? (int) $_GET['filas'] : 10;
 $orden = $_GET['orden'] ?? 'nombre_producto';
@@ -53,6 +57,11 @@ switch ($orden_validado) {
 
 // Consulta principal con JOIN a categorías
 $where = "WHERE p.activo = 1";
+
+if (!in_array($idUsuario, $admins)) {
+    $where .= " AND p.idUsuario = $idUsuario";
+}
+
 if (!empty($buscar)) {
     $where .= " AND (p.nombre_producto LIKE '%$buscar_escapado%' 
                   OR p.descripcion LIKE '%$buscar_escapado%'

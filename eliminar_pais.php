@@ -49,6 +49,13 @@ if ($row['total'] > 0) {
 }
 $stmt_check->close();
 
+// Eliminar relación con usuarios
+$sql_relacion = "DELETE FROM usuarios_paises WHERE idPais = ?";
+$stmt_relacion = $conn->prepare($sql_relacion);
+$stmt_relacion->bind_param("i", $idPais);
+$stmt_relacion->execute();
+$stmt_relacion->close();
+
 // Borrado lógico (vigente = 0)
 $sql = "UPDATE paises SET vigente = 0 WHERE idPais = ? AND vigente = 1";
 $stmt = $conn->prepare($sql);

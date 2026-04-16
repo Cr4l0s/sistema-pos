@@ -5,6 +5,19 @@ ini_set('display_errors', 1);
 require '../../db.php';
 require_once '../../config.php';
 
+session_start();
+//$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$idUsuario = 1;  // Forzar admin para QA
+$admins = [1, 12];
+
+if (!in_array($idUsuario, $admins)) {
+    echo json_encode([
+        "html" => "<tr><td colspan='5' class='text-center text-danger'>Acceso denegado. Solo administradores pueden ver usuarios.",
+        "paginacion" => ""
+    ]);
+    exit;
+}
+
 $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 $filas = isset($_GET['filas']) ? (int)$_GET['filas'] : 10;
 $orden = $_GET['orden'] ?? 'nombres';

@@ -32,7 +32,7 @@ if (isset($_POST['editar_pais'])) {
     $nombrePais = limpiarInput(trim($_POST['nombrePais']));
 
     // ===== VALIDACIONES CON EXPRESIONES REGULARES =====
-    
+
     // Validar ID
     if (!validarID($idPais)) {
         $_SESSION['mensaje'] = 'ID de país no válido';
@@ -40,7 +40,7 @@ if (isset($_POST['editar_pais'])) {
         header('Location: menu.php?page=inicio_pais.php');
         exit;
     }
-    
+
     // Validar sigla (2 letras mayúsculas)
     if (!validarSiglaPais($siglaPais)) {
         $_SESSION['mensaje'] = 'La sigla debe tener 2 letras mayúsculas';
@@ -48,7 +48,7 @@ if (isset($_POST['editar_pais'])) {
         header("Location: menu.php?page=pais-editar.php&id=$idPais");
         exit;
     }
-    
+
     // Validar nombre (solo letras y espacios)
     if (!validarNombrePais($nombrePais)) {
         $_SESSION['mensaje'] = 'El nombre del país contiene caracteres no válidos';
@@ -91,14 +91,14 @@ if (isset($_POST['create_pais'])) {
     $monedas = $_POST['monedas'] ?? [];
 
     // ===== VALIDACIONES =====
-    
+
     if (!validarSiglaPais($siglaPais)) {
         $_SESSION['mensaje'] = 'La sigla debe tener 2 letras mayúsculas';
         $_SESSION['tipo_mensaje'] = 'danger';
         header('Location: menu.php?page=pais-crear.php');
         exit;
     }
-    
+
     if (!validarNombrePais($nombrePais)) {
         $_SESSION['mensaje'] = 'El nombre del país contiene caracteres no válidos';
         $_SESSION['tipo_mensaje'] = 'danger';
@@ -127,14 +127,22 @@ if (isset($_POST['create_pais'])) {
 
         $idPais = $stmt->insert_id;
         $stmt->close();
-
+        // Asociar país al usuario que lo creó
+        $idUsuario = $_SESSION['usuario_id'] ?? 0;
+        if ($idUsuario > 0) {
+            $sql_relacion = "INSERT INTO usuarios_paises (idUsuario, idPais) VALUES (?, ?)";
+            $stmt_relacion = $conn->prepare($sql_relacion);
+            $stmt_relacion->bind_param("ii", $idUsuario, $idPais);
+            $stmt_relacion->execute();
+            $stmt_relacion->close();
+        }
         // Insertar monedas (la primera es la principal)
         foreach ($monedas as $index => $idMoneda) {
             // Validar que idMoneda sea un número
             if (!validarID($idMoneda)) {
                 throw new Exception("ID de moneda no válido");
             }
-            
+
             $es_principal = ($index == 0) ? 1 : 0;
             $sql_moneda = "INSERT INTO paises_monedas (idPais, idMoneda, es_principal) VALUES (?, ?, ?)";
             $stmt_moneda = $conn->prepare($sql_moneda);
@@ -151,7 +159,7 @@ if (isset($_POST['create_pais'])) {
         $_SESSION['tipo_mensaje'] = 'success';
         header("Location: menu.php?page=pais-ver.php&id=$idPais");
         exit;
-        
+
     } catch (Exception $e) {
         $conn->rollback();
         $_SESSION['mensaje'] = $e->getMessage();
@@ -166,7 +174,7 @@ if (isset($_POST['create_pais'])) {
 // ============================================
 if (isset($_POST['borrar_pais'])) {
     $idPais = intval($_POST['borrar_pais']);
-    
+
     // Validar ID
     if (!validarID($idPais)) {
         $_SESSION['mensaje'] = 'ID de país no válido';

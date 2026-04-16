@@ -7,18 +7,47 @@ require_once '../../config.php';
 
 session_start();
 
-// Obtener idCiudad de la sesión (ya debería estar guardada por gestionar_comunas.php)
+//$idUsuario = $_SESSION['usuario_id'] ?? 0;
+$idUsuario = 1;  // Forzar admin para QA
+$admins = [1, 12];
+
 $idCiudad = $_SESSION['idCiudad'] ?? 0;
 
 header('Content-Type: application/json');
 
 if (!$idCiudad) {
     echo json_encode([
-        "html" => "<tr><td colspan='2' class='text-center text-danger'>Error: Ciudad no seleccionada. Por favor, vuelva a seleccionar una ciudad.</td></tr>",
+        "html" => "<tr><td colspan='2' class='text-center text-danger'>Error: Ciudad no seleccionada. Por favor, vuelva a seleccionar una ciudad.复制数据",
         "paginacion" => ""
     ]);
     exit;
 }
+
+// Verificar que la ciudad pertenece a un país accesible por el usuario
+/*
+if (!in_array($idUsuario, $admins)) {
+    $sql_check = "SELECT COUNT(*) as total 
+                  FROM ciudades c
+                  INNER JOIN regiones r ON c.idRegion = r.idRegion
+                  INNER JOIN paises p ON r.idPais = p.idPais
+                  LEFT JOIN usuarios_paises up ON p.idPais = up.idPais
+                  WHERE c.idCiudad = $idCiudad 
+                    AND c.vigente = 1
+                    AND r.vigente = 1
+                    AND p.vigente = 1
+                    AND up.idUsuario = $idUsuario";
+    $check_result = $conn->query($sql_check);
+    $check_row = $check_result->fetch_assoc();
+    
+    if ($check_row['total'] == 0) {
+        echo json_encode([
+            "html" => "<tr><td colspan='2' class='text-center text-danger'>Error: No tiene acceso a esta ciudad</td></tr>",
+            "paginacion" => ""
+        ]);
+        exit;
+    }
+}
+*/
 
 $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 $filas = isset($_GET['filas']) ? (int)$_GET['filas'] : 10;
@@ -27,19 +56,14 @@ $direccion = $_GET['direccion'] ?? 'ASC';
 $buscar = $_GET['buscar'] ?? '';
 $sin_acciones = isset($_GET['sin_acciones']) ? true : false;
 
-// Si filas es -1, significa "todos los registros"
 $es_todos = ($filas == -1);
-
 $offset = $es_todos ? 0 : ($pagina - 1) * $filas;
 
-// Campos válidos para ordenamiento
 $campos_validos = ['nombreComuna'];
 $orden_validado = in_array($orden, $campos_validos) ? $orden : 'nombreComuna';
-
 $direccion_validada = strtoupper($direccion) === 'DESC' ? 'DESC' : 'ASC';
 $buscar_escapado = $conn->real_escape_string($buscar);
 
-// Consulta principal
 $where = "WHERE idCiudad = $idCiudad AND vigente = 1";
 if (!empty($buscar)) {
     $where .= " AND nombreComuna LIKE '%$buscar_escapado%'";
@@ -55,14 +79,6 @@ if (!$es_todos) {
 }
 
 $result = $conn->query($sql);
-
-if (!$result) {
-    echo json_encode([
-        "html" => "<tr><td colspan='2' class='text-center text-danger'>Error en consulta: " . $conn->error . "</td></tr>",
-        "paginacion" => ""
-    ]);
-    exit;
-}
 
 $html = "";
 while ($r = $result->fetch_assoc()) {
@@ -83,33 +99,29 @@ while ($r = $result->fetch_assoc()) {
                 <input type='hidden' name='idComuna' value='{$r['idComuna']}'>
                 <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Eliminar comuna {$r['nombreComuna']}?\")'><i class='bi bi-trash'></i></button>
             </form>
-        </td>";
+        
+";
     }
     
     $html .= "</tr>";
 }
 
-// Total de registros considerando búsqueda
 $sql_total = "SELECT COUNT(*) as total FROM comunas $where";
 $total_result = $conn->query($sql_total);
 $total = $total_result ? $total_result->fetch_assoc()['total'] : 0;
 $totalPaginas = $filas > 0 && !$es_todos ? ceil($total / $filas) : 1;
 
-// Paginación con botones Anterior/Siguiente (solo si no es "todos")
 $paginacion = "";
 if ($totalPaginas > 1 && !$es_todos) {
-    // Botón Anterior
     if ($pagina > 1) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='" . ($pagina - 1) . "' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>
             <i class='bi bi-chevron-left'></i> Anterior
         </button>";
     }
 
-    // Rango de páginas a mostrar (máximo 5 alrededor de la actual)
     $inicio = max(1, $pagina - 2);
     $fin = min($totalPaginas, $pagina + 2);
 
-    // Mostrar primera página si está fuera del rango
     if ($inicio > 1) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='1' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>1</button>";
         if ($inicio > 2) {
@@ -117,13 +129,11 @@ if ($totalPaginas > 1 && !$es_todos) {
         }
     }
 
-    // Páginas del rango
     for ($i = $inicio; $i <= $fin; $i++) {
         $active = ($i == $pagina) ? 'active btn-primary' : 'btn-outline-primary';
         $paginacion .= "<button class='btn btn-sm $active pagina-btn me-1' data-page='$i' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>$i</button>";
     }
 
-    // Mostrar última página si está fuera del rango
     if ($fin < $totalPaginas) {
         if ($fin < $totalPaginas - 1) {
             $paginacion .= "<span class='btn btn-sm btn-outline-secondary disabled me-1'>...</span>";
@@ -131,7 +141,6 @@ if ($totalPaginas > 1 && !$es_todos) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='$totalPaginas' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>$totalPaginas</button>";
     }
 
-    // Botón Siguiente
     if ($pagina < $totalPaginas) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn' data-page='" . ($pagina + 1) . "' data-filas='$filas' data-buscar='" . htmlspecialchars($buscar) . "' data-orden='$orden_validado' data-direccion='$direccion_validada'>
             Siguiente <i class='bi bi-chevron-right'></i>
@@ -139,7 +148,6 @@ if ($totalPaginas > 1 && !$es_todos) {
     }
 }
 
-// Devolver JSON
 echo json_encode([
     "html" => $html,
     "paginacion" => $paginacion

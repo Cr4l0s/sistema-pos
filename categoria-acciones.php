@@ -19,23 +19,27 @@ if (isset($_POST['create_categoria'])) {
         exit;
     }
 
-    $sql = "INSERT INTO categorias (nombre_categoria, descripcion, activo) VALUES (?, ?, 1)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $nombre, $descripcion);
+    $idUsuario = $_SESSION['usuario_id'] ?? 0;
 
+    $sql = "INSERT INTO categorias (nombre_categoria, descripcion, activo, idUsuario) VALUES (?, ?, 1, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssi", $nombre, $descripcion, $idUsuario);
+    
     if ($stmt->execute()) {
         $id_categoria = $stmt->insert_id;
         $_SESSION['mensaje'] = "Categoría '$nombre' creada exitosamente.";
         $_SESSION['tipo_mensaje'] = 'success';
         $stmt->close();
-        
+
         // 🔴 REDIRIGIR CON POST SIN ID EN URL
         ?>
         <!DOCTYPE html>
         <html>
+
         <head>
             <title>Redirigiendo...</title>
         </head>
+
         <body>
             <form id="redirectForm" action="menu.php" method="POST">
                 <input type="hidden" name="page" value="categoria-ver.php">
@@ -45,6 +49,7 @@ if (isset($_POST['create_categoria'])) {
                 document.getElementById('redirectForm').submit();
             </script>
         </body>
+
         </html>
         <?php
         exit;
@@ -62,14 +67,14 @@ if (isset($_POST['create_categoria'])) {
 // ============================================
 if (isset($_POST['update_categoria'])) {
     $id = intval($_POST['categoria_id']);
-    
+
     if (!validarID($id)) {
         $_SESSION['mensaje'] = 'ID de categoría no válido';
         $_SESSION['tipo_mensaje'] = 'danger';
         header('Location: menu.php?page=categorias.php');
         exit;
     }
-    
+
     $nombre = limpiarInput(trim($_POST['nombre_categoria']));
     $descripcion = !empty(trim($_POST['descripcion'])) ? limpiarInput(trim($_POST['descripcion'])) : null;
 
@@ -88,14 +93,16 @@ if (isset($_POST['update_categoria'])) {
         $_SESSION['mensaje'] = "Categoría '$nombre' actualizada correctamente.";
         $_SESSION['tipo_mensaje'] = 'success';
         $stmt->close();
-        
+
         // 🔴 REDIRIGIR CON POST SIN ID EN URL
         ?>
         <!DOCTYPE html>
         <html>
+
         <head>
             <title>Redirigiendo...</title>
         </head>
+
         <body>
             <form id="redirectForm" action="menu.php" method="POST">
                 <input type="hidden" name="page" value="categoria-ver.php">
@@ -105,6 +112,7 @@ if (isset($_POST['update_categoria'])) {
                 document.getElementById('redirectForm').submit();
             </script>
         </body>
+
         </html>
         <?php
         exit;
@@ -122,14 +130,14 @@ if (isset($_POST['update_categoria'])) {
 // ============================================
 if (isset($_POST['borrar_categoria'])) {
     $id = intval($_POST['id_categoria']);
-    
+
     if (!validarID($id)) {
         $_SESSION['mensaje'] = 'ID de categoría no válido';
         $_SESSION['tipo_mensaje'] = 'danger';
         header('Location: menu.php?page=categorias.php');
         exit;
     }
-    
+
     // Obtener nombre antes de eliminar
     $sql_nombre = "SELECT nombre_categoria FROM categorias WHERE id_categoria = ? AND activo = 1";
     $stmt_nombre = $conn->prepare($sql_nombre);
@@ -139,7 +147,7 @@ if (isset($_POST['borrar_categoria'])) {
     $categoria = $result_nombre->fetch_assoc();
     $nombre_categoria = $categoria ? $categoria['nombre_categoria'] : 'desconocido';
     $stmt_nombre->close();
-    
+
     // =============================================
     // REGLA 5: Verificar si la categoría tiene productos activos
     // =============================================
@@ -149,7 +157,7 @@ if (isset($_POST['borrar_categoria'])) {
     $stmt_check->execute();
     $result_check = $stmt_check->get_result();
     $row = $result_check->fetch_assoc();
-    
+
     if ($row['total'] > 0) {
         $_SESSION['mensaje'] = "No se puede eliminar la categoría '$nombre_categoria' porque tiene {$row['total']} producto(s) activo(s).";
         $_SESSION['tipo_mensaje'] = 'warning';
@@ -172,7 +180,7 @@ if (isset($_POST['borrar_categoria'])) {
         $_SESSION['tipo_mensaje'] = 'danger';
     }
     $stmt->close();
-    
+
     header('Location: menu.php?page=categorias.php');
     exit;
 }
