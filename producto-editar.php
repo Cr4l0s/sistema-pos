@@ -56,7 +56,7 @@ $stmt->close();
                 </a>
             </div>
             <div class="card-body">
-                <form action="producto-acciones.php" method="POST">
+                <form action="producto-acciones.php" method="POST" autocomplete="off">
                     <input type="hidden" name="producto_id" value="<?= $producto['id_producto'] ?>">
 
                     <div class="row">
@@ -67,9 +67,14 @@ $stmt->close();
                                 required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label>Código de Barras</label>
-                            <input type="text" name="codigo_barras"
-                                value="<?= htmlspecialchars($producto['codigo_barras'] ?? '') ?>" class="form-control">
+                            <label>Código de Barras:</label>
+                            <?php
+                            // Generar un nombre único para el campo
+                            $input_name = 'codigo_barras_' . uniqid();
+                            ?>
+                            <input type="text" name="<?= $input_name ?>"
+                                value="<?php echo $producto['codigo_barras']; ?>" class="form-control"
+                                autocomplete="off">
                             <small class="text-muted">Código alfanumérico, máximo 100 caracteres</small>
                         </div>
                     </div>

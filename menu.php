@@ -40,6 +40,7 @@ $menu = [
     'Mantenedores' => [
         // Visibles
         ['name' => 'Países', 'file' => 'inicio_pais.php', 'icon' => 'bi-globe-americas'],
+        ['name' => 'Monedas', 'file' => 'inicio_moneda.php', 'icon' => 'bi-cash-coin'],
         ['name' => 'Regiones', 'file' => 'selector_pais.php', 'icon' => 'bi-map'],
         ['name' => 'Ciudades', 'file' => 'selector_pais_y_region.php', 'icon' => 'bi-building'],
         ['name' => 'Comunas', 'file' => 'selector_pais_region_ciudad.php', 'icon' => 'bi-grid'],
@@ -51,6 +52,9 @@ $menu = [
         ['name' => 'Gestionar Regiones', 'file' => 'gestionar_regiones.php', 'icon' => 'bi-map', 'hidden' => true],
         ['name' => 'Gestionar Ciudades', 'file' => 'gestionar_ciudades.php', 'icon' => 'bi-building', 'hidden' => true],
         ['name' => 'Gestionar Comunas', 'file' => 'gestionar_comunas.php', 'icon' => 'bi-grid', 'hidden' => true],
+        ['name' => 'Crear Moneda', 'file' => 'moneda-crear.php', 'icon' => 'bi-plus-circle', 'hidden' => true],
+        ['name' => 'Editar Moneda', 'file' => 'moneda-editar.php', 'icon' => 'bi-pencil', 'hidden' => true],
+        ['name' => 'Ver Moneda', 'file' => 'moneda-ver.php', 'icon' => 'bi-eye', 'hidden' => true],
 
         // Ocultos (edición y vista)
         ['name' => 'Crear País', 'file' => 'pais-crear.php', 'icon' => 'bi-plus-circle', 'hidden' => true],
@@ -282,13 +286,12 @@ $menu = [
                     if (empty($subs_visibles))
                         continue;
                     ?>
-                    <li
-                        class="menu-group <?php foreach ($subs_visibles as $sub) {
-                            if ($currentPage == $sub['file']) {
-                                echo 'active';
-                                break;
-                            }
-                        } ?>">
+                    <li class="menu-group <?php foreach ($subs_visibles as $sub) {
+                        if ($currentPage == $sub['file']) {
+                            echo 'active';
+                            break;
+                        }
+                    } ?>">
                         <div class="menu-toggle">
                             <span><?= $main ?></span>
                             <i class="bi bi-chevron-down arrow"></i>
@@ -356,6 +359,9 @@ $menu = [
                         'pais-crear.php',
                         'pais-editar.php',
                         'pais-ver.php',
+                        'moneda-crear.php',
+                        'moneda-editar.php',
+                        'moneda-ver.php',
                         'producto-crear.php',
                         'producto-editar.php',
                         'producto-ver.php',

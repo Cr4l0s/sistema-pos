@@ -57,12 +57,12 @@ $stmt->close();
                     <div class="mb-3">
                         <label for="nombreRegion" class="form-label">Nombre de la Región</label>
                         <input type="text" class="form-control" name="nombreRegion" id="nombreRegion" 
-                               value="<?= htmlspecialchars($region['nombreRegion']) ?>" required>
+                               value="<?= htmlspecialchars($region['nombreRegion']) ?>" autocomplete="off" required>
                     </div>
                     <div class="mb-3">
                         <label for="codRegion" class="form-label">Código de la Región</label>
                         <input type="text" class="form-control" name="codRegion" id="codRegion" 
-                               value="<?= htmlspecialchars($region['codRegion']) ?>" required>
+                               value="<?= htmlspecialchars($region['codRegion']) ?>" autocomplete="off" required>
                     </div>
                     <button type="submit" name="update_region" class="btn btn-primary">Actualizar</button>
                 </form>

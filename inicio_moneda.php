@@ -11,10 +11,15 @@ require_once 'config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mantenedor de Países</title>
+    <title>Mantenedor de Monedas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="components/tabla_pro/tabla_pro.css">
+
+    <!-- Librerías para PDF y Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <style>
         .card-header {
             background-color: #f8f9fa;
@@ -39,7 +44,6 @@ require_once 'config.php';
         }
 
         @media (max-width: 992px) {
-
             .header-controls select {
                 width: 150px;
             }
@@ -85,11 +89,6 @@ require_once 'config.php';
     </style>
 </head>
 
-<!-- Librerías para PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
-
 <body>
     <?php include('navbar.php'); ?>
     <div class="container mt-4">
@@ -97,8 +96,9 @@ require_once 'config.php';
 
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Listado de Países</h4>
+                <h4 class="mb-0">Listado de Monedas</h4>
                 <div class="header-controls">
+                    <input type="text" id="buscarTabla" class="form-control" placeholder="Buscar...">
                     <select id="filasTabla" class="form-select">
                         <option value="10">10</option>
                         <option value="25">25</option>
@@ -112,28 +112,25 @@ require_once 'config.php';
                 require_once 'components/tabla_pro/tabla_pro.php';
 
                 $columnas = [
-                    'siglaPais' => 'Sigla',
-                    'codMoneda' => 'Moneda',
-                    'simbolo_moneda' => 'Símbolo',
-                    'nombrePais' => 'País'
+                    'codMoneda' => 'Código',
+                    'nombreMoneda' => 'Moneda',
+                    'simbolo' => 'Símbolo'
                 ];
 
-                tablaPro("components/tabla_pro/tabla_endpoint_paises.php", 'nombrePais', $columnas);
+                tablaPro("components/tabla_pro/tabla_endpoint_monedas.php", 'codMoneda', $columnas);
                 ?>
 
                 <div class="btn-agregar">
-                    <a href="menu.php?page=pais-crear.php" class="btn btn-primary">
-                        <span class="bi bi-plus-circle-fill"></span> Agregar País
+                    <a href="menu.php?page=moneda-crear.php" class="btn btn-primary">
+                        <span class="bi bi-plus-circle-fill"></span> Agregar Moneda
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 🔴 VARIABLE GLOBAL para tabla_pro.js -->
     <script>
-        var globalIdPais = 0;
-        console.log("🌍 globalIdPais definido en inicio_pais:", globalIdPais);
+        var globalIdMoneda = 0;
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

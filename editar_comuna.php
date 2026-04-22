@@ -59,7 +59,7 @@ $stmt->close();
                     <div class="mb-3">
                         <label for="nombreComuna" class="form-label">Nombre de la Comuna</label>
                         <input type="text" class="form-control" name="nombreComuna" id="nombreComuna"
-                            value="<?= htmlspecialchars($comuna['nombreComuna']) ?>" required>
+                            value="<?= htmlspecialchars($comuna['nombreComuna']) ?>"autocomplete="off" required>
                     </div>
                     <button type="submit" name="update_comuna" class="btn btn-primary">Actualizar</button>
                 </form>

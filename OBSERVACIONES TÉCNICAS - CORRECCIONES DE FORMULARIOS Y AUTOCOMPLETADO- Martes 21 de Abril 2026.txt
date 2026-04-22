@@ -1,0 +1,155 @@
+================================================================================
+OBSERVACIONES TÉCNICAS - CORRECCIONES DE FORMULARIOS Y AUTOCOMPLETADO
+================================================================================
+Fecha: 21 de Abril 2026
+================================================================================
+
+1. PROBLEMAS DETECTADOS Y SOLUCIONES APLICADAS
+================================================================================
+
+1.1 ERROR DE SINTaxis EN categoria-editar.php
+---------------------------------------------
+PROBLEMA: El campo "Nombre de la Categoría" mostraba texto HTML literal:
+"value="Accesorios Electrónicos" required> Solo letras, números y espacios"
+
+CAUSA: La línea del input estaba duplicada:
+```php
+<input ... value="<?= htmlspecialchars(...) ?>" ... required>
+       value="<?= htmlspecialchars(...) ?>" required>
+SOLUCIÓN: Se eliminó la línea duplicada, dejando solo un input correcto:
+
+php
+<input type="text" class="form-control" name="nombre_categoria" id="nombre_categoria" value="<?= htmlspecialchars($categoria['nombre_categoria']) ?>" autocomplete="off" required>
+<small class="text-muted">Solo letras, números y espacios</small>
+1.2 ERROR EN bind_param DE producto-acciones.php
+
+PROBLEMA: Error "ArgumentCountError" al crear producto.
+
+CAUSA: La cadena de tipos "ssidddiiii" tenía 10 caracteres pero se pasaban 9 variables.
+
+SOLUCIÓN: Se corrigió la cadena a "ssiddiiii" (2s + 1i + 2d + 4i = 9):
+
+php
+$stmt->bind_param("ssiddiiii", $codigo_barras, $nombre, $id_categoria, $precio_compras, $precio_venta, $stock_actual, $stock_minimo, $mostrar_en_tienda, $idUsuario);
+1.3 ERROR DE FOREIGN KEY EN producto-acciones.php
+
+PROBLEMA: Error "Cannot add or update a child row: a foreign key constraint fails".
+
+CAUSA: $idUsuario no tenía un valor válido.
+
+SOLUCIÓN: Se aseguró que $idUsuario tenga un valor por defecto:
+
+php
+$idUsuario = $_SESSION['usuario_id'] ?? 1;
+1.4 SUGERENCIAS DEL NAVEGADOR (AUTOCOMPLETADO)
+
+PROBLEMA: El navegador mostraba sugerencias de valores anteriores en los campos de texto.
+
+SOLUCIÓN: Se agregó autocomplete="off" o autocomplete="new-password" en todos los formularios.
+
+================================================================================
+2. ARCHIVOS MODIFICADOS CON autocomplete="off"
+================================================================================
+
+2.1 CATEGORÍAS
+
+categoria-crear.php: input nombre_categoria con autocomplete="off"
+
+categoria-editar.php: input nombre_categoria con autocomplete="off"
+
+2.2 PRODUCTOS
+
+producto-crear.php: form con autocomplete="off" y campo codigo_barras con autocomplete="new-password"
+
+producto-editar.php: form con autocomplete="off" y campo codigo_barras con autocomplete="new-password"
+
+2.3 MONEDAS
+
+moneda-crear.php: inputs con autocomplete="off"
+
+moneda-editar.php: inputs con autocomplete="off"
+
+2.4 PAÍSES
+
+pais-crear.php: inputs con autocomplete="off"
+
+pais-editar.php: inputs con autocomplete="off"
+
+2.5 REGIONES
+
+agregar_region.php: inputs con autocomplete="off"
+
+editar_region.php: inputs con autocomplete="off"
+
+2.6 CIUDADES
+
+agregar_ciudad.php: inputs con autocomplete="off"
+
+editar_ciudad.php: inputs con autocomplete="off"
+
+2.7 COMUNAS
+
+agregar_comuna.php: inputs con autocomplete="off"
+
+editar_comuna.php: inputs con autocomplete="off"
+
+2.8 USUARIOS
+
+usuario-crear.php: inputs con autocomplete="off"
+
+usuario-editar.php: inputs con autocomplete="off" (campo username readonly)
+
+================================================================================
+3. FUNCIÓN PARA NOMBRE DINÁMICO DE CÓDIGO DE BARRAS
+================================================================================
+
+Para evitar sugerencias del navegador en el campo "Código de Barras", se implementó
+una función que genera un nombre dinámico para el input:
+
+php
+function obtenerCodigoBarras() {
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'codigo_barras_') === 0) {
+            return !empty(trim($value)) ? limpiarInput(trim($value)) : null;
+        }
+    }
+    return isset($_POST['codigo_barras']) ? limpiarInput(trim($_POST['codigo_barras'])) : null;
+}
+Y en el formulario:
+
+php
+$input_name = 'codigo_barras_' . uniqid();
+<input type="text" name="<?= $input_name ?>" value="<?= $producto['codigo_barras'] ?>" autocomplete="off">
+================================================================================
+4. CÓDIGO CORREGIDO DE producto-acciones.php (SECCIÓN CREAR PRODUCTO)
+================================================================================
+
+php
+// Insertar
+$sql = "INSERT INTO productos (codigo_barras, nombre_producto, id_categoria, precio_compras, precio_venta, stock_actual, stock_minimo, mostrar_en_tienda, activo, idUsuario) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ssiddiiii", $codigo_barras, $nombre, $id_categoria, $precio_compras, $precio_venta, $stock_actual, $stock_minimo, $mostrar_en_tienda, $idUsuario);
+================================================================================
+5. VERIFICACIÓN DE USUARIOS EXISTENTES
+================================================================================
+
+Se verificaron los usuarios en la base de datos:
+
+idUsuario = 1 (Jorge) - Administrador
+
+idUsuario = 12 (Carlos) - Administrador
+
+================================================================================
+6. PENDIENTES PARA FUTURO
+================================================================================
+
+Verificar que todos los formularios de creación/edición tengan autocomplete="off"
+
+Implementar validación de que $idUsuario existe antes de insertar
+
+Considerar eliminar la tabla paises_monedas si ya no se usa
+
+================================================================================
+FIN DEL DOCUMENTO
+================================================================================

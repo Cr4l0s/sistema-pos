@@ -22,23 +22,23 @@ error_log("=== usuario-crear.php está siendo incluido ===");
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Nombres <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="nombres" required>
+                                <input type="text" class="form-control" name="nombres" autocomplete="off"required>
                                 <small class="text-muted">Mínimo 3 caracteres</small>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Apellido Paterno</label>
-                                <input type="text" class="form-control" name="apPaterno">
+                                <input type="text" class="form-control" name="apPaterno" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Apellido Materno</label>
-                                <input type="text" class="form-control" name="apMaterno">
+                                <input type="text" class="form-control" name="apMaterno" autocomplete="off">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Nombre de Usuario <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="username" required>
+                                <input type="text" class="form-control" name="username" autocomplete="off" required>
                                 <small class="text-muted">Mínimo 3 caracteres</small>
                             </div>
                         </div>
@@ -46,28 +46,28 @@ error_log("=== usuario-crear.php está siendo incluido ===");
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" name="email" required>
+                                <input type="email" class="form-control" name="email" autocomplete="off" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Teléfono Fijo</label>
-                                <input type="text" class="form-control" name="fonofijo">
+                                <input type="text" class="form-control" name="fonofijo" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Teléfono Celular 1</label>
-                                <input type="text" class="form-control" name="fonocelular1">
+                                <input type="text" class="form-control" name="fonocelular1" autocomplete="off">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Teléfono Celular 2</label>
-                                <input type="text" class="form-control" name="fonocelular2">
+                                <input type="text" class="form-control" name="fonocelular2" autocomplete="off">
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label>Contraseña <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" name="password" required>
+                            <input type="password" class="form-control" name="password" autocomplete="off" required>
                             <small class="text-muted">Mínimo 6 caracteres</small>
                         </div>
 

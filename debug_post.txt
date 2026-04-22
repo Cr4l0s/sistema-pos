@@ -384,3 +384,33 @@ Array
     [nombrePais] => Afganistán
 )
 
+2026-04-21 22:31:13 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => JPN
+    [nombrePais] => Japón
+    [codMoneda] => JPY
+    [nombreMoneda] => Yen japonés
+    [simbolo_moneda] => ¥
+)
+
+2026-04-22 03:19:39 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => JPN
+    [nombrePais] => Japón
+    [codMoneda] => 
+    [nombreMoneda] => 
+    [simbolo_moneda] => $
+)
+
+2026-04-22 03:25:17 - POST: Array
+(
+    [create_pais] => 1
+    [siglaPais] => JPN
+    [nombrePais] => Japón
+    [codMoneda] => JPY
+    [nombreMoneda] => Yen japones
+    [simbolo_moneda] => $
+)
+

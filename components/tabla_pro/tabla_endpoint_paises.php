@@ -49,10 +49,10 @@ $buscar_escapado = $conn->real_escape_string($buscar);
 // Determinar campo de ordenamiento según la columna seleccionada
 switch ($orden_validado) {
     case 'codMoneda':
-        $campo_orden = 'm.codMoneda';
+        $campo_orden = 'p.codMoneda';
         break;
     case 'simbolo_moneda':
-        $campo_orden = 'm.simbolo';
+        $campo_orden = 'p.simbolo_moneda';
         break;
     case 'siglaPais':
         $campo_orden = 'p.siglaPais';
@@ -63,29 +63,26 @@ switch ($orden_validado) {
         break;
 }
 
-// Consulta con JOIN para obtener la moneda principal
+// Consulta principal
 $sql = "SELECT 
             p.idPais,
             p.siglaPais,
             p.nombrePais,
-            m.codMoneda,
-            m.simbolo as simbolo_moneda
+            p.codMoneda,
+            p.simbolo_moneda
         FROM paises p
-        LEFT JOIN paises_monedas pm ON p.idPais = pm.idPais AND pm.es_principal = 1
-        LEFT JOIN monedas m ON pm.idMoneda = m.idMoneda
         $join_usuario
         WHERE p.vigente = 1 $where_usuario";
 
 if (!empty($buscar)) {
     $sql .= " AND (p.nombrePais LIKE '%$buscar_escapado%' 
                   OR p.siglaPais LIKE '%$buscar_escapado%' 
-                  OR m.codMoneda LIKE '%$buscar_escapado%'
-                  OR m.simbolo LIKE '%$buscar_escapado%')";
+                  OR p.codMoneda LIKE '%$buscar_escapado%'
+                  OR p.simbolo_moneda LIKE '%$buscar_escapado%')";
 }
 
 $sql .= " ORDER BY $campo_orden $direccion_validada";
 
-// Solo aplicar LIMIT si NO es "todos los registros"
 if (!$es_todos) {
     $sql .= " LIMIT $offset, $filas";
 }
@@ -102,14 +99,12 @@ if (!$result) {
 
 $html = "";
 while ($r = $result->fetch_assoc()) {
-    // SIEMPRE incluimos las celdas de datos
     $html .= "<tr>
         <td>" . htmlspecialchars($r['siglaPais']) . "</td>
         <td>" . htmlspecialchars($r['codMoneda'] ?? '—') . "</td>
         <td>" . htmlspecialchars($r['simbolo_moneda'] ?? '$') . "</td>
         <td>" . htmlspecialchars($r['nombrePais']) . "</td>";
 
-    // Solo agregamos la columna de acciones si NO es sin_acciones
     if (!$sin_acciones) {
         $html .= "<td>
             <form action='menu.php?page=pais-ver.php' method='POST' style='display:inline;'>
@@ -124,46 +119,40 @@ while ($r = $result->fetch_assoc()) {
                 <input type='hidden' name='idPais' value='{$r['idPais']}'>
                 <button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(\"¿Está seguro de eliminar el país " . htmlspecialchars($r['nombrePais']) . "?\")'><i class='bi bi-trash'></i></button>
             </form>
-        </td>";
+        
+";
     }
-
+    
     $html .= "</tr>";
 }
 
-// Total de registros considerando búsqueda
 $sql_total = "SELECT COUNT(DISTINCT p.idPais) as total 
               FROM paises p
-              LEFT JOIN paises_monedas pm ON p.idPais = pm.idPais AND pm.es_principal = 1
-              LEFT JOIN monedas m ON pm.idMoneda = m.idMoneda
               $join_usuario
               WHERE p.vigente = 1 $where_usuario";
 
 if (!empty($buscar)) {
     $sql_total .= " AND (p.nombrePais LIKE '%$buscar_escapado%' 
                         OR p.siglaPais LIKE '%$buscar_escapado%' 
-                        OR m.codMoneda LIKE '%$buscar_escapado%'
-                        OR m.simbolo LIKE '%$buscar_escapado%')";
+                        OR p.codMoneda LIKE '%$buscar_escapado%'
+                        OR p.simbolo_moneda LIKE '%$buscar_escapado%')";
 }
 
 $total_result = $conn->query($sql_total);
 $total = $total_result ? $total_result->fetch_assoc()['total'] : 0;
 $totalPaginas = $filas > 0 && !$es_todos ? ceil($total / $filas) : 1;
 
-// Paginación con botones Anterior/Siguiente (solo si no es "todos")
 $paginacion = "";
 if ($totalPaginas > 1 && !$es_todos) {
-    // Botón Anterior
     if ($pagina > 1) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='" . ($pagina - 1) . "'>
             <i class='bi bi-chevron-left'></i> Anterior
         </button>";
     }
 
-    // Rango de páginas a mostrar (máximo 5 alrededor de la actual)
     $inicio = max(1, $pagina - 2);
     $fin = min($totalPaginas, $pagina + 2);
 
-    // Mostrar primera página si está fuera del rango
     if ($inicio > 1) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='1'>1</button>";
         if ($inicio > 2) {
@@ -171,13 +160,11 @@ if ($totalPaginas > 1 && !$es_todos) {
         }
     }
 
-    // Páginas del rango
     for ($i = $inicio; $i <= $fin; $i++) {
         $active = ($i == $pagina) ? 'active' : '';
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1 $active' data-page='$i'>$i</button>";
     }
 
-    // Mostrar última página si está fuera del rango
     if ($fin < $totalPaginas) {
         if ($fin < $totalPaginas - 1) {
             $paginacion .= "<span class='btn btn-sm btn-outline-secondary disabled me-1'>...</span>";
@@ -185,7 +172,6 @@ if ($totalPaginas > 1 && !$es_todos) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn me-1' data-page='$totalPaginas'>$totalPaginas</button>";
     }
 
-    // Botón Siguiente
     if ($pagina < $totalPaginas) {
         $paginacion .= "<button class='btn btn-sm btn-outline-primary pagina-btn' data-page='" . ($pagina + 1) . "'>
             Siguiente <i class='bi bi-chevron-right'></i>
@@ -193,7 +179,6 @@ if ($totalPaginas > 1 && !$es_todos) {
     }
 }
 
-// Devolver JSON
 echo json_encode([
     "html" => $html,
     "paginacion" => $paginacion

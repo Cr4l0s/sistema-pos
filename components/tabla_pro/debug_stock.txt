@@ -714,3 +714,193 @@ Producto: Agua Mineral con Gas 1.5L - Stock: 250
 Producto: Agua Mineral con Gas 500ml - Stock: 350
 Producto: Agua Mineral sin Gas 1.5L - Stock: 300
 Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: Cable Lightning 1m - Stock: 60
+Producto: Cachantún con Gas Display 12u - Stock: 40
+Producto: Cachantún sin Gas Display 12u - Stock: 38
+Producto: Caja Multiuso - Stock: 45
+Producto: Cargador Rápido USB-C - Stock: 85
+Producto: Gorra Deportiva - Stock: 110
+Producto: Harina con Polvos 1kg - Stock: 140
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Pendrive 32GB - Stock: 100
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 2 - Stock: 5
+Producto: Prueba 34 - Stock: 5
+Producto: Gorra Deportiva - Stock: 110
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Pendrive 32GB - Stock: 100
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 2 - Stock: 5
+Producto: Prueba 34 - Stock: 5
+Producto: Prueba 4 - Stock: 20
+Producto: Gorra Deportiva - Stock: 110
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Pendrive 32GB - Stock: 100
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 2 - Stock: 5
+Producto: Prueba 34 - Stock: 5
+Producto: Prueba 4 - Stock: 20
+Producto: Gorra Deportiva - Stock: 110
+Producto: Jeans Mujer 36 - Stock: 45
+Producto: Pendrive 32GB - Stock: 100
+Producto: Producto de Prueba SQL - Stock: 0
+Producto: Producto prueba post-config - Stock: 0
+Producto: Prueba - Stock: 23
+Producto: Prueba - Stock: 23
+Producto: Prueba 2 - Stock: 5
+Producto: Prueba 34 - Stock: 5
+Producto: Prueba 4 - Stock: 20
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380
+Producto: 7Up Original 1.5L - Stock: 130
+Producto: 7Up Zero 1.5L - Stock: 120
+Producto: Aceite de Oliva 500ml - Stock: 40
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Aceite Vegetal 1.5L - Stock: 80
+Producto: Adaptador Corriente - Stock: 40
+Producto: Agua Mineral con Gas 1.5L - Stock: 250
+Producto: Agua Mineral con Gas 500ml - Stock: 350
+Producto: Agua Mineral sin Gas 1.5L - Stock: 300
+Producto: Agua Mineral sin Gas 500ml - Stock: 380

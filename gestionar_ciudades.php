@@ -159,7 +159,7 @@ $nombreRegion = $_SESSION['nombreRegion'] ?? 'Desconocido';
                     <div class="row">
                         <div class="col-md-8">
                             <label for="nombreCiudad" class="form-label">Nombre de la Ciudad:</label>
-                            <input type="text" class="form-control" name="nombreCiudad" id="nombreCiudad" required>
+                            <input type="text" class="form-control" name="nombreCiudad" id="nombreCiudad"autocomplete="off" required>
                         </div>
                         <div class="col-md-4 align-self-end">
                             <button type="submit" class="btn btn-primary">Agregar Ciudad</button>

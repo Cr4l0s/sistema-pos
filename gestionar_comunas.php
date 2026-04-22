@@ -169,7 +169,7 @@ $nombreCiudad = $_SESSION['nombreCiudad'] ?? 'Desconocido';
                     <div class="row">
                         <div class="col-md-8">
                             <label for="nombreComuna" class="form-label">Nombre de la Comuna:</label>
-                            <input type="text" class="form-control" name="nombreComuna" id="nombreComuna" required>
+                            <input type="text" class="form-control" name="nombreComuna" id="nombreComuna" autocomplete="off" required>
                         </div>
                         <div class="col-md-4 align-self-end">
                             <button type="submit" class="btn btn-primary">Agregar Comuna</button>

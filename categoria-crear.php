@@ -27,7 +27,7 @@
                         <form action="categoria-acciones.php" method="POST" onsubmit="return validarFormularioCategoria()">
                             <div class="mb-3">
                                 <label>Nombre de la Categoría <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="nombre_categoria" id="nombre_categoria" required>
+                                <input type="text" class="form-control" name="nombre_categoria" id="nombre_categoria" autocomplete="off" required>
                                 <small class="text-muted">Solo letras, números y espacios</small>
                             </div>
                             

@@ -61,17 +61,17 @@ $stmt->close();
                     <div class="mb-3">
                         <label>Nombres</label>
                         <input type="text" name="nombres" value="<?= htmlspecialchars($usuario['nombres']) ?>"
-                            class="form-control" required>
+                            class="form-control" autocomplete="off"required>
                     </div>
                     <div class="mb-3">
                         <label>Apellido Paterno</label>
                         <input type="text" name="apPaterno" value="<?= htmlspecialchars($usuario['ApPaterno']) ?>"
-                            class="form-control">
+                            class="form-control" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label>Apellido Materno</label>
                         <input type="text" name="apMaterno" value="<?= htmlspecialchars($usuario['ApMaterno']) ?>"
-                            class="form-control">
+                            class="form-control" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label>Usuario</label>
@@ -82,21 +82,21 @@ $stmt->close();
                     <div class="mb-3">
                         <label>Email</label>
                         <input type="email" name="email" value="<?= htmlspecialchars($usuario['email']) ?>"
-                            class="form-control" required>
+                            class="form-control" autocomplete="off" required>
                     </div>
                     <div class="mb-3">
                         <label>Teléfono</label>
                         <input type="text" name="fonofijo" value="<?= htmlspecialchars($usuario['fonofijo']) ?>"
-                            class="form-control">
+                            class="form-control" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label>Celular</label>
                         <input type="text" name="fonocelular1" value="<?= htmlspecialchars($usuario['fonocelular1']) ?>"
-                            class="form-control">
+                            class="form-control" autocomplete="off">
                     </div>
                     <div class="mb-3">
                         <label>Password (dejar vacío para no cambiar)</label>
-                        <input type="password" class="form-control" name="password">
+                        <input type="password" class="form-control" name="password" autocomplete="off">
                     </div>
                     <button type="submit" name="update_usuario" class="btn btn-primary">Actualizar</button>
                 </form>
