@@ -10,9 +10,11 @@ if (isset($_GET['id']) && !isset($_POST['id_producto'])) {
     ?>
     <!DOCTYPE html>
     <html>
+
     <head>
         <title>Redirigiendo...</title>
     </head>
+
     <body>
         <form id="redirectForm" action="menu.php" method="POST">
             <input type="hidden" name="page" value="producto-ver.php">
@@ -22,6 +24,7 @@ if (isset($_GET['id']) && !isset($_POST['id_producto'])) {
             document.getElementById('redirectForm').submit();
         </script>
     </body>
+
     </html>
     <?php
     exit;
@@ -95,6 +98,12 @@ if (!$producto) {
                         <label><b>Código de Barras</b></label>
                         <p class="form-control"><?= htmlspecialchars($producto['codigo_barras'] ?: '—') ?></p>
                     </div>
+                    <div class="col-md-6 mb-3">
+                        <label><b>Código de Producto</b></label>
+                        <p class="form-control">
+                            <?= htmlspecialchars($producto['codigo_producto'] ?: '—') ?>
+                        </p>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label><b>Nombre</b></label>
@@ -145,7 +154,7 @@ if (!$producto) {
 
                     if ($fecha_bd && $fecha_bd != '0000-00-00 00:00:00') {
                         $es_localhost = ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1');
-                        
+
                         if ($es_localhost) {
                             $fecha = new DateTime($fecha_bd);
                         } else {
@@ -157,7 +166,8 @@ if (!$producto) {
 
                         $ahora = new DateTime();
                         $diferencia = $ahora->getTimestamp() - $fecha->getTimestamp();
-                        if ($diferencia < 0) $diferencia = 0;
+                        if ($diferencia < 0)
+                            $diferencia = 0;
 
                         $hace_texto = '';
                         if ($diferencia < 60) {

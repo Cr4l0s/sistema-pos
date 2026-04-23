@@ -77,6 +77,15 @@ $stmt->close();
                                 autocomplete="off">
                             <small class="text-muted">Código alfanumérico, máximo 100 caracteres</small>
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Código de Producto:</label>
+                            <?php
+                            $input_codigo = 'codigo_producto_' . uniqid();
+                            ?>
+                            <input type="text" name="<?= $input_codigo ?>" class="form-control"
+                                value="<?= htmlspecialchars($producto['codigo_producto'] ?? '') ?>" autocomplete="off">
+                            <small class="text-muted">Código interno del producto (opcional)</small>
+                        </div>
                     </div>
 
                     <div class="mb-3">

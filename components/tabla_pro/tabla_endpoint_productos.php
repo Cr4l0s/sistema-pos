@@ -77,6 +77,7 @@ if ($categoria > 0) {
 $sql = "SELECT 
             p.id_producto,
             p.codigo_barras,
+            p.codigo_producto,
             p.nombre_producto,
             c.nombre_categoria,
             p.precio_compras,
@@ -131,6 +132,7 @@ while ($r = $result->fetch_assoc()) {
     // ORDEN CORRECTO de celdas según la vista
     $html .= "<tr>";
     $html .= "<td>" . htmlspecialchars($r['codigo_barras'] ?: '—') . "</td>";
+    $html .= "<td>" . htmlspecialchars($r['codigo_producto'] ?: '—') . "</td>"; 
     $html .= "<td>" . htmlspecialchars($r['nombre_producto']) . "</td>";
     $html .= "<td>" . htmlspecialchars($r['nombre_categoria'] ?: '—') . "</td>";
     $html .= "<td>" . $precio_compras . "</td>";

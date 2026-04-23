@@ -1,0 +1,146 @@
+================================================================================
+OBSERVACIONES TÉCNICAS - CORRECCIONES DE PRODUCTOS Y QA FINAL
+================================================================================
+Fecha: 22 de Abril 2026
+================================================================================
+
+1. PROBLEMAS DETECTADOS Y SOLUCIONES APLICADAS
+================================================================================
+
+1.1 CAMPO CÓDIGO DE PRODUCTO EN PRODUCTOS
+------------------------------------------
+PROBLEMA: El formulario de productos no tenía campo "Código de Producto",
+solo "Código de Barras" (opcional). El QA requería un campo para código
+interno del producto.
+
+SOLUCIÓN:
+- Se agregó columna `codigo_producto` a la tabla `productos`
+- Se modificó `producto-crear.php` para incluir el campo
+- Se modificó `producto-editar.php` para incluir el campo con valor existente
+- Se modificó `producto-acciones.php` para guardar el campo en INSERT y UPDATE
+- Se agregó función `obtenerCodigoProducto()` para nombre dinámico
+- Se modificó `tabla_endpoint_productos.php` para mostrar el campo en listado
+- Se modificó `producto-ver.php` para mostrar el campo en vista de detalle
+
+CÓDIGO AGREGADO EN `producto-ver.php`:
+```php
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label><b>Código de Barras</b></label>
+        <p class="form-control"><?= htmlspecialchars($producto['codigo_barras'] ?: '—') ?></p>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label><b>Código de Producto</b></label>
+        <p class="form-control">
+            <?= htmlspecialchars($producto['codigo_producto'] ?: '—') ?>
+        </p>
+    </div>
+</div>
+1.2 CORRECCIÓN DE CONSULTA SQL EN tabla_endpoint_productos.php
+
+PROBLEMA: La columna codigo_producto no estaba incluida en la consulta SELECT.
+
+SOLUCIÓN: Se agregó p.codigo_producto en la consulta:
+
+php
+$sql = "SELECT 
+            p.id_producto,
+            p.codigo_barras,
+            p.codigo_producto,
+            p.nombre_producto,
+            c.nombre_categoria,
+            p.precio_compras,
+            p.precio_venta,
+            p.stock_actual,
+            p.mostrar_en_tienda,
+            p.stock_minimo
+        FROM productos p
+        ...";
+1.3 AGREGAR CELDA EN LISTADO DE PRODUCTOS
+
+SOLUCIÓN: Se agregó la celda para mostrar el código de producto:
+
+php
+$html .= "<td>" . htmlspecialchars($r['codigo_producto'] ?: '—') . "</td>";
+1.4 MODIFICACIÓN DE productos.php (COLUMNAS)
+
+Se actualizó el array $columnas para incluir "Código Producto":
+
+php
+$columnas = [
+    'codigo_barras' => 'Código',
+    'codigo_producto' => 'Código Producto',
+    'nombre_producto' => 'Producto',
+    'categoria' => 'Categoría',
+    'precio_compras' => 'Costo',
+    'precio_venta' => 'Precio',
+    'stock_actual' => 'Stock',
+    'mostrar_en_tienda' => 'Tienda'
+];
+================================================================================
+2. FUNCIÓN PARA NOMBRE DINÁMICO DE CÓDIGO DE PRODUCTO
+================================================================================
+
+En producto-acciones.php se agregó:
+
+php
+function obtenerCodigoProducto() {
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'codigo_producto_') === 0) {
+            return !empty(trim($value)) ? limpiarInput(trim($value)) : null;
+        }
+    }
+    return isset($_POST['codigo_producto']) ? limpiarInput(trim($_POST['codigo_producto'])) : null;
+}
+================================================================================
+3. SQL EJECUTADO
+================================================================================
+
+sql
+-- Agregar columna código de producto a la tabla productos
+ALTER TABLE productos ADD COLUMN codigo_producto VARCHAR(50) DEFAULT NULL AFTER codigo_barras;
+================================================================================
+4. ARCHIVOS MODIFICADOS
+================================================================================
+
+Archivo	Cambio realizado
+productos.php	Agregada columna 'Código Producto' en $columnas
+producto-crear.php	Agregado campo código de producto
+producto-editar.php	Agregado campo código de producto con valor
+producto-acciones.php	Agregada función obtenerCodigoProducto() y bind_param
+producto-ver.php	Agregada fila para mostrar código de producto
+tabla_endpoint_productos.php	Agregado codigo_producto en SELECT y en HTML
+================================================================================
+5. VERIFICACIÓN FINAL DEL QA 15-04-2026
+================================================================================
+
+#	Problema	Estado
+1	Al crear país, busca moneda en lista predefinida	✅ RESUELTO
+2	No se puede crear moneda nueva	✅ RESUELTO
+3	Regiones muestran datos de Chile al seleccionar otro país	✅ RESUELTO
+4	Ciudades muestran datos de Chile al seleccionar otra región	✅ RESUELTO
+5	Al agregar comuna muestra lista de sugerencias	✅ RESUELTO
+6	Productos no tiene campo código de producto	✅ RESUELTO
+================================================================================
+6. ESTRUCTURA DE DIVS EN producto-ver.php (ACLARACIÓN)
+================================================================================
+
+La estructura de Bootstrap utilizada:
+
+<div class="row"> = fila horizontal
+
+<div class="col-md-6"> = columna vertical dentro de la fila
+
+El cierre es LIFO: se cierra primero la columna, luego la fila
+
+Ejemplo:
+
+php
+<div class="row">           // 1. ABRE fila
+    <div class="col-md-6">  // 2. ABRE columna
+        contenido
+    </div>                  // 2. CIERRA columna
+</div>                      // 1. CIERRA fila
+================================================================================
+FIN DEL DOCUMENTO
+================================================================================

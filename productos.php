@@ -134,6 +134,7 @@ $categoria_seleccionada = isset($_GET['categoria']) ? intval($_GET['categoria'])
 
                 $columnas = [
                     'codigo_barras' => 'Código',
+                    'codigo_producto' => 'Código Producto', 
                     'nombre_producto' => 'Producto',
                     'categoria' => 'Categoría',
                     'precio_compras' => 'Costo',

@@ -12,7 +12,8 @@ $fecha_actual = date('Y-m-d H:i:s');
 $idUsuario = $_SESSION['usuario_id'] ?? 1;
 
 // Función para obtener el código de barras desde un nombre dinámico
-function obtenerCodigoBarras() {
+function obtenerCodigoBarras()
+{
     foreach ($_POST as $key => $value) {
         if (strpos($key, 'codigo_barras_') === 0) {
             return !empty(trim($value)) ? limpiarInput(trim($value)) : null;
@@ -21,12 +22,22 @@ function obtenerCodigoBarras() {
     // Si no se encuentra, usar el nombre tradicional
     return isset($_POST['codigo_barras']) ? limpiarInput(trim($_POST['codigo_barras'])) : null;
 }
+function obtenerCodigoProducto()
+{
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'codigo_producto_') === 0) {
+            return !empty(trim($value)) ? limpiarInput(trim($value)) : null;
+        }
+    }
+    return isset($_POST['codigo_producto']) ? limpiarInput(trim($_POST['codigo_producto'])) : null;
+}
 // ============================================
 // CREAR PRODUCTO
 // ============================================
 if (isset($_POST['create_producto'])) {
 
     $codigo_barras = obtenerCodigoBarras();
+    $codigo_producto = obtenerCodigoProducto();
     $nombre = limpiarInput(trim($_POST['nombre_producto']));
     $descripcion = !empty(trim($_POST['descripcion'])) ? limpiarInput(trim($_POST['descripcion'])) : null;
     $id_categoria = !empty($_POST['id_categoria']) ? intval($_POST['id_categoria']) : null;
@@ -90,10 +101,10 @@ if (isset($_POST['create_producto'])) {
 
     // Insertar
 // En CREATE PRODUCTO
-    $sql = "INSERT INTO productos (codigo_barras, nombre_producto, id_categoria, precio_compras, precio_venta, stock_actual, stock_minimo, mostrar_en_tienda, activo, idUsuario) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)";
+    $sql = "INSERT INTO productos (codigo_barras, codigo_producto, nombre_producto, id_categoria, precio_compras, precio_venta, stock_actual, stock_minimo, mostrar_en_tienda, activo, idUsuario) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssiddiiii", $codigo_barras, $nombre, $id_categoria, $precio_compras, $precio_venta, $stock_actual, $stock_minimo, $mostrar_en_tienda, $idUsuario);
+    $stmt->bind_param("sssidddiiii", $codigo_barras, $codigo_producto, $nombre, $id_categoria, $precio_compras, $precio_venta, $stock_actual, $stock_minimo, $mostrar_en_tienda, $idUsuario);
 
     if (!$stmt) {
         error_log("Error prepare CREATE: " . $conn->error);
@@ -176,6 +187,7 @@ if (isset($_POST['update_producto'])) {
     $stmt_nombre->close();
 
     $codigo_barras = obtenerCodigoBarras();
+    $codigo_producto = obtenerCodigoProducto();
     $nombre = limpiarInput(trim($_POST['nombre_producto']));
     $descripcion = !empty(trim($_POST['descripcion'])) ? limpiarInput(trim($_POST['descripcion'])) : null;
     $id_categoria = !empty($_POST['id_categoria']) ? intval($_POST['id_categoria']) : null;
@@ -221,8 +233,9 @@ if (isset($_POST['update_producto'])) {
         exit;
     }
 
-    $sql = "UPDATE productos SET 
+$sql = "UPDATE productos SET 
             codigo_barras = ?,
+            codigo_producto = ?,
             nombre_producto = ?,
             descripcion = ?,
             id_categoria = ?,
@@ -243,8 +256,9 @@ if (isset($_POST['update_producto'])) {
     }
 
     $stmt->bind_param(
-        "sssiddiiii",
+        "ssssiddiiii",
         $codigo_barras,
+        $codigo_producto,
         $nombre,
         $descripcion,
         $id_categoria,

@@ -34,69 +34,76 @@ require 'db.php';
                                 <input type="text" name="<?= $input_name ?>" class="form-control" autocomplete="off">
                                 <small class="text-muted">Código alfanumérico, máximo 100 caracteres</small>
                             </div>
-                        </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Código de Producto:</label>
+                                <?php
+                                $input_codigo = 'codigo_producto_' . uniqid();
+                                ?>
+                                <input type="text" name="<?= $input_codigo ?>" class="form-control" autocomplete="off">
+                                <small class="text-muted">Código interno del producto (opcional)</small>
+                            </div>
 
-                        <!-- Fila 2: Descripción -->
-                        <div class="mb-3">
-                            <label>Descripción</label>
-                            <textarea class="form-control" name="descripcion" rows="3"></textarea>
-                        </div>
+                            <!-- Fila 2: Descripción -->
+                            <div class="mb-3">
+                                <label>Descripción</label>
+                                <textarea class="form-control" name="descripcion" rows="3"></textarea>
+                            </div>
 
-                        <!-- Fila 3: Categoría y Precio de Costo -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>Categoría</label>
-                                <select class="form-control" name="id_categoria">
-                                    <option value="">Seleccionar categoría</option>
-                                    <?php
-                                    $categorias = mysqli_query($conn, "SELECT * FROM categorias WHERE activo = 1");
-                                    while ($cat = mysqli_fetch_array($categorias)) {
-                                        echo '<option value="' . $cat['id_categoria'] . '">' . htmlspecialchars($cat['nombre_categoria']) . '</option>';
-                                    }
-                                    ?>
-                                </select>
+                            <!-- Fila 3: Categoría y Precio de Costo -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label>Categoría</label>
+                                    <select class="form-control" name="id_categoria">
+                                        <option value="">Seleccionar categoría</option>
+                                        <?php
+                                        $categorias = mysqli_query($conn, "SELECT * FROM categorias WHERE activo = 1");
+                                        while ($cat = mysqli_fetch_array($categorias)) {
+                                            echo '<option value="' . $cat['id_categoria'] . '">' . htmlspecialchars($cat['nombre_categoria']) . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>Precio de Costo</label>
+                                    <input type="number" step="0.01" class="form-control" name="precio_compras"
+                                        id="precio_compras" value="0.00">
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Precio de Costo</label>
-                                <input type="number" step="0.01" class="form-control" name="precio_compras"
-                                    id="precio_compras" value="0.00">
-                            </div>
-                        </div>
 
-                        <!-- Fila 4: Precio de Venta y Mostrar en Tienda -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>Precio de Venta <span class="text-danger">*</span></label>
-                                <input type="number" step="0.01" class="form-control" name="precio_venta"
-                                    id="precio_venta" required>
+                            <!-- Fila 4: Precio de Venta y Mostrar en Tienda -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label>Precio de Venta <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" name="precio_venta"
+                                        id="precio_venta" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>Mostrar en Tienda Virtual</label>
+                                    <select class="form-control" name="mostrar_en_tienda">
+                                        <option value="1">Sí</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Mostrar en Tienda Virtual</label>
-                                <select class="form-control" name="mostrar_en_tienda">
-                                    <option value="1">Sí</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
-                        </div>
 
-                        <!-- Fila 5: Stock Actual y Stock Mínimo -->
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>Stock Actual</label>
-                                <input type="number" class="form-control" name="stock_actual" id="stock_actual"
-                                    value="0" min="0">
+                            <!-- Fila 5: Stock Actual y Stock Mínimo -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label>Stock Actual</label>
+                                    <input type="number" class="form-control" name="stock_actual" id="stock_actual"
+                                        value="0" min="0">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>Stock Mínimo</label>
+                                    <input type="number" class="form-control" name="stock_minimo" id="stock_minimo"
+                                        value="0" min="0">
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Stock Mínimo</label>
-                                <input type="number" class="form-control" name="stock_minimo" id="stock_minimo"
-                                    value="0" min="0">
-                            </div>
-                        </div>
 
-                        <!-- Botón Grabar -->
-                        <div class="mb-3">
-                            <button type="submit" name="create_producto" class="btn btn-primary">Grabar</button>
-                        </div>
+                            <!-- Botón Grabar -->
+                            <div class="mb-3">
+                                <button type="submit" name="create_producto" class="btn btn-primary">Grabar</button>
+                            </div>
                     </form>
                 </div>
             </div>
